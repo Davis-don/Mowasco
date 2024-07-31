@@ -1,0 +1,40 @@
+@media (max-width:640px){
+.overall-receipt-gen-container{
+    
+    }
+.gen-water-receipt-form-div{
+padding: 30px;
+width: 80vw;
+margin: auto;
+}
+}
+@media screen and (min-width:641px) and (max-width:1025px){
+    .overall-receipt-gen-container{
+    
+    }
+.gen-water-receipt-form-div{
+padding: 30px;
+width: 80vw;
+margin: auto;
+}
+.generate-receipt-overall-form-div{
+display: grid;
+grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+gap:20px;
+}
+}
+@media screen and (min-width:1026px){
+    .overall-receipt-gen-container{
+    
+    }
+.gen-water-receipt-form-div{
+padding: 30px;
+width: 80vw;
+margin: auto;
+}
+.generate-receipt-overall-form-div{
+display: grid;
+grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+gap:20px;
+}
+}

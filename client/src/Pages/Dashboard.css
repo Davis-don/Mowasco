@@ -1,0 +1,51 @@
+.active-link-css{
+background-color: blue;
+padding: 5px;
+}
+
+
+.overall-dashboard-container{
+position: relative;
+}
+
+
+@media (max-width:640px){
+.small-phone-display{
+position: relative;
+}
+.dashboard-header-small{
+width: 100vw;
+height: 60px;
+background-color: blue;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+padding: 20px;
+}
+.sidebar-small-screen{
+position: absolute;
+z-index: +4;
+width: 80vw;
+height: 100vh;
+background-color: rgb(28, 6, 103);
+padding: 20px;
+}
+.close-btn-small{
+position: absolute;
+z-index: +2;
+top:0px;
+left:100%;
+width: max-content;
+height: max-content;
+}
+.component-dash-display{
+position: absolute;
+z-index: +1;
+}
+}
+@media screen and (min-width:641px) and (max-width:1025px){
+
+}
+@media screen and (min-width:1026px){
+
+}

@@ -1,0 +1,42 @@
+@media (max-width:640px){
+.overall-gen-water-bill-container{
+padding: 30px;
+}
+.gen-water-bill-form-div{
+width: 80vw;
+margin: auto;
+}
+.overall-customer-details-container{
+border-bottom:  2px solid grey;
+}
+}
+@media screen and (min-width:641px) and (max-width:1025px){
+    .overall-gen-water-bill-container{
+        padding: 30px;
+        }
+        .gen-water-bill-form-div{
+        width: 80vw;
+        margin: auto;
+        }
+        .overall-customer-details-container{
+        border-bottom:  2px solid grey;
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
+        gap:20px;
+        }
+}
+@media screen and (min-width:1026px){
+    .overall-gen-water-bill-container{
+        padding: 30px;
+        }
+        .gen-water-bill-form-div{
+        width: 80vw;
+        margin: auto;
+        }
+        .overall-customer-details-container{
+        border-bottom:  2px solid grey;
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
+        gap:20px;
+        }
+}
