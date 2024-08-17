@@ -1,0 +1,21 @@
+const { Client } = require('pg');
+require('dotenv').config();
+
+const configurations={
+    user: 'Davis',
+    host: process.env.HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: 26257, // Default CockroachDB port
+    ssl: {
+        rejectUnauthorized: false // Disable SSL for development
+    } 
+}
+
+
+postgresql://Davis:<ENTER-SQL-USER-PASSWORD>@winkywebus-5578.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/winkyweb-awesome?sslmode=verify-full
+
+
+
+
+module.exports=configurations;

@@ -1,0 +1,19 @@
+@media (max-width:640px){
+.overall-add-user-container{
+position: relative;
+height: 110vh;
+}
+.form-encapsulator{
+    position: absolute; 
+    top:50%; 
+    left:50%; 
+    transform:translate(-50%, -50%); 
+    width:90vw;
+    
+
+}
+.adduser-button{
+width: max-content;
+margin: auto;
+}
+}

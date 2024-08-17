@@ -13,6 +13,16 @@ function Login() {
     setPasswordShown(!passwordShown);
   };
 
+  const [userCred,setUserCred]=useState({
+    UserId:"",
+    Password:""
+  });
+  const updateCredentials=(e)=>{
+    setUserCred({
+      ...userCred,[e.target.name]:e.target.value
+    })
+    console.log(userCred);
+  }
   return (
     <div className="overall-login-container container-fluid">
         <img className='water-background' src={waterImage} alt='water in lake'/>
@@ -25,7 +35,7 @@ function Login() {
               <span className="input-group-text">
                 <MdPermIdentity />
               </span>
-              <input type="number" className="form-control" placeholder="Enter company ID" />
+              <input onChange={updateCredentials} name='UserId' type="number" className="form-control" placeholder="Enter company ID" />
             </div>
             <div className="input-group mb-3">
               <span className="input-group-text">
@@ -35,6 +45,8 @@ function Login() {
                 type={passwordShown ? "text" : "password"}
                 className="form-control"
                 placeholder="Enter password"
+                name='Password'
+                onChange={updateCredentials}
               />
               <span className="input-group-text" onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
                 {passwordShown ? <MdVisibilityOff /> : <MdVisibility />}
