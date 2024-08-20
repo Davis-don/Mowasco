@@ -9,8 +9,8 @@ Content-Type: application/json
   "Contact":"0758420860",
   "Password":"As261/1163",
   "ConfirmPassword":"As261/1163",
-   "Status":"Active",
-   "Role":"Admin"
+   "Status":"active",
+   "Role":"admin"
 
 }
 

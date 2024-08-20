@@ -22,6 +22,7 @@ function AddUser() {
 setUserData({
   ...userData,[e.target.name]:e.target.value
 })
+console.log(userData);
   }
 
   const handlePost = async (e) => {
@@ -70,20 +71,40 @@ setUserData({
         {form && <form onSubmit={handlePost}>
     <input onChange={handleForm} name='EmployeeId' required type='number'placeholder='Employee id'className='form-control m-2'/>
     <input onChange={handleForm} name='FullNames' required type='text'placeholder='Names'className='form-control m-2'/>
-    <input onChange={handleForm} name='Gender' required type='text'placeholder='gender'className='form-control m-2'/>
+    {/* <input onChange={handleForm} name='Gender' required type='text'placeholder='gender'className='form-control m-2'/> */}
+    <select onChange={handleForm} name="Gender" className='form-control m-2'>
+  <option value="">Gender</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  <option value="N/A">Rather not say</option>
+</select>
+
+
+
     <input onChange={handleForm} name='Age' required type='number'placeholder='age'className='form-control m-2'/>
-    <input  onChange={handleForm} name='Contact' required type='number'placeholder='contact'className='form-control m-2'/>
+    
+                 <input
+    required
+    onChange={handleForm}
+    name='Contact'
+    type='text'
+    placeholder='Enter Kenyan phone number'
+    className='form-control'
+    pattern="(\+2547[0-9]{8}|\+2541[0-9]{8}|07[0-9]{8}|01[0-9]{8})"
+    title="Please enter a valid Kenyan phone number"
+/>
+
     <input onChange={handleForm} name='Password' required type='password'placeholder='password'className='form-control m-2'/>
     <input onChange={handleForm} name='ConfirmPassword' required type='password'placeholder='confirm password'className='form-control m-2'/>
-<select onSelect={handleForm} name="Status" className='form-control m-2'>
+<select onChange={handleForm} name="Status" className='form-control m-2'>
   <option value="">status</option>
-  <option value="Active">Admin</option>
-  <option value="Inactive">User</option>
+  <option value="active">active</option>
+  <option value="inactive">inactive</option>
 </select>
-<select onSelect={handleForm} name="Role" className='form-control m-2'>
+<select onChange={handleForm} name="Role" className='form-control m-2'>
   <option value="">role</option>
-  <option value="Administrator">Active</option>
-  <option value="User">Inactive</option>
+  <option value="admin">admin</option>
+  <option value="user">user</option>
 </select>
     <div className='adduser-button'>
         <button type='submit' className='btn btn-outline-primary'>Submit</button>

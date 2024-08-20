@@ -18,11 +18,11 @@ async function createEmployeesTable() {
         CREATE TABLE IF NOT EXISTS Employees_tbl (
           Employees_Id INT PRIMARY KEY,
           FullNames VARCHAR(255) NOT NULL,
-          Gender CHAR(10) NOT NULL,
+          Gender VARCHAR(10) NOT NULL,
           Age INT NOT NULL,
           contact VARCHAR(50) NOT NULL,
-          Status CHAR(10) NOT NULL,
-          Role char(10) NOT NULL,
+          Status VARCHAR(10) NOT NULL,
+          Role VARCHAR(10) NOT NULL,
           Password VARCHAR(10) NOT NULL
         )
       `;
@@ -32,6 +32,26 @@ async function createEmployeesTable() {
       console.error('Error creating table:', err);
     }
   }
+
+  //FUNCTION TO DROP THE WHOLE TABLE
+  async function dropEmployeesTable() {
+    try {
+      // SQL query to drop the table if it exists
+      const dropTableQuery = `
+        DROP TABLE IF EXISTS Employees_tbl;
+      `;
+  
+      // Execute the query
+      await client.query(dropTableQuery);
+      console.log("Employees table dropped successfully");
+    } catch (err) {
+      console.error('Error dropping table:', err);
+    } finally {
+      // Close the database connection
+      await client.end();
+    }
+  }
+  
 
 // DROP ALL RECORDS FROM EMPLOYEES TABLE function
 async function deleteAllRecordsFromEmployeesTable() {
@@ -107,6 +127,7 @@ async function deleteAllRecordsFromEmployeesTable() {
 
 
 Routes.post('/Add/User', async (req,res)=>{
+  await createEmployeesTable(); 
   let DataReturned=await insertEmployeeToDatabase(req.body);// Insert data into the table;
   res.status(DataReturned.status).json({message:DataReturned.message});
  
@@ -119,6 +140,7 @@ Routes.get('/Get/All/Users', async (req,res)=>{
 })
 Routes.get('/remove/All/Users', async (req,res)=>{
   await deleteAllRecordsFromEmployeesTable() //remove all users;
+ // await dropEmployeesTable();
 })
 
 

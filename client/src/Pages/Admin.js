@@ -1,5 +1,6 @@
 import React from 'react'
 import './Admin.css'
+import AddUser from '../Components/AddUser';
 import { useState } from 'react';
 import { IoMenuSharp } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -15,15 +16,15 @@ function Admin() {
      }
     const [sidebar,setSidebar]=useState(false);
     const [Home,setHome]=useState(true);
-    const [Customer,setCustomer]=useState(false);
+    const [User,setUser]=useState(false);
     const [Bill,setBill]=useState(false);
     const [receipt,setReceipt]=useState(false);
     let component;
     if(Home==true){
     component=<AdminDashDisplay/>
     }
-    else if(Customer==true){
-      component=''
+    else if(User==true){
+      component=<AddUser/>
     }
     else if(Bill==true){
       component=''
@@ -52,10 +53,10 @@ function Admin() {
              <h2 style={{display:"flex",gap:'10px'}}><span><MdOutlineDashboard className='fs-1 text-light'/></span><span className='text-light'>Dashboard</span></h2>
              <div className='close-btn-small'onClick={()=>{setSidebar(false)}}><IoMdClose className='fs-1 text-dark'/></div>
              <ul className='list-unstyled p-3' >
-              <li className={Home ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(true);setCustomer(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaHome className='text-light fs-2'/></span><span className='fs-5 text-light'>Home</span></li>
-              <li className={Customer ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setCustomer(true);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaUserTie className='text-light fs-2'/></span><span className='fs-5 text-light'>Customer</span></li>
-              <li className={Bill ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setCustomer(false);setBill(true);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaMoneyBillWave className='text-light fs-2'/></span><span className='fs-5 text-light'>Bill</span></li>
-              <li className={receipt ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setCustomer(false);setBill(false);setReceipt(true)}} style={{display:"flex",gap:'10px'}}><span><FaReceipt className='text-light fs-2'/></span><span className='fs-5 text-light'>Receipt</span></li>
+              <li className={Home ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(true);setUser(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaHome className='text-light fs-2'/></span><span className='fs-5 text-light'>Home</span></li>
+              <li className={User ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(true);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaUserTie className='text-light fs-2'/></span><span className='fs-5 text-light'>User</span></li>
+              <li className={Bill ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(false);setBill(true);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaMoneyBillWave className='text-light fs-2'/></span><span className='fs-5 text-light'>Bill</span></li>
+              <li className={receipt ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(false);setBill(false);setReceipt(true)}} style={{display:"flex",gap:'10px'}}><span><FaReceipt className='text-light fs-2'/></span><span className='fs-5 text-light'>Receipt</span></li>
              </ul>
         </div>}
         <div className='component-dash-display'>
