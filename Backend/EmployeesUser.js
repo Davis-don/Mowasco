@@ -128,7 +128,7 @@ async function deleteAllRecordsFromEmployeesTable() {
 
 Routes.post('/Add/User', async (req,res)=>{
   await createEmployeesTable(); 
-  let DataReturned=await insertEmployeeToDatabase(req.body);// Insert data into the table;
+  let DataReturned = await insertEmployeeToDatabase(req.body);// Insert data into the table;
   res.status(DataReturned.status).json({message:DataReturned.message});
  
 })
