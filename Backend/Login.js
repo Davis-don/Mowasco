@@ -94,20 +94,6 @@ async function checkUserCredentials(UserId, Password) {
   }
 }
 
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
 
  Routes.post('/',async (req,res)=>{
   const {UserId, Password}=req.body;
@@ -127,27 +113,7 @@ res.status(200).json({ Token:token,message:"Login successful",userRole:await get
   else{
   res.status(200).json({message:"User not found"});
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  })
 
 
-  module.exports=Routes;
+export default Routes

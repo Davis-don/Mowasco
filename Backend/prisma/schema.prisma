@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Customers {
+  cust_id String @id @default(uuid())
+  custMeterNumber String @map("Meter_number")
+  custZone String @map("cust_zone")
+  custFirstName String @map("first_name")
+  custLastName String @map("last_name")
+  custID Int @map("cust_ID")
+  custPhoneNumber Int @map("phone_number")
+  custConnectionType String @map("connection_type")
+  custStatus String @default("Active") @map("status")
+  @@map("Customers_tb")
+}
+
+model Meters {
+  meter_id String @id @default(uuid())
+  meterNumber Int @unique @map("meter_number")
+  zone String @map("zone")
+
+  @@map("meters_tb")
+}
+
+model Zones {
+  zone_id String @id @default(uuid())
+  zoneName Int @unique @map("zone_name")
+
+  @@map("zone_tb")
+}
+
+model Water_Reading{
+  reading_id String @id @default(uuid())
+  currentReading Decimal @db.Decimal(10,2) @map("current_reading")
+  prevReading Decimal @db.Decimal(10,2) @map("prev_reading")
+  consumption Decimal @db.Decimal(10,2) @map("consumption")
+  createdAt DateTime @default(now()) @map("reading date")
+
+  @@map("water_reading_tb")
+}
+
+model Billing {
+  bill_id String @id @default(uuid())
+  billingPeriod DateTime @map("billing_period")
+  consumption Decimal @db.Decimal(10,2) @map("consumption")
+  amountDue Decimal @db.Decimal(10,2) @map("amount_due")
+  billingDate DateTime
+ 
+  @@map("bills_tb")
+}
+
+model Receipts {
+  receipt_id String @id @default(uuid())
+  receiptNumber Int @map("receipt_number")
+  amount_paid Decimal @db.Decimal(10,2) @map("amount_paid")
+  Deadline_date DateTime @map("deadline_date")
+  createdAt DateTime @default(now())
+
+  @@map("receipts_tb")
+}
