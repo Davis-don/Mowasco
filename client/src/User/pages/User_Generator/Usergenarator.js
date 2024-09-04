@@ -1,7 +1,9 @@
 import React from 'react'
 import './Usergenerator.css'
-import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
-import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
+// import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
+import oceanimg from '../../../images/jack-b-o1radglopDA-unsplash.jpg'
+
+// import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css'
 function Usergenarator() {
   return (

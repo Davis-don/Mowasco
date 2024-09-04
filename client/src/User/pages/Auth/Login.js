@@ -4,10 +4,9 @@ import './Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MdPermIdentity } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
-import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
-import Cookies from 'js-cookie';
+import waterImage from '../../../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
+// import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import { IoFileTray } from 'react-icons/io5';
 function Login() {
   // const Token = sessionStorage.getItem('userToken');
@@ -25,6 +24,7 @@ function Login() {
     UserId:"",
     Password:""
   });
+  
   const updateCredentials=(e)=>{
     setUserCred({
       ...userCred,[e.target.name]:e.target.value

@@ -7,10 +7,10 @@ import { IoMdClose } from "react-icons/io";
 import { useState } from 'react';
 import './Dashboard.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Usergenarator from '../Components/Usergenarator';
-import Genwaterbill from '../Components/Genwaterbill';
-import Receiptgen from '../Components/Receiptgen';
-import Homecomponent from '../Components/Homecomponent';
+import Usergenarator from '../../User/pages/User_Generator/Usergenarator';
+import Genwaterbill from '../../User/pages/Bill/Genwaterbill';
+import Receiptgen from '../../User/pages/Receipt/Receiptgen';
+import Homecomponent from '../../User/Components/Homecomponent'
 
 function Dashboard() {
 const [sidebar,setSidebar]=useState(false);
