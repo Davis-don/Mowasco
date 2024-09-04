@@ -8,6 +8,8 @@ import bodyParser from 'body-parser'
 import pg from 'pg'
 import customers from './src/Routers/create_customers.js';
 import bills from './src/Routers/bills.js';
+import waterReading from './src/Routers/water_reading.js';
+import meters from './src/Routers/meters.js';
 // const configurations = require('./Databaseconfig');
 import { config  } from 'dotenv';
 
@@ -43,4 +45,6 @@ app.listen(4000, (error) => {
   });
 
   app.use('/customers',customers)
+  app.use('/customer/reading', waterReading)
+  app.use('/meters', meters)
   app.use('/customer/bill', bills)

@@ -1,19 +1,14 @@
 import { Router } from "express";
+import { getAllReadings, getSigleReading, recordReading, deleteReading } from "../Controllers/water_reading.js";
 const router = Router()
 
-router.get('/all', async(req,res) => {
-    res.json('sdklsklds')
-})
+router.get('/all', getAllReadings)
 
-router.get('/reading/:reading_id', async(req,res) => {
-    res.json('single water reading.')
-})
+router.get('/:reading_id', getSigleReading)
 
-router.post('/create', async(req,res) => {
-    res.json('Create new water reading.')
-})
+router.post('/create',recordReading)
 
 
-router.delete('/reading/:reading_id', async(req,res) => {
-    res.json('delete water reading.')
-})
+router.delete('/:reading_id',deleteReading )
+
+export default router
