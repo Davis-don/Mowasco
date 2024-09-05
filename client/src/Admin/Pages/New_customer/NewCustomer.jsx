@@ -2,15 +2,21 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useFormik } from "formik";
 
 const NewCustomer = () => {
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
 
-  
-   const handleSubmit = async (values) => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (values) => {
     try {
+      setLoading(true);
       const postUser = await axios
         .post("http://localhost:4000/customers/create", {
           custMeterNumber: values.meterNumber,
@@ -20,16 +26,30 @@ const NewCustomer = () => {
           custID: values.IDNumber,
           custPhoneNumber: values.phoneNumber,
           custConnectionType: values.connectionType,
-          custStatus: values.status
+          custStatus: values.status,
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log("dsjsdjk", error);
+          toast.error("Server error!. Please try again later.", {
+            position: "top-center",
+          });
+          setError(error);
+          return;
+        });
 
-      console.log(postUser)
-      
+      if (postUser.status == 200) {
+        toast("Sucessfull.", { position: "top-center" });
+      } else{
+      toast.warn("something went wrong. Try again later.", { position: "bottom-center" });
+      }
+
     } catch (error) {
-      console.log(error)
+      console.log("error", error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
-   };
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -39,15 +59,12 @@ const NewCustomer = () => {
       lName: "",
       IDNumber: "",
       phoneNumber: "",
-      connectionType:'',
+      connectionType: "",
       status: "",
     },
-    onSubmit:handleSubmit
+    onSubmit: handleSubmit,
   });
 
-
- 
-  
   return (
     <div className="overall-add-user-container">
       <div className="form-encapsulator">
@@ -138,10 +155,14 @@ const NewCustomer = () => {
           </select>
 
           <div className="adduser-button">
-            <button className="btn btn-outline-primary">Submit</button>
+            <button className="btn btn-outline-primary">
+              {loading ? "Generating customer ...." : "Generate customer"}
+            </button>
           </div>
+          <ToastContainer />
         </form>
       </div>
+      {/* {error && <p>{error}</p>} */}
     </div>
   );
 };
