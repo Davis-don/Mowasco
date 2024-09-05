@@ -11,6 +11,7 @@ import bills from './src/Routers/bills.js';
 import waterReading from './src/Routers/water_reading.js';
 import meters from './src/Routers/meters.js';
 import zones from './src/Routers/zones.js';
+import receipts from './src/Routers/receipts.js';
 // const configurations = require('./Databaseconfig');
 import { config  } from 'dotenv';
 
@@ -50,3 +51,4 @@ app.listen(4000, (error) => {
   app.use('/meters', meters)
   app.use('/zones', zones)
   app.use('/customer/bill', bills)
+  app.use('/customer/receipt', receipts)
