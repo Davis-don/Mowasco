@@ -6,10 +6,6 @@ import {useFormik} from 'formik'
 // import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css'
 function Usergenarator() {
-  const [selectedZone, setSelectedZone] = useState()
-  const [meterNumber, setMeterNumber] = useState()
-
-
   const handleSubmit = async (values) => {
     try {
 
