@@ -4,15 +4,15 @@ const prisma = new PrismaClient()
 
 export const getAllBills = async(req, res)=>{
    try{
-    const getBills = await prisma.bills.findMany({
+    const getBills = await prisma.billing.findMany({
         select: {
-            bill_id: true,
-            cust_id: true,
-            currentReading: true,
-            prevReading: true, 
-            consumption:true,  
-            balance: true, 
-            totalCharges: true 
+           bill_id:true,
+           billingPeriod:true,
+           billingDate: true,
+           amountDue: true,
+           consumption:true,
+           meters:true,
+           customer:true
         }
     })
     if (getBills){
@@ -30,7 +30,7 @@ export const getSingleBill = async(req, res)=>{
     try{
         const {bill_id} = req.params;
 
-        const checkBill = await prisma.bills.findUnique({
+        const checkBill = await prisma.billing.findUnique({
             where: {bill_id: bill_id}
         })
          if (checkBill){
@@ -47,30 +47,23 @@ export const getSingleBill = async(req, res)=>{
 export const createBill = async(req, res)=>{
     
     try{
-        const {cust_id, currentReading,prevReading, consumption,  balance, totalCharges  } = req.body;
+        const {billingPeriod,  consumption,  amountDue, cust_id, meter_id  } = req.body;
 
-        // fetch the last meter reading.
-        const lastReading = await prisma.bills.findFirst({
-            where: {cust_id: cust_id},
-            orderBy: {createdAt: 'desc'}
-        })
-
-        let consumedAmount = 0;
-        if ( lastReading) {
-            consumedAmount = currentReading - lastReading.currentReading
-        }
-
-
-        const createBill = await prisma.bills.create({
+        let custID = '5da90084-ab2a-4b74-af15-537fd6d910e3'
+        let meterID = 'c46ab4e5-92fd-4b60-9a47-4c5b1a8369d1'
+        const createBill = await prisma.billing.create({
             data: {
-                currentReading,
-                prevReading: lastReading ? lastReading.currentReading : 0,
-                consumption: consumedAmount, 
-                balance, 
-                totalCharges,
+                billingPeriod,
+                consumption,
+                amountDue,
+                meters:{
+                    connect: {
+                        meter_id: meterID
+                    }
+                },
                 customer:{
                     connect:{
-                        cust_id: cust_id
+                        cust_id: custID
                     }
                 }
             }

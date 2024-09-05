@@ -24,15 +24,20 @@ model Customers {
   custConnectionType String @map("connection_type")
   custStatus         String @default("Active") @map("status")
 
+  billing  Billing?
+  receipts Receipts?
+
   @@map("Customers_tb")
 }
 
 model Meters {
-  meter_id    String @id @default(uuid())
-  meterNumber Int    @unique @map("meter_number")
-  zone        String @map("zone")
+  meter_id    String   @id @default(uuid())
+  meterNumber Int      @unique @map("meter_number")
+  zone        String   @map("zone")
+  billing     Billing?
 
   water_reading Water_Reading?
+  receipts      Receipts?
 
   @@map("meters_tb")
 }
@@ -50,8 +55,9 @@ model Water_Reading {
   prevReading    Decimal  @map("prev_reading") @db.Decimal(10, 2)
   consumption    Decimal  @map("consumption") @db.Decimal(10, 2)
   createdAt      DateTime @default(now()) @map("reading date")
-  meter_id String @unique
-  meter Meters @relation(fields: [meter_id], references: [meter_id])
+  meter_id       String   @unique
+  meter          Meters   @relation(fields: [meter_id], references: [meter_id])
+
   @@map("water_reading_tb")
 }
 
@@ -60,7 +66,15 @@ model Billing {
   billingPeriod DateTime @map("billing_period")
   consumption   Decimal  @map("consumption") @db.Decimal(10, 2)
   amountDue     Decimal  @map("amount_due") @db.Decimal(10, 2)
-  billingDate   DateTime
+  billingDate   DateTime @default(now())
+
+  customer Customers @relation(fields: [cust_id], references: [cust_id])
+  cust_id  String    @unique
+
+  meters   Meters @relation(fields: [meter_id], references: [meter_id])
+  meter_id String @unique
+
+  receipts Receipts?
 
   @@map("bills_tb")
 }
@@ -69,8 +83,17 @@ model Receipts {
   receipt_id    String   @id @default(uuid())
   receiptNumber Int      @map("receipt_number")
   amount_paid   Decimal  @map("amount_paid") @db.Decimal(10, 2)
-  Deadline_date DateTime @map("deadline_date")
+  deadline_date DateTime @map("deadline_date")
   createdAt     DateTime @default(now())
+
+  billing Billing @relation(fields: [bill_id], references: [bill_id])
+  bill_id String  @unique
+
+  meters   Meters @relation(fields: [meter_id], references: [meter_id])
+  meter_id String @unique
+
+  customer Customers @relation(fields: [cust_id], references: [cust_id])
+  cust_id  String    @unique
 
   @@map("receipts_tb")
 }

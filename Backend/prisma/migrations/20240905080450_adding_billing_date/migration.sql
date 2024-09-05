@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "bills_tb" ALTER COLUMN "billingDate" SET DEFAULT CURRENT_TIMESTAMP;
