@@ -6,6 +6,7 @@ import { MdPermIdentity } from 'react-icons/md';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import waterImage from '../../../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
+import axios from 'axios'
 // import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import { IoFileTray } from 'react-icons/io5';
 function Login() {
@@ -36,6 +37,7 @@ function Login() {
     e.preventDefault();
   
     try {
+      console.log(userCred)
       const response = await fetch('http://localhost:4000/User/Login', {
         method: 'POST',
         headers: {
@@ -43,7 +45,7 @@ function Login() {
         },
         body: JSON.stringify(userCred)
       });
-  
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
