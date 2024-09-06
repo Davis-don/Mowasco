@@ -7,15 +7,14 @@ export const getAllCustomers = async (req,res) => {
 
         const getCustomers = await prisma.customers.findMany({
             select:{
-                cust_id: true,  
-                custMeterNumber: true,
-                custZone: true,
+                cust_id: true, 
                 custFirstName: true, 
                 custLastName: true,
                 custID: true, 
                 custPhoneNumber: true, 
                 custConnectionType: true, 
-                custStatus: true
+                custStatus: true,
+                zone:true
             }
         })
 
@@ -48,17 +47,22 @@ export const getSingleCustomer = async (req,res) => {
 
 export const createCustomer = async (req,res) => {
     try{
-        const { custMeterNumber,  custZone, custFirstName, custLastName,custID, custPhoneNumber, custConnectionType } = req.body;
+        const {custFirstName, custLastName,custID, custPhoneNumber, custConnectionType } = req.body;
 
+        const zoneID = 'f1e6667d-6ebe-4f5e-ba1f-e8753aef1fc1'
         const createCustomer = await prisma.customers.create({
             data: {
-                custMeterNumber,
-                custZone, 
+                
                 custFirstName, 
                 custLastName,
                 custID, 
                 custPhoneNumber, 
                 custConnectionType, 
+                zone: {
+                    connect:{
+                        zone_id:zoneID
+                    }
+                }
             }
         })
 

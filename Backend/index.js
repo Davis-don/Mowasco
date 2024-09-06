@@ -14,6 +14,7 @@ import waterReading from './src/Routers/water_reading.js';
 import meters from './src/Routers/meters.js';
 import zones from './src/Routers/zones.js';
 import receipts from './src/Routers/receipts.js';
+import searchCustomers from './src/searchCustomers.js';
 // const configurations = require('./Databaseconfig');
 import configurations from './Databaseconfig'
 import Routes from './Login.js'
@@ -50,6 +51,7 @@ app.listen(4000, (error) => {
     console.log('Listening on port 4000');
   });
 
+  app.use('/api/customers', searchCustomers)
   app.use('/customers',customers)
   app.use('/customer/reading', waterReading)
   app.use('/meters', meters)

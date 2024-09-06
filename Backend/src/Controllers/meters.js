@@ -7,7 +7,9 @@ export const getAllMeters = async(req, res) => {
         select: {
             meter_id: true,
             meterNumber: true,
-            zone: true
+            zones:true,
+            customer:true
+      
         }
     })
     if (getMeters != null) {
@@ -43,11 +45,22 @@ export const getSingleMeter = async(req, res) => {
 
 export const createNewMeter = async(req, res) => {
     try{
-        const {meterNumber, zone} = req.body;
-
+        const {meterNumber} = req.body;
+        const zoneID = 'f1e6667d-6ebe-4f5e-ba1f-e8753aef1fc1'
+        const custID = '5539ea35-6d27-445a-bdb1-9e6f6bab6f13'
         const createMeter = await prisma.meters.create({
             data: {
-                meterNumber, zone
+                meterNumber, 
+                zones:{
+                    connect:{
+                        zone_id:zoneID
+                    }
+                },
+                customer:{
+                    connect:{
+                        cust_id: custID
+                    }
+                }
             }
         })
 
