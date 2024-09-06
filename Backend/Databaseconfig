@@ -1,5 +1,7 @@
-const { Client } = require('pg');
-require('dotenv').config();
+import { config } from "dotenv"
+
+config()
+
 
 const configurations={
     user: 'Davis',
@@ -12,10 +14,7 @@ const configurations={
     } 
 }
 
-
-postgresql://Davis:<ENTER-SQL-USER-PASSWORD>@winkywebus-5578.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/winkyweb-awesome?sslmode=verify-full
-
+//Davis:<ENTER-SQL-USER-PASSWORD>@winkywebus-5578.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/winkyweb-awesome?sslmode=verify-full
 
 
-
-module.exports=configurations;
+export default configurations

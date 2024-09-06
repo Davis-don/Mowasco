@@ -5,7 +5,9 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 // const bodyParser = require('body-parser');
 // const { Client } = require('pg');
-import pg from 'pg'
+// import { Client } from 'pg'
+import pkg from 'pg';
+const { Client } = pkg;
 import customers from './src/Routers/create_customers.js';
 import bills from './src/Routers/bills.js';
 import waterReading from './src/Routers/water_reading.js';
@@ -13,6 +15,8 @@ import meters from './src/Routers/meters.js';
 import zones from './src/Routers/zones.js';
 import receipts from './src/Routers/receipts.js';
 // const configurations = require('./Databaseconfig');
+import configurations from './Databaseconfig'
+import Routes from './Login.js'
 import { config  } from 'dotenv';
 
 config()
@@ -35,7 +39,7 @@ app.use(cors(corsOptions));
 // const EmployeesUser=require('./EmployeesUser');
 // app.use('/EmployeesUser',EmployeesUser);
 // const UserLogin=require('./Login');
-// app.use('/User/Login',UserLogin);
+app.use('/User/Login',Routes);
 
   // Start server
 app.listen(4000, (error) => {

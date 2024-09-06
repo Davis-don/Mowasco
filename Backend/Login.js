@@ -1,8 +1,17 @@
-const express = require ('express');
-const Routes=express.Router();
-const { Client } = require('pg');
-const configurations = require('./Databaseconfig');
-const jwt = require('jsonwebtoken');
+// const express = require ('express');
+import express from 'express'
+// const Routes=express.Router();
+import { Router } from 'express';
+const Routes = Router()
+//  const { Client } = require('pg');
+// import { Client } from 'pg';
+import pkg from 'pg';
+const { Client } = pkg;
+
+// const configurations = require('./Databaseconfig');
+import configurations from './Databaseconfig';
+// const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken'
 
 // Database client setup
 const client = new Client(configurations);

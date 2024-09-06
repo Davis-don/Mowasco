@@ -15,7 +15,7 @@ datasource db {
 
 model Customers {
   cust_id            String @id @default(uuid())
-  custMeterNumber    String @map("Meter_number")
+  custMeterNumber    String @map("Meter_number") @unique
   custZone           String @map("cust_zone")
   custFirstName      String @map("first_name")
   custLastName       String @map("last_name")
@@ -23,6 +23,7 @@ model Customers {
   custPhoneNumber    Int    @map("phone_number")
   custConnectionType String @map("connection_type")
   custStatus         String @default("Active") @map("status")
+  createdAt DateTime @default(now())
 
   billing  Billing?
   receipts Receipts?
