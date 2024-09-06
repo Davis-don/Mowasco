@@ -49,7 +49,7 @@ export const createCustomer = async (req,res) => {
     try{
         const {custFirstName, custLastName,custID, custPhoneNumber, custConnectionType } = req.body;
 
-        const zoneID = 'f1e6667d-6ebe-4f5e-ba1f-e8753aef1fc1'
+        const zoneID = '0382efac-986f-4d0f-8692-17226222fe8b'
         const createCustomer = await prisma.customers.create({
             data: {
                 

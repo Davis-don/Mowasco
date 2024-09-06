@@ -51,7 +51,7 @@ model Meters {
 
 model Zones {
   zone_id  String     @id @default(uuid())
-  zoneName Int        @unique @map("zone_name")
+  zoneName String        @unique @map("zone_name")
   customer Customers?
   meter    Meters?
 

@@ -10,7 +10,7 @@ export const getAllZones = async(req, res) =>{
             }
         })
 
-         if (getZones){
+         if (getZones != null){
             res.status(200).json({success:true, message:'Zones found successfully.', data:getZones})
         } else{
             res.status(500).json({success:false, message:'Something went wrong!'})
