@@ -35,6 +35,7 @@ model Meters {
   meter_id    String   @id @default(uuid())
   meterNumber Int      @unique @map("meter_number")
   zone        String   @map("zone")
+  createdAt DateTime @default(now())
   billing     Billing?
 
   water_reading Water_Reading?
