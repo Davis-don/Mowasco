@@ -35,6 +35,7 @@ export const getSingleCustomer = async (req,res) => {
         where: {cust_id: cust_id},
         include:{
             zone:true,
+            meters:true
         }
     })
 
