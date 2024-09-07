@@ -32,7 +32,10 @@ export const getSingleCustomer = async (req,res) => {
    try{
     const {cust_id} = req.params;
     const checkID = await prisma.customers.findUnique({
-        where: {cust_id: cust_id}
+        where: {cust_id: cust_id},
+        include:{
+            zone:true,
+        }
     })
 
     if(checkID){
