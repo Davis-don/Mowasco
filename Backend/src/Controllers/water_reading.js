@@ -60,9 +60,6 @@ export const recordReading = async(req,res) => {
         amountConsumed = currentReading
     }
 
-
-    const prev = currentReading - amountConsumed
-    console.log(lastReading.prevReading)
     const createReading = await prisma.water_Reading.create({
         data: {
             currentReading,

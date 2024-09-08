@@ -73,9 +73,9 @@ model Water_Reading {
 
 model Billing {
   bill_id       String   @id @default(uuid())
-  billingPeriod DateTime @map("billing_period")
+  billingPeriod DateTime @default(now())  @map("billing_period")
   consumption   Decimal  @map("consumption") @db.Decimal(10, 2)
-  amountDue     Decimal  @map("amount_due") @db.Decimal(10, 2)
+  amountDue     Decimal  @map("amount_due") @db.Decimal(10, 2) @default(0)
   billingDate   DateTime @default(now())
 
   customer Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)

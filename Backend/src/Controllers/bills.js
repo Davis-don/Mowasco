@@ -48,22 +48,30 @@ export const createBill = async(req, res)=>{
     
     try{
         const {billingPeriod,  consumption,  amountDue, cust_id, meter_id  } = req.body;
+const meterID = '6af3d56e-3990-476e-a92a-27ae46b44df6'
+        const amoutPayable = await prisma.water_Reading.findFirst({
+            where:{meter_id},
+            orderBy:{createdAt: 'desc'}
+        })
 
-        let custID = '5da90084-ab2a-4b74-af15-537fd6d910e3'
-        let meterID = 'c46ab4e5-92fd-4b60-9a47-4c5b1a8369d1'
+        let totalCharges = 0;
+        if(amoutPayable){
+                totalCharges = amoutPayable.consumption * 123
+        }
+   
         const createBill = await prisma.billing.create({
             data: {
                 billingPeriod,
                 consumption,
-                amountDue,
+                amountDue: totalCharges,
                 meters:{
                     connect: {
-                        meter_id: meterID
+                        meter_id: meter_id
                     }
                 },
                 customer:{
                     connect:{
-                        cust_id: custID
+                        cust_id: cust_id
                     }
                 }
             }
@@ -91,14 +99,14 @@ export const deleteBill = async(req, res)=>{
       try{
         const {bill_id} = req.params;
 
-        const checkBill = await prisma.bills.findUnique({
-            where: {bill_id: bill_id}
+        const checkBill = await prisma.billing.findUnique({
+            where: {bill_id}
         })
          if (checkBill){
-            await prisma.bills.delete({
-                where: {bill_id: bill_id}
+            await prisma.billing.delete({
+                where: {bill_id}
             })
-            res.status(200).json({success: true, message: 'Bill deleted successfully.', data: checkBill})
+            res.status(200).json({success: true, message: 'Bill deleted successfully.'})
         } else{
             res.status(500).json({success: false, message: 'Something went wrong.'})
         } 
