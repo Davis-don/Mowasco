@@ -31,6 +31,7 @@ export const getSigleReading = async(req,res) => {
      
         const findReading = await prisma.water_Reading.findFirst({
             where:{custID},
+            orderBy:{createdAt:'desc'}
         })
 
         if(findReading != null) {
@@ -60,10 +61,12 @@ export const recordReading = async(req,res) => {
     }
 
 
+    const prev = currentReading - amountConsumed
+    console.log(lastReading.prevReading)
     const createReading = await prisma.water_Reading.create({
         data: {
             currentReading,
-            prevReading: lastReading ? currentReading : 0,
+            prevReading: lastReading ? (lastReading.currentReading) : 0,
             consumption: amountConsumed,
             meter:{
                 connect:{meter_id:meter_id}

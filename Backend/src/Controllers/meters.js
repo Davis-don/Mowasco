@@ -9,7 +9,6 @@ export const getAllMeters = async(req, res) => {
             meterNumber: true,
             zones:true,
             customer:true
-      
         }
     })
     if (getMeters != null) {
@@ -30,7 +29,8 @@ export const getSingleMeter = async(req, res) => {
             where: {meter_id},
             include:{
                 customer:true,
-                zones:true
+                zones:true,
+                water_reading:true
             }
         })
 
@@ -39,9 +39,6 @@ export const getSingleMeter = async(req, res) => {
         } else{
             res.status(500).json({success:false, message: 'Meter not found.'})
         }
-
-
-
     } catch (error) {
         res.status(500).json({success: false, message: error.message})
     }
