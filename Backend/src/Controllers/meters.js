@@ -27,7 +27,11 @@ export const getSingleMeter = async(req, res) => {
         const {meter_id} = req.params;
 
         const checkMeter = await prisma.meters.findUnique({
-            where: {meter_id}
+            where: {meter_id},
+            include:{
+                customer:true,
+                zones:true
+            }
         })
 
         if (checkMeter){

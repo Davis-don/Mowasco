@@ -30,7 +30,6 @@ model Customers {
   billing  Billing?
   receipts Receipts?
 
-  meter_reading Water_Reading?
 
   @@map("customers_tb")
 }
@@ -45,7 +44,7 @@ model Meters {
   customer    Customers @relation(fields: [cust_id], references: [cust_id])
   billing     Billing?
 
-  water_reading Water_Reading?
+  water_reading Water_Reading[]
   receipts      Receipts?
 
   @@map("meters_tb")
@@ -66,10 +65,8 @@ model Water_Reading {
   prevReading    Decimal  @map("prev_reading") @db.Decimal(10, 2) @default(0)
   consumption    Decimal  @map("consumption") @db.Decimal(10, 2)@default(0)
   createdAt      DateTime @default(now()) @map("reading date")
-  meter_id       String   @unique
+  meter_id       String   
   meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
-  custID String @unique
-  customer Customers @relation(fields: [custID], references: [cust_id])
 
   @@map("water_reading_tb")
 }
