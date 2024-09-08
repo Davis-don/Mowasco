@@ -1,14 +1,17 @@
-const express = require ('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Client } = require('pg');
-const configurations = require('./Databaseconfig');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { Client } from 'pg';
+import configurations from './Databaseconfig';
+import EmployeesUser from './EmployeesUser'; // Replace require with import
+import UserLogin from './Login'; // Replace require with import
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 const corsOptions = {
   origin: 'http://localhost:3000', // Replace with your allowed origin or use a function for dynamic configuration
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -17,18 +20,15 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Routes
+app.use('/EmployeesUser', EmployeesUser);
+app.use('/User/Login', UserLogin);
 
-
-const EmployeesUser=require('./EmployeesUser');
-app.use('/EmployeesUser',EmployeesUser);
-const UserLogin=require('./Login');
-app.use('/User/Login',UserLogin);
-
-  // Start server
+// Start server
 app.listen(4000, (error) => {
-    if (error) {
-      console.error('Error starting server:', error);
-      process.exit(1); // Exit the process with an error code
-    }
-    console.log('Listening on port 4000');
-  });
+  if (error) {
+    console.error('Error starting server:', error);
+    process.exit(1); // Exit the process with an error code
+  }
+  console.log('Listening on port 4000');
+});
