@@ -62,9 +62,9 @@ model Zones {
 
 model Water_Reading {
   reading_id     String   @id @default(uuid())
-  currentReading Decimal  @map("current_reading") @db.Decimal(10, 2)
-  prevReading    Decimal  @map("prev_reading") @db.Decimal(10, 2)
-  consumption    Decimal  @map("consumption") @db.Decimal(10, 2)
+  currentReading Decimal  @map("current_reading") @db.Decimal(10, 2) @default(0)
+  prevReading    Decimal  @map("prev_reading") @db.Decimal(10, 2) @default(0)
+  consumption    Decimal  @map("consumption") @db.Decimal(10, 2)@default(0)
   createdAt      DateTime @default(now()) @map("reading date")
   meter_id       String   @unique
   meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)

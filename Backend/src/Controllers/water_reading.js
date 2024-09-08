@@ -27,9 +27,10 @@ export const getAllReadings  = async(req,res) => {
 
 export const getSigleReading = async(req,res) => {
     try {
-        const {reading_id} = req.params;
+        const { custID} = req.params;
+     
         const findReading = await prisma.water_Reading.findFirst({
-            where:{reading_id}
+            where:{custID},
         })
 
         if(findReading != null) {
@@ -43,9 +44,10 @@ export const getSigleReading = async(req,res) => {
 }
 
 export const recordReading = async(req,res) => {
-    const meterID = '3d14658c-659f-4379-a103-5a78549832f4'
+    const meterID = '6af3d56e-3990-476e-a92a-27ae46b44df6'
+    const custID = 'd55ec1ac-6e8a-4e14-bff8-e9173bf9b254'
    try{
-    const {meter_id, currentReading, prevReading, consumption} = req.body;
+    const { currentReading, prevReading} = req.body;
 
     const lastReading = await prisma.water_Reading.findFirst({
         where: {meter_id: meterID},
@@ -66,6 +68,11 @@ export const recordReading = async(req,res) => {
             consumption: amountConsumed,
             meter:{
                 connect:{meter_id:meterID}
+            },
+            customer:{
+                connect:{
+                    cust_id:custID
+                }
             }
         }
     })
