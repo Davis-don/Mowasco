@@ -22,9 +22,6 @@ model Customers {
   custConnectionType String   @map("connection_type")
   custStatus         String   @default("Active") @map("status")
   createdAt          DateTime @default(now())
-  zone_id            String   @unique
-  zone               Zones    @relation(fields: [zone_id], references: [zone_id])
-
   meters Meters?
 
   billing  Billing?
@@ -53,7 +50,6 @@ model Meters {
 model Zones {
   zone_id  String     @id @default(uuid())
   zoneName String        @unique @map("zone_name")
-  customer Customers?
   meter    Meters?
 
   @@map("zone_tb")

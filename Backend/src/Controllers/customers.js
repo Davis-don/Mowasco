@@ -14,8 +14,12 @@ export const getAllCustomers = async (req,res) => {
                 custPhoneNumber: true, 
                 custConnectionType: true, 
                 custStatus: true,
-                zone:true,
-                meters:true
+                meters:true,
+                meters:{
+                    include:{
+                        zones:true
+                    }
+                }
             }
         })
 
@@ -35,7 +39,6 @@ export const getSingleCustomer = async (req,res) => {
     const checkID = await prisma.customers.findUnique({
         where: {cust_id: cust_id},
         include:{
-            zone:true,
             meters:true,
         }
     })
@@ -54,7 +57,6 @@ export const createCustomer = async (req,res) => {
     try{
         const {custFirstName, custLastName,custID, custPhoneNumber, custConnectionType } = req.body;
 
-        const zoneID = '0382efac-986f-4d0f-8692-17226222fe8b'
         const createCustomer = await prisma.customers.create({
             data: {
                 
@@ -63,11 +65,7 @@ export const createCustomer = async (req,res) => {
                 custID, 
                 custPhoneNumber, 
                 custConnectionType, 
-                zone: {
-                    connect:{
-                        zone_id:zoneID
-                    }
-                }
+              
             }
         })
 

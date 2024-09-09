@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
-
 import { useFormik } from "formik";
 
 const NewCustomer = () => {
@@ -30,46 +29,51 @@ const NewCustomer = () => {
     phoneNumber: Yup.number().required("Provide customers phone number."),
     connectionType: Yup.string().required("Provide the connection type."),
   });
+
+
   const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const postUser = await axios
-        .post("http://localhost:4000/customers/create", {
-          custMeterNumber: values.meterNumber,
-          custZone: values.zone,
-          custFirstName: values.fName,
-          custLastName: values.lName,
-          custID: values.IDNumber,
-          custPhoneNumber: values.phoneNumber,
-          custConnectionType: values.connectionType,
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Server error!. Please try again later.", {
-            position: "top-center",
-          });
-          setError(error);
-          return;
-        });
+    alert('sdsdsd')
+    console.log(values)
+  //   try {
+  //     setLoading(true);
+  //     console.log(values)
+  //     const postUser = await axios
+  //       .post("http://localhost:4000/customers/create", {
+  //         custFirstName: values.fName,
+  //         custLastName: values.lName,
+  //         custID: values.IDNumber,
+  //         custPhoneNumber: values.phoneNumber,
+  //         custConnectionType: values.connectionType,
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         toast.error("Server error!. Please try again later.", {
+  //           position: "top-center",
+  //         });
+  //         setError(error);
+  //         return;
+  //       });
 
-      console.log(postUser);
+  //     console.log(postUser);
 
-      if (postUser.status == 200) {
-        toast("Sucessfull.", { position: "top-center" });
-      } else {
-        toast.warn("something went wrong. Try again later.", {
-          position: "bottom-center",
-        });
-      }
-    } catch (error) {
-      console.log("error", error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
+  //     if (postUser.status == 200) {
+  //       toast("Sucessfull.", { position: "top-center" });
+  //     } else {
+  //       toast.warn("something went wrong. Try again later.", {
+  //         position: "bottom-center",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     setError(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
   };
 
-  // get and map all the users from the database.
+
+  //get and map all the users from the database.
+  
   const getCustomers = async () => {
     try {
       setLoading(true)
@@ -116,8 +120,6 @@ const NewCustomer = () => {
 
   const formik = useFormik({
     initialValues: {
-      meterNumber: "",
-      zone: "",
       fName: "",
       lName: "",
       IDNumber: "",
@@ -143,135 +145,15 @@ const NewCustomer = () => {
             </div>
           )}
           <form onSubmit={formik.handleSubmit}>
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="meterNumber"
-                value={formik.meterNumber}
-                type="text"
-                placeholder="Meter number"
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.meterNumber && formik.errors.meterNumber && (
-                <p>{formik.errors.meterNumber}</p>
-              )}
-            </div>
 
-            <div>
-              <select
-                onChange={formik.handleChange}
-                name="zone"
-                value={formik.zone}
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              >
-                <option value="">Zone Area</option>
-                <option value="1">Zone 1</option>
-                <option value="2">Zone 2</option>
-                <option value="3">Zone 3</option>
-                <option value="4">Zone 4</option>
-              </select>
-
-              {formik.touched.zone && formik.errors.zone && (
-                <p>{formik.errors.zone}</p>
-              )}
+            <h2>Please enter the customers details.</h2>
+            <div className="input">
+              <input type="text"    className="form-control m-2" name="fName" value={formik.values.fName} placeholder="First name" />
             </div>
-
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="fName"
-                value={formik.fName}
-                type="text"
-                placeholder="First Name"
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.fName && formik.errors.fName && (
-                <p>{formik.errors.fName}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="lName"
-                value={formik.lName}
-                type="text"
-                placeholder="Last Name"
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.lName && formik.errors.lName && (
-                <p>{formik.errors.lName}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="IDNumber"
-                value={formik.IDNumber}
-                type="number"
-                placeholder="National ID number"
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.IDNumber && formik.errors.IDNumber && (
-                <p>{formik.errors.IDNumber}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="phoneNumber"
-                value={formik.phoneNumber}
-                type="number"
-                placeholder="Phone number"
-                className="form-control"
-                onBlur={formik.handleBlur}
-                // pattern="(\+2547[0-9]{8}|\+2541[0-9]{8}|07[0-9]{8}|01[0-9]{8})"
-                // title="Please enter a valid Kenyan phone number"
-              />
-              {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                <p>{formik.errors.phoneNumber}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                type="text"
-                className="form-control"
-                name="connectionType"
-                value={formik.connectionType}
-                onChange={formik.handleChange}
-                placeholder="Connection type"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.connectionType &&
-                formik.errors.connectionType && (
-                  <p>{formik.errors.connectionType}</p>
-                )}
-            </div>
-            {/* <select
-            onChange={formik.handleChange}
-            name="status"
-            value={formik.status}
-            className="form-control m-2"
-          >
-            <option value="">status</option>
-            <option value="active">active</option>
-            <option value="inactive">inactive</option>
-          </select> */}
-
-            <div className="adduser-button">
-              <button className="btn btn-outline-primary">
-                {loading ? "Submitting...." : "Submit"}
-              </button>
-            </div>
-            <ToastContainer />
+            <div className="input"></div>
+            <div className="input"></div>
+            <div className="input"></div>
+            <div className="input"></div>
           </form>
         </div>
         {/* {error && <p>{error}</p>} */}

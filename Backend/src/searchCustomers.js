@@ -8,8 +8,6 @@ router.post('/search-customer', async(req, res) => {
     
     try {
         const {meterNumber,zones} = req.body;
-        console.log(meterNumber)
-        console.log(zones)
         const search = await prisma.meters.findFirst({
             where:{
                 meterNumber,
