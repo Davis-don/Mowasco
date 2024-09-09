@@ -91,11 +91,10 @@ model Billing {
 
 model Receipts {
   receipt_id    String   @id @default(uuid())
-  receiptNumber Int      @map("receipt_number")
+  receiptNumber Int      @default(autoincrement()) @map("receipt_number")
   amount_paid   Decimal  @map("amount_paid") @db.Decimal(10, 2)
-  deadline_date DateTime @map("deadline_date")
+  deadline_date DateTime @default(now()) @map("deadline_date") 
   createdAt     DateTime @default(now())
-
   billing Billing @relation(fields: [bill_id], references: [bill_id], onDelete: Cascade)
   bill_id String  @unique
 

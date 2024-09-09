@@ -9,6 +9,8 @@ import { FaHome, FaUserTie,FaMoneyBillWave } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
+import { BsSpeedometer2 } from "react-icons/bs";
+import CreateMeters from '../Pages/Meters/CreateMeters';
 
 function Admin() {
     function AdminDashDisplay(){
@@ -22,6 +24,7 @@ function Admin() {
     const [Bill,setBill]=useState(false);
     const [receipt,setReceipt]=useState(false);
     const [newCustomer, setNewCustomer] = useState(false)
+    const [meters, setMeters] = useState(false)
     let component;
     if(Home==true){
     component=<AdminDashDisplay/>
@@ -33,6 +36,8 @@ function Admin() {
       component=''
     } else if(newCustomer == true){
       component=<NewCustomer/>
+    }else if(meters == true){
+      component=<CreateMeters/>
     }
     else if(receipt==true){
       component=''
@@ -58,12 +63,12 @@ function Admin() {
              <h2 style={{display:"flex",gap:'10px'}}><span><MdOutlineDashboard className='fs-1 text-light'/></span><span className='text-light'>Dashboard</span></h2>
              <div className='close-btn-small'onClick={()=>{setSidebar(false)}}><IoMdClose className='fs-1 text-dark'/></div>
              <ul className='list-unstyled p-3' >
-              <li className={Home ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(true);setUser(false); setNewCustomer(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaHome className='text-light fs-2'/></span><span className='fs-5 text-light'>Home</span></li>
-              <li className={User ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(true); setNewCustomer(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaUserTie className='text-light fs-2'/></span><span className='fs-5 text-light'>User</span></li>
-              <li className={newCustomer ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setNewCustomer(true);setUser(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><IoMdPersonAdd className='text-light fs-2'/></span><span className='fs-5 text-light'>Create new Customer</span></li>
-
+              <li className={Home ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(true);setUser(false); setNewCustomer(false);setBill(false);setReceipt(false);setMeters(false)}} style={{display:"flex",gap:'10px'}}><span><FaHome className='text-light fs-2'/></span><span className='fs-5 text-light'>Home</span></li>
+              <li className={User ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(true); setNewCustomer(false);setBill(false);setReceipt(false); setMeters(false)}} style={{display:"flex",gap:'10px'}}><span><FaUserTie className='text-light fs-2'/></span><span className='fs-5 text-light'>User</span></li>
+              <li className={newCustomer ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setNewCustomer(true);setUser(false);setBill(false);setReceipt(false);setMeters(false)}} style={{display:"flex",gap:'10px'}}><span><IoMdPersonAdd className='text-light fs-2'/></span><span className='fs-5 text-light'>Create new Customer</span></li>
+              <li className={meters ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setNewCustomer(false);setUser(false);setBill(false);setReceipt(false); setMeters(true)}} style={{display:"flex",gap:'10px'}}><span><BsSpeedometer2 className='text-light fs-2'/></span><span className='fs-5 text-light'>Meters</span></li>
               <li className={Bill ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false); setNewCustomer(false);setUser(false);setBill(true);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaMoneyBillWave className='text-light fs-2'/></span><span className='fs-5 text-light'>Bill</span></li>
-              <li className={receipt ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(false);setNewCustomer(false);setBill(false);setReceipt(true)}} style={{display:"flex",gap:'10px'}}><span><FaReceipt className='text-light fs-2'/></span><span className='fs-5 text-light'>Receipt</span></li>
+              <li className={receipt ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(false);setUser(false);setNewCustomer(false);setBill(false);setReceipt(true);setMeters(false)}} style={{display:"flex",gap:'10px'}}><span><FaReceipt className='text-light fs-2'/></span><span className='fs-5 text-light'>Receipt</span></li>
              </ul>
         </div>}
         <div className='component-dash-display'>

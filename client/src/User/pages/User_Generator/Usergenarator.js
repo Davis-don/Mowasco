@@ -1,28 +1,80 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Usergenerator.css'
 // import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import oceanimg from '../../../images/jack-b-o1radglopDA-unsplash.jpg'
 import {useFormik} from 'formik'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from 'axios'
+import Water_reading from '../Water_readings/Water_reading';
+import { useNavigate } from 'react-router-dom';
 function Usergenarator() {
-  const handleSubmit = async (values) => {
-    try {
+  const [zone, setZone] = useState([])
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+ 
 
-      // const generateCustomer = 
-      
+  const getZones = async() => {
+    try {
+      setLoading(true)
+      const zones = await axios.get('http://localhost:4000/zones/all').catch(error => console.log(error))
+      if(zones){
+       setZone(zones.data.data)
+      } else{
+        toast.warn('Zones were not found.')
+      }
     } catch (error) {
       console.log(error)
+      setError(error)
+    }finally{
+      setLoading(false)
     }
   }
 
+   const handleSubmit = async (values) => {
+    try {
+      
+      setError(false)
+      setLoading(true)
+      const queryUser = await axios.post(`http://localhost:4000/api/customers/search-customer`, {
+        meterNumber: values.meterNumber,
+        zones:values.zones
+      }).catch(error => {console.log(error)
+        setError(error)
+        toast.error('Invalid inputs. Meter number not associated with that zone.')
+      })
+      const custID = queryUser.data.data.customer.cust_id
+
+      if(queryUser.status == 200){
+        navigate(`/customer/current-reading/${custID}`)
+      } else{
+        toast.warn('Something went wrong.')
+      }
+
+      
+    } catch (error) {
+      console.log(error)
+      setError(error)
+    }finally{
+      setLoading(false)
+    }
+  }
+
+
   const formik = useFormik({
     initialValues:{
-      zone:'',
+      zones:'',
       meterNumber:''
     },
     onSubmit: handleSubmit
   })
+
+  useEffect(() => {
+    getZones()
+  },[])
   return (
     <div className='overall-user-generator'>
          {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
@@ -30,22 +82,29 @@ function Usergenarator() {
         <p style={{ textAlign: 'center' }}>Please enter the customer's zone and meter details below</p>
           <form className='user-gen-form' onSubmit={formik.handleSubmit}>
             <div>
-              <select className="form-select form-control" name='zone' value={formik.values.zone} onChange={formik.handleChange} id="sel1">
-                <option >Zones</option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
+              <select className="form-select form-control"  name='zones' value={formik.values.zones} onChange={formik.handleChange} id="sel1">
+               
+                     <option  >Zones</option>
+                {
+                  zone && zone.length > 0 ? (
+                    zone.map((zone, key) => (
+
+                      <option value={zone.zone_id}>{zone.zoneName}</option>
+                    ))
+                  ) : (
+                  <p>Loading zones...</p>
+                  )
+                }
               </select>
             </div>
             <div>
-              <input className="form-control" name='meterNumber' type='text' value={formik.values.meterNumber} onChange={formik.handleChange} placeholder='Meter Number'/>
+              <input className="form-control" name='meterNumber' type='number' value={formik.values.meterNumber} onChange={formik.handleChange} placeholder='Meter Number'/>
             </div>
             <div style={{ width: 'max-content', margin: 'auto' }}>
-               <button>Generate Customer</button>
+               <button>{loading ? 'Generating ...':'Generate Customer'}</button>
             </div>
-
-          
           </form>
+          <ToastContainer/>
         
       </div>
 
@@ -59,7 +118,8 @@ function Usergenarator() {
     <p style={{ textAlign: 'center' }}>Please enter the customer's zone and meter details below</p>
           <form className='user-gen-form'>
             <div>
-            
+
+
     <select  className="form-select form-control" id="sel1" name="zone">
       <option>Zone</option>
       <option>Mugunda</option>

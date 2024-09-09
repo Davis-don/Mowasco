@@ -1,0 +1,8 @@
+.meters{
+    display: grid;
+    place-content: center;
+}
+table tr td{
+    text-align: center;
+    padding: .5rem;
+}

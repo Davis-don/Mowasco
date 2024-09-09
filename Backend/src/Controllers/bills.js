@@ -77,7 +77,7 @@ const meterID = '6af3d56e-3990-476e-a92a-27ae46b44df6'
             }
         })
         if (createBill){
-            res.status(200).json({success: true, message: 'Bill created successfully.'})
+            res.status(200).json({success: true, message: 'Bill created successfully.', data:createBill})
         } else{
             res.status(500).json({success: false, message: 'Something went wrong.'})
         }

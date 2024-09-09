@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import './Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MdPermIdentity } from 'react-icons/md';
@@ -37,15 +37,16 @@ function Login() {
     e.preventDefault();
   
     try {
-      console.log(userCred)
+    
       const response = await fetch('http://localhost:4000/User/Login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(userCred)
-      });
+      }).catch(error=>{console.log(error)})
 
+      console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -82,17 +83,6 @@ function Login() {
       console.log('Error:', error);
     }
   };
-
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="overall-login-container container-fluid">
         <img className='water-background' src={waterImage} alt='water in lake'/>

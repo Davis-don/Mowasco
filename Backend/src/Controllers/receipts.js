@@ -11,8 +11,12 @@ export const getAllReceipts = async(req, res) => {
             deadline_date: true,
             customer: true,
             meters: true,
-            billing:true
-
+            billing:true,
+            customer:{
+                include: {
+                    zone:true
+                }
+            }
         }
      })
 
@@ -31,7 +35,17 @@ export const getSingleReceipt = async(req, res) => {
     const {receipt_id} = req.params;
 
     const getReceipt = await prisma.receipts.findUnique({
-        where: {receipt_id:receipt_id}
+        where: {receipt_id:receipt_id},
+        include:{
+            customer:true,
+            customer:{
+                include:{
+                    zone:true
+                }
+            },
+            meters:true, 
+            billing:true
+        }
     })
 
      if (getReceipt != null){
@@ -46,37 +60,31 @@ export const getSingleReceipt = async(req, res) => {
 
 export const generateReceipt = async(req, res) => {
     try {
-        const {receiptNumber, amount_paid, deadline_date, bill_id,meter_id, cust_id} = req.body;
-
-        let custId = '5da90084-ab2a-4b74-af15-537fd6d910e3'
-        let meterID = 'c46ab4e5-92fd-4b60-9a47-4c5b1a8369d1'
-        let billID = 'a8d665e2-2464-4c7e-97f7-f2b2627f9201'
+        const { amount_paid, bill_id,meter_id, cust_id} = req.body;
 
         const generate = await prisma.receipts.create({
             data:{
-                receiptNumber,
                 amount_paid, 
-                deadline_date,
                 billing:{
                     connect:{
-                        bill_id:billID
+                        bill_id:bill_id
                     }
                 },
                 meters: {
                     connect:{
-                        meter_id: meterID
+                        meter_id:meter_id
                     }
                 },
                 customer: {
                     connect:{
-                        cust_id:custId
+                        cust_id:cust_id
                     }
                 }
             }
         })
 
         if (generate != null){
-            res.status(200).json({success: true, message:"Receipt generated successfully."})
+            res.status(200).json({success: true, message:"Receipt generated successfully.", data:generate})
         } else{
             res.status(500).json({success: false, message:"Server error."})
 

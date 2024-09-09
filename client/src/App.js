@@ -9,6 +9,7 @@ import Dashboard from './Admin/Components/Dashboard';
 import Admin from './Admin/Components/Admin';
 import AddUser from '../src/User/pages/Create_User/AddUser';
 import Cookies from 'js-cookie';
+import Water_reading from './User/pages/Water_readings/Water_reading';
 
 function App() {
   return (
@@ -19,6 +20,11 @@ function App() {
             <Route element={<ProtectedRoutes/>}>
             <Route path="/Admin/Dashboard" element={<Admin />} />
             <Route path="/Account/login" element={<Dashboard />} />
+            <Route path='/customer/meter/:id' element={<Genwaterbill/>}/>
+            <Route path='/customer/current-reading/:id' element={<Water_reading/>}/>
+            <Route path='/customer/meter/receipt/:id' element={<Receiptgen/>}/>
+
+
             </Route>
       </Routes>
       </BrowserRouter>

@@ -14,7 +14,8 @@ export const getAllCustomers = async (req,res) => {
                 custPhoneNumber: true, 
                 custConnectionType: true, 
                 custStatus: true,
-                zone:true
+                zone:true,
+                meters:true
             }
         })
 
@@ -35,7 +36,7 @@ export const getSingleCustomer = async (req,res) => {
         where: {cust_id: cust_id},
         include:{
             zone:true,
-            meters:true
+            meters:true,
         }
     })
 
