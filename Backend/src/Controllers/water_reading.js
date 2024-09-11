@@ -25,6 +25,38 @@ export const getAllReadings  = async(req,res) => {
     }
 }
 
+export const totalAmountConsumed = async(req, res)=>{
+   try{
+    // find the latest month.
+    const now = new Date()
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+
+    const totalAmountConsumed = await prisma.water_Reading.aggregate({
+        _sum:{
+            consumption:true
+        },
+        where:{
+            createdAt:{
+                gte:startOfMonth,
+                // lte:endOfMonth
+            }
+        }
+    })
+
+    if(totalAmountConsumed != null){
+        res.status(200).json({success: true, message: 'Total amount computed successfully.', data: totalAmountConsumed._sum.consumption})
+    } else{
+        res.status(500).json({success: false, message: 'Something went wrong.'})
+
+    }
+
+   } catch(error) {
+     res.status(500).json({success: false, message: error.message})
+   }
+}
+
+
 export const getSigleReading = async(req,res) => {
     try {
         const { custID} = req.params;
