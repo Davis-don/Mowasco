@@ -1,0 +1,190 @@
+@media (max-width:640px){
+   
+    .overall-admin-page-container{
+   position:relative;
+    }
+    .admin-page-header{
+        position: absolute;
+        z-index: +1;
+
+        background-color: red; /* For browsers that do not support gradients */
+        background-image: linear-gradient(to bottom right, black, blue);
+        width: 100%;
+        height: max-content
+    }
+    .admin-page-header-content-holder{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    }
+.admin-page-side-bar{
+position: absolute;
+z-index: +2;
+width:80vw;
+height: 100vh;
+background-color: rgb(2, 0, 132); /* For browsers that do not support gradients */
+background-image: linear-gradient(to bottom right, rgb(11, 8, 85), rgb(19, 5, 145));
+}
+.admin-sidebar-header{
+padding: 30px;
+ border-bottom: 1px solid white;
+}
+.admin-sidebar-body{
+
+}
+.admin-links-page-list-container{
+padding: 20px;
+}
+.admin-link-icon{
+background-color: blue;
+padding: 10px;
+
+}
+.admin-link-name{
+font-size: 18px;
+}
+.admin-link-ul{
+display: flex;
+flex-direction: column;
+gap:20px;
+}
+.admin-link-ul li{
+display: flex;
+flex-direction: row;
+gap: 10px;
+}
+.admin-active{
+background-color: black;
+padding: 10px;
+}
+
+    .admin-page-body{
+    position: absolute;
+    z-index: +1;
+    top:20vh;
+    width:100vw;
+    height: 100px;
+    }
+    .admin-page-footer{
+    
+    }
+    /*admin dashboard css*/
+    .admin-dashboard-header{
+     
+    }
+    .general-information-summary-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    margin: 10px;
+    }
+    .employees-statistics{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    }
+    .active-employees, .inactive-employees{
+    height: max-content;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    }
+    .active-summation-container, .Inactive-summation-container{
+    font-size: 30px;
+    }
+    .employees-active-right,.employees-inactive-right{
+    background-color: blue;
+    width: 50px;
+    height: 50px;
+    margin-top: 28px;
+    }
+    .employee-active-icon, .employee-inactive-icon{
+    text-align: center;
+    padding-top: 10px;
+    }
+    .client-statistics{
+        display: flex;
+        flex-direction: column;
+        gap:20px;   
+    }
+   .admin-active-clients, .admin-inactive-clients{
+    height: max-content;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+   }
+   .admin-clients-active-summation-container,.admin-clients-inactive-summation-container{
+    font-size: 30px;
+   }
+   .clients-active-right,.clients-inactive-right{
+    background-color: blue;
+    width: 50px;
+    height: 50px;
+    margin-top: 28px;
+   }
+   .admin-client-active-icon,.admin-client-inactive-icon{
+    text-align: center;
+    padding-top: 10px;
+   }
+
+   .general-clients-details-on-zones{
+    padding: 20px;
+   }
+   .clients-by-zone-container{
+    background-color: black;
+   
+   }
+   /*table styling*/
+   table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th {
+    
+}
+}
+@media screen and (min-width:641px) and (max-width:1025px){
+.overall-admin-page-container{
+
+}
+.admin-page-header{
+    background-color: red; /* For browsers that do not support gradients */
+    background-image: linear-gradient(to bottom right, black, blue);
+    width: 100%;
+    height: max-content;
+    padding: 20px;
+}
+.admin-page-header-content-holder{
+
+}
+.admin-name{
+
+}
+/*display none*/
+.admin-interacting-icons{
+display: none;
+}
+
+
+
+ .overall-admin-dashboard-component{
+position: relative;
+ }  
+ .admin-dashboard-header{
+position: relative
+ } 
+}
+@media screen and (min-width:1026px){
+     
+}
