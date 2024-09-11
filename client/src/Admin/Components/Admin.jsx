@@ -1,53 +1,129 @@
-import React from 'react'
-import './Admin.css'
-import AddUser from '../../User/pages/Create_User/AddUser';
-import NewCustomer from '../Pages/New_customer/NewCustomer';
-import { useState } from 'react';
+import React, { useEffect } from "react";
+import "./Admin.css";
+import AddUser from "../../User/pages/Create_User/AddUser";
+import NewCustomer from "../Pages/New_customer/NewCustomer";
+import { useState } from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
-import { FaHome, FaUserTie,FaMoneyBillWave } from "react-icons/fa";
+import { FaHome, FaUserTie, FaMoneyBillWave } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+function AdminDashDisplay() {
+  const [zones, setZones] = useState()
+
+  // 1. Get the number of zones
+  const getZones = async () => {
+    const zones = await axios.get("http://localhost:4000/zones/all").catch(error => console.log(error));
+
+    if (zones.status == 200) {
+      toast.success('Meters found successfully.')
+      setZones(zones.data.data)
+    } else{
+      toast.warn('Something went wrong.')
+    }
+  }
 
 
+  useEffect(() => {
+    getZones()
+  }, [])
+  return (
+    <>
+      <div className="adminSect">
+        <div className="admin-cards">
+          <div className="cards">
+            <div className="card-title">
+              <h4>Total amount consumed for the month : {"January"}</h4>
+              <p>
+                Total amount: {12} M <sup>4</sup>
+              </p>
+            </div>
+          </div>
 
- function AdminDashDisplay() {
-   return <h1>Admin Dashboard</h1>;
- }
+          <div className="cards">
+            <div className="card-title">
+              <h4>Total amount consumed for the month : {"January"}</h4>
+              <p>
+                Total amount: {12} 
+              </p>
+            </div>
+          </div>
+
+          <div className="cards">
+            <div className="card-title">
+              <h4> Total number of consumers active consumers</h4>
+              <p>
+                Active consumers: {12} 
+              </p>
+            </div>
+          </div>
+
+          <div className="cards">
+            <div className="card-title">
+              <h4>Number of Zones
+              </h4>
+              {
+                zones && zones.length > 0? ( <p>
+                Zones: {zones.length}
+              </p>):(
+                <p>Loading zones</p>
+              )
+              }
+             
+            </div>
+          </div>
+          <div className="cards">
+            <div className="card-title">
+              <h4>Number of Agents : {"January"}</h4>
+              <p>
+                Agents: {12}
+              </p>
+            </div>
+          </div>
+          <div className="cards">
+            <div className="card-title">
+              <h4>Number of registered meters : {"January"}</h4>
+              <p>
+                Meters: {12} 
+              </p>
+            </div>
+          </div>
+        </div>
+        <ToastContainer/>
+      </div>
+    </>
+  );
+}
 function Admin() {
-   
-    const [sidebar,setSidebar]=useState(false);
-    const [Home,setHome]=useState(true);
-    const [User,setUser]=useState(false);
-    const [Bill,setBill]=useState(false);
-    const [receipt,setReceipt]=useState(false);
-    const [newCustomer, setNewCustomer] = useState(false)
-    let component;
-    if(Home==true){
-    component=<AdminDashDisplay/>
-    }
-    else if(User==true){
-      component=<AddUser/>
-    }
-    else if(Bill==true){
-      component=''
-    } else if(newCustomer == true){
-      component=<NewCustomer/>
-    }
-    else if(receipt==true){
-      component=''
-    
-    }
-
+  const [sidebar, setSidebar] = useState(false);
+  const [Home, setHome] = useState(true);
+  const [User, setUser] = useState(false);
+  const [Bill, setBill] = useState(false);
+  const [receipt, setReceipt] = useState(false);
+  const [newCustomer, setNewCustomer] = useState(false);
+  let component;
+  if (Home == true) {
+    component = <AdminDashDisplay />;
+  } else if (User == true) {
+    component = <AddUser />;
+  } else if (Bill == true) {
+    component = "";
+  } else if (newCustomer == true) {
+    component = <NewCustomer />;
+  } else if (receipt == true) {
+    component = "";
+  }
 
   return (
     <div className="admin-overall-container">
-      
       <div className="small-phone-display">
         <header className="dashboard-header-small">
-          <div className="left-side-small-screen-content">
-          </div>
+          <div className="left-side-small-screen-content"></div>
           <div className="right-side-small-screen-content">
             <div
               onClick={() => {
@@ -165,10 +241,8 @@ function Admin() {
         )}
         <div className="component-dash-display">{component}</div>
       </div>
-
-    
     </div>
   );
 }
 
-export default Admin
+export default Admin;

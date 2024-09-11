@@ -1,0 +1,22 @@
+.adminSect {
+    border: 2px solid red;
+}
+.admin-cards{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    border: 2px solid black;
+    margin: 1rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.admin-cards .cards{ 
+    /* min-width: ; */
+    padding: .5rem;
+    border-radius: .5rem;
+    border: 2px solid blue;
+    flex:2 1 20rem; 
+}
+
