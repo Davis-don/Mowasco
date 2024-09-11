@@ -70,7 +70,7 @@ export const createCustomer = async (req,res) => {
         })
 
         if(createCustomer != null){
-            res.status(200).json({success: true, message:'Customer created successfully.'})
+            res.status(200).json({success: true, message:'Customer created successfully.', data:createCustomer})
         } else {
             res.status(500).json({success: false, message:'Something went wrong.'})
         }

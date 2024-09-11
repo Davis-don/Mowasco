@@ -42,12 +42,7 @@ const NewCustomer = () => {
 
   const handleSubmit = async (e) => {
     // navigate("/newTestFile");
-    e.preventDefault()
-    
-      const data = {fName, lName, IDNumber, phoneNumber, connectionType}
-      
-        
-console.log(typeof(phoneNumber))
+    e.preventDefault()   
       try {
         setLoading(true);
         const postUser = await axios
@@ -67,10 +62,11 @@ console.log(typeof(phoneNumber))
             return;
           });
 
-        console.log(postUser);
-
         if (postUser.status == 200) {
           toast("Sucessfull.", { position: "top-center" });
+          const userData = postUser.data.data
+          const userID = userData.cust_id 
+          navigate(`/${userID}/create-meter`);
         } else {
           toast.warn("something went wrong. Try again later.", {
             position: "bottom-center",
@@ -167,6 +163,7 @@ console.log(typeof(phoneNumber))
                 value={fName}
                 placeholder="First name"
                 onChange={(e) => setFName(e.target.value)}
+                required
               />
             </div>
             <div className="inputs">
@@ -177,6 +174,7 @@ console.log(typeof(phoneNumber))
                 value={lName}
                 placeholder="Last name"
                 onChange={(e) => setLName(e.target.value)}
+                required
               />
             </div>
 
@@ -188,6 +186,7 @@ console.log(typeof(phoneNumber))
                 value={IDNumber}
                 placeholder="ID number"
                 onChange={(e) => setIDNumber(e.target.value)}
+                required
               />
             </div>
             <div className="inputs">
@@ -198,6 +197,7 @@ console.log(typeof(phoneNumber))
                 className="form-control m-2"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                required
               />
             </div>
             <div className="inputs">
@@ -208,10 +208,11 @@ console.log(typeof(phoneNumber))
                 className="form-control m-2"
                 value={connectionType}
                 onChange={(e) => setConnectionType(e.target.value)}
+                required
               />
             </div>
             <div className="adduser-button">
-              <button type="button" className="btn btn-outline-primary">
+              <button className="btn btn-outline-primary">
                 {loading ? "Submitting...." : "Submit"}
               </button>
             </div>

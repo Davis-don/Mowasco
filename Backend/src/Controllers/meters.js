@@ -46,7 +46,7 @@ export const getSingleMeter = async(req, res) => {
 
 export const createNewMeter = async(req, res) => {
     try{
-        const {meterNumber, zone} = req.body;
+        const {meterNumber, zone, cust_id} = req.body;
         const createMeter = await prisma.meters.create({
             data: {
                 meterNumber, 
@@ -57,7 +57,7 @@ export const createNewMeter = async(req, res) => {
                 },
                 customer:{
                     connect:{
-                        cust_id: custID
+                        cust_id: cust_id
                     }
                 }
             }

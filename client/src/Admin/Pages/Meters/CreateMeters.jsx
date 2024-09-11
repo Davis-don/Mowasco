@@ -7,7 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
+import { useParams } from "react-router-dom";
 const CreateMeters = () => {
+  const {cust_id} = useParams()
+
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
 
@@ -44,11 +47,11 @@ const CreateMeters = () => {
       setError(false);
       setLoading(true);
 
-      console.log(values);
       const createMeter = await axios
         .post(`http://localhost:4000/meters/create`, {
           meterNumber: values.meterNumber,
           zone: values.zone,
+          cust_id: cust_id
         })
         .catch((error) => {
           console.log(error);
@@ -138,7 +141,7 @@ const CreateMeters = () => {
                 <p>{formik.errors.meterNumber}</p>
               )}
             </div>
-            {/* 
+            
             <div>
               <select
                 onChange={formik.handleChange}
@@ -161,7 +164,7 @@ const CreateMeters = () => {
               {formik.touched.zone && formik.errors.zone && (
                 <p>{formik.errors.zone}</p>
               )}
-            </div> */}
+            </div>
 
             {/* <div>
               <input
@@ -186,7 +189,7 @@ const CreateMeters = () => {
             </div> */}
 
             <div className="adduser-button">
-              <button type="button" className="btn btn-outline-primary">
+              <button  className="btn btn-outline-primary">
                 {loading ? "Submitting...." : "Submit"}
               </button>
             </div>
