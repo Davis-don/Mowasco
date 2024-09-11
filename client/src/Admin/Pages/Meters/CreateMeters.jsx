@@ -14,37 +14,37 @@ const CreateMeters = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [meters, setMeters] = useState([]);
-  const [zone, setZone] = useState()
+  const [zone, setZone] = useState();
 
   const validation = Yup.object({
     meterNumber: Yup.number().required("Please provide a meter number"),
     zone: Yup.string().required("Please provide a zone"),
   });
 
-    const getZones = async () => {
-      try {
-        setLoading(true);
-        const zones = await axios
-          .get("http://localhost:4000/zones/all")
-          .catch((error) => console.log(error));
-        if (zones) {
-          setZone(zones.data.data);
-        } else {
-          toast.warn("Zones were not found.");
-        }
-      } catch (error) {
-        console.log(error);
-        setError(error);
-      } finally {
-        setLoading(false);
+  const getZones = async () => {
+    try {
+      setLoading(true);
+      const zones = await axios
+        .get("http://localhost:4000/zones/all")
+        .catch((error) => console.log(error));
+      if (zones) {
+        setZone(zones.data.data);
+      } else {
+        toast.warn("Zones were not found.");
       }
-    };
+    } catch (error) {
+      console.log(error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSubmit = async (values) => {
     try {
       setError(false);
       setLoading(true);
 
-      console.log(values)
+      console.log(values);
       const createMeter = await axios
         .post(`http://localhost:4000/meters/create`, {
           meterNumber: values.meterNumber,
@@ -85,18 +85,20 @@ const CreateMeters = () => {
   };
 
   // delete meters.
-  const deleteMeter = async(id) => {
+  const deleteMeter = async (id) => {
     try {
-        const remove = await axios.delete(`http://localhost:4000/meters/${id}`).catch(error => console.log(error))
-        if (remove){
-            alert('Meter deleted')
-        }else {
-            alert('Something happened.')
-        }
+      const remove = await axios
+        .delete(`http://localhost:4000/meters/${id}`)
+        .catch((error) => console.log(error));
+      if (remove) {
+        alert("Meter deleted");
+      } else {
+        alert("Something happened.");
+      }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -109,7 +111,7 @@ const CreateMeters = () => {
 
   useEffect(() => {
     getMeters();
-    getZones()
+    getZones();
   }, []);
   return (
     <div>
@@ -136,7 +138,7 @@ const CreateMeters = () => {
                 <p>{formik.errors.meterNumber}</p>
               )}
             </div>
-
+            {/* 
             <div>
               <select
                 onChange={formik.handleChange}
@@ -159,9 +161,32 @@ const CreateMeters = () => {
               {formik.touched.zone && formik.errors.zone && (
                 <p>{formik.errors.zone}</p>
               )}
-            </div>
+            </div> */}
+
+            {/* <div>
+              <input
+                type="text"
+                name="fName"
+                value={formik.values.fName}
+                onChange={formik.handleChange}
+                className="form-control m-2"
+                onBlur={formik.handleBlur}
+              />
+            </div> */}
+
+            {/* <div>
+              <input
+                type="text"
+                name="lName"
+                value={formik.values.lName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="form-control m-2"
+              />
+            </div> */}
+
             <div className="adduser-button">
-              <button className="btn btn-outline-primary">
+              <button type="button" className="btn btn-outline-primary">
                 {loading ? "Submitting...." : "Submit"}
               </button>
             </div>
