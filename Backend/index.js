@@ -1,9 +1,6 @@
-const express = require ('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Client } = require('pg');
-const configurations = require('./Databaseconfig');
-
+import express from 'express';
+import cors from 'cors'
+import bodyParser from 'body-parser';
 const app = express();
 
 // Middleware
@@ -18,11 +15,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-
-const EmployeesUser=require('./EmployeesUser');
+import EmployeesUser from './EmployeesUser.js'
 app.use('/EmployeesUser',EmployeesUser);
-const UserLogin=require('./Login');
-app.use('/User/Login',UserLogin);
+// const UserLogin=require('./Login');
+// app.use('/User/Login',UserLogin);
 
   // Start server
 app.listen(4000, (error) => {
