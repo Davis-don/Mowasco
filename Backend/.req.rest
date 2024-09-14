@@ -1,17 +1,26 @@
-POST http://localhost:4000/EmployeesUser/Add/User
+POST http://localhost:4000/EmployeesUser/Add/Employee
 Content-Type: application/json
 
 {
-  "EmployeeId": "39257524",
+  "EmployeeId": 39257525,
   "FullNames": "Ikou Davis Mugo",
   "Gender":"Male",
-  "Age":"22",
+  "Age":22,
   "Contact":"0758420860",
   "Password":"As261/1163",
   "ConfirmPassword":"As261/1163",
    "Status":"active",
    "Role":"admin"
 
+}
+
+###
+POST http://localhost:4000/User/Login
+Content-Type: application/json
+
+{
+"UserId":39257525,
+"Password":"As261/1163"
 }
 
 ###

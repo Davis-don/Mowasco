@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// prisma/schema.prisma
+
+model Employee {
+  Employees_Id Int    @id // Define Employees_Id as the primary key, but without auto-increment
+  FullNames    String
+  Gender       String @db.VarChar(10)
+  Age          Int
+  contact      String @db.VarChar(50)
+  Status       String @db.VarChar(10)
+  Role         String @db.VarChar(10)
+  Password     String @db.VarChar(255)
+
+  @@map("Employees_tbl") // Explicitly map to the Employees_tbl table
+}
+
+

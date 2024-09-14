@@ -29,7 +29,7 @@ console.log(userData);
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:4000/EmployeesUser/Add/User', {
+      const response = await fetch('http://localhost:4000/EmployeesUser/Add/Employee', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
