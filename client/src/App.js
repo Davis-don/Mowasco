@@ -15,12 +15,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <Routes>
-      <Route path="/Admin/Dashboard" element={<Admin />} />
-        {/* <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login />} />
             <Route element={<ProtectedRoutes/>}>
             <Route path="/Admin/Dashboard" element={<Admin />} />
             <Route path="/Account/login" element={<Dashboard />} />
-            </Route> */}
+            </Route>
       </Routes>
       </BrowserRouter>
     </div>
