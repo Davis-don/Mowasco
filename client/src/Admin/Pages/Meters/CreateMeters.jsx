@@ -118,14 +118,14 @@ const CreateMeters = () => {
   }, []);
   return (
     <div>
-      <div className="overall-add-user-container ">
+      {/* <div className="overall-add-user-container ">
         <div className="form-encapsulator">
           <h2 style={{ textAlign: "center" }}>Register new meter</h2>
           {displayServerComponent && (
             <div class="alert alert-info">
               <strong>{serverMessage}</strong>
             </div>
-          )}
+          )} */}
           <form onSubmit={formik.handleSubmit}>
             <div>
               <input
@@ -195,8 +195,8 @@ const CreateMeters = () => {
             </div>
             <ToastContainer />
           </form>
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
       <div className="meters">
         <h2>Registered meters.</h2>
         <table>

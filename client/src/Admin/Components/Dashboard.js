@@ -12,6 +12,7 @@ import Genwaterbill from '../../User/pages/Bill/Genwaterbill';
 import Receiptgen from '../../User/pages/Receipt/Receiptgen';
 import Homecomponent from '../../User/Components/Homecomponent'
 import CreateMeters from '../Pages/Meters/CreateMeters';
+import Navigation from './Navigation';
 
 function Dashboard() {
 const [sidebar,setSidebar]=useState(false);
@@ -35,7 +36,7 @@ else if(receipt==true){
 }
 
   return (
-    <div className='overall-dashboard-container'>
+    <div className='overall-dashboard-container header'>
        <div className='small-phone-display'>
         <header className='dashboard-header-small'>
            <div className='left-side-small-screen-content'>
@@ -46,7 +47,7 @@ else if(receipt==true){
             </div>
         </header>
         {sidebar && <div className='sidebar-small-screen'>
-             <h2 style={{display:"flex",gap:'10px'}}><span><MdOutlineDashboard className='fs-1 text-light'/></span><span className='text-light'>Dashboardfff</span></h2>
+             <h2 style={{display:"flex",gap:'10px'}}><span><MdOutlineDashboard className='fs-1 text-light'/></span><span className='text-light'>Dashboard</span></h2>
              <div className='close-btn-small'onClick={()=>{setSidebar(false)}}><IoMdClose className='fs-1 text-dark'/></div>
              <ul className='list-unstyled p-3' >
               <li className={Home ? "active-link-css" : ""} onClick={()=>{setSidebar(false);setHome(true);setCustomer(false);setBill(false);setReceipt(false)}} style={{display:"flex",gap:'10px'}}><span><FaHome className='text-light fs-2'/></span><span className='fs-5 text-light'>Home</span></li>

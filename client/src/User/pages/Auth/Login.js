@@ -59,7 +59,7 @@ function Login() {
           sessionStorage.setItem('userToken', responseData.Token);
            console.log(responseData.userRole);
           if(responseData.userRole == 'admin'){
-           navigate('/Admin/Dashboard')
+           navigate('/Dashboard')
           }
           else if(responseData.userRole == 'user'){
             navigate('/Account/login') 
