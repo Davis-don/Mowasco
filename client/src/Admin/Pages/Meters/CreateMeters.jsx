@@ -7,8 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { MdNavigateNext } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
+import { AiOutlineHistory } from "react-icons/ai";
+
 const CreateMeters = () => {
+  const navigate = useNavigate()
   const {cust_id} = useParams()
 
   const [serverMessage, setServerMessage] = useState("");
@@ -103,6 +107,13 @@ const CreateMeters = () => {
     }
   };
 
+  const viewHistory = async() => {
+    try {
+      navigate("/meter-history");
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const formik = useFormik({
     initialValues: {
       meterNumber: "",
@@ -118,99 +129,35 @@ const CreateMeters = () => {
   }, []);
   return (
     <div>
-      {/* <div className="overall-add-user-container ">
-        <div className="form-encapsulator">
-          <h2 style={{ textAlign: "center" }}>Register new meter</h2>
-          {displayServerComponent && (
-            <div class="alert alert-info">
-              <strong>{serverMessage}</strong>
-            </div>
-          )} */}
-          <form onSubmit={formik.handleSubmit}>
-            <div>
-              <input
-                onChange={formik.handleChange}
-                name="meterNumber"
-                value={formik.meterNumber}
-                type="number"
-                placeholder="Meter number"
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.meterNumber && formik.errors.meterNumber && (
-                <p>{formik.errors.meterNumber}</p>
-              )}
-            </div>
-            
-            <div>
-              <select
-                onChange={formik.handleChange}
-                name="zone"
-                type='text'
-                value={formik.zone}
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              >
-                <option>Zones</option>
-                {zone && zone.length > 0 ? (
-                  zone.map((zone, key) => (
-                    <option value={zone.zone_id}>{zone.zoneName}</option>
-                  ))
-                ) : (
-                  <p>Loading zones...</p>
-                )}
-              </select>
+      <div className="cust-top">
+        <h4>
+          Meters
+        </h4>
+      </div>
+      <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
+        Registered Meters
+      </h2>
 
-              {formik.touched.zone && formik.errors.zone && (
-                <p>{formik.errors.zone}</p>
-              )}
-            </div>
-
-            {/* <div>
-              <input
-                type="text"
-                name="fName"
-                value={formik.values.fName}
-                onChange={formik.handleChange}
-                className="form-control m-2"
-                onBlur={formik.handleBlur}
-              />
-            </div> */}
-
-            {/* <div>
-              <input
-                type="text"
-                name="lName"
-                value={formik.values.lName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="form-control m-2"
-              />
-            </div> */}
-
-            <div className="adduser-button">
-              <button  className="btn btn-outline-primary">
-                {loading ? "Submitting...." : "Submit"}
-              </button>
-            </div>
-            <ToastContainer />
-          </form>
-        {/* </div>
-      </div> */}
       <div className="meters">
-        <h2>Registered meters.</h2>
         <table>
           <tr>
             <th>Meter no.</th>
             <th>Zone</th>
+            <th>Meter Status</th>
+            <th>Installation Date</th>
+            <th>Repair Date</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>History</th>
           </tr>
           {meters.length > 0 ? (
             meters.map((meter, key) => (
               <tr key={key}>
                 <td>{meter.meterNumber}</td>
                 <td>{meter.zone}</td>
+                <td>Active</td>
+                <td>12th June, 2007</td>
+                <td>20th December, 2024</td>
                 <td>{<MdEdit />}</td>
                 <td>
                   {
@@ -219,6 +166,7 @@ const CreateMeters = () => {
                     />
                   }
                 </td>
+                <td>{<AiOutlineHistory onClick={viewHistory} />}</td>
               </tr>
             ))
           ) : (

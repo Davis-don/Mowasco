@@ -17,6 +17,7 @@ import Customers from './Admin/Pages/New_customer/Customers';
 import AddNewCustomers from './Admin/Pages/New_customer/AddNewCustomers';
 import ViewCustomer from './Admin/Pages/New_customer/ViewCustomer';
 import UpdateCustomer from './Admin/Pages/New_customer/UpdateCustomer';
+import AboutMeter from './Admin/Pages/Meters/AboutMeter';
 function App() {
 
   return (
@@ -48,7 +49,7 @@ function App() {
             <Route path='/add-new-customer' element={<AddNewCustomers/>}/>
             <Route path='/customer-details' element={<ViewCustomer/>}/>
             <Route path='/update-customer' element={<UpdateCustomer/>}/>
-
+            <Route path='/meter-history' element={<AboutMeter/>}/>
         </Routes>
 
         </div>
