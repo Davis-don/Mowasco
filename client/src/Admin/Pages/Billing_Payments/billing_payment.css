@@ -1,0 +1,25 @@
+.search{
+    border: 2px solid var(--sky-blue);
+    border-radius: .5rem;
+    overflow: hidden;
+}
+
+.search .search-input{
+    height: 2.1rem;
+    border: none;
+    padding-inline-start: .3rem;
+    outline: none;
+}
+.search .search-input:focus{
+    border: none;
+}
+.search button{
+    padding: .3rem .3rem;
+    border: none;
+    background-color: var(--sky-blue);
+}
+
+
+.customer-bills .select{
+    float: right;
+}
