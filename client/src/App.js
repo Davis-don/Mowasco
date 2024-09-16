@@ -9,11 +9,14 @@ import Admin from './Admin/Components/Admin';
 import CreateMeters from './Admin/Pages/Meters/CreateMeters';
 import Water_reading from './User/pages/Water_readings/Water_reading';
 import Billing_payment from './Admin/Pages/Billing_Payments/Billing_payment';
-import NewCustomer from './Admin/Pages/New_customer/NewCustomer';
 import Navigation from './Admin/Components/Navigation';
 import WaterReading from './Admin/Pages/Water_Readings/WaterReading';
 import AdminDashboard from './Admin/Pages/AdminDashboard/AdminDashboard';
 import SideNav from './Admin/Components/SideNav';
+import Customers from './Admin/Pages/New_customer/Customers';
+import AddNewCustomers from './Admin/Pages/New_customer/AddNewCustomers';
+import ViewCustomer from './Admin/Pages/New_customer/ViewCustomer';
+import UpdateCustomer from './Admin/Pages/New_customer/UpdateCustomer';
 function App() {
 
   return (
@@ -37,11 +40,14 @@ function App() {
         <SideNav/>
         <div className='content'>
           <Routes>
-            <Route path='/manage-customers' element={<NewCustomer/>}/>
+            <Route path='/manage-customers' element={<Customers/>}/>
             <Route path='/billing-payment' element={<Billing_payment/>}/>
             <Route path='/dashboard' element={<AdminDashboard/>}/>
             <Route path='/manage-meters' element={<CreateMeters/>}/>
             <Route path='/manage-water-readings' element={<WaterReading/>}/>
+            <Route path='/add-new-customer' element={<AddNewCustomers/>}/>
+            <Route path='/customer-details' element={<ViewCustomer/>}/>
+            <Route path='/update-customer' element={<UpdateCustomer/>}/>
 
         </Routes>
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./Admin.css";
 import AddUser from "../../User/pages/Create_User/AddUser";
 // import NewCustomer from "../Pages/New_customer/NewCustomer";
-import NewCustomer from "../Pages/New_customer/NewCustomer";
+import NewCustomer from "../Pages/New_customer/Customers";
 import { useState } from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -10,7 +10,7 @@ import { FaHome, FaUserTie, FaMoneyBillWave } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { IoMdPersonAdd } from "react-icons/io";
-import logo from '../../../src/images/logo.jpeg'
+import logo from "../../../src/images/logo.jpeg";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +19,6 @@ import { Link, Outlet } from "react-router-dom";
 import SideNav from "./SideNav";
 import Billing_payment from "../Pages/Billing_Payments/Billing_payment";
 import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
-
 
 function Admin() {
   const [sidebar, setSidebar] = useState(false);

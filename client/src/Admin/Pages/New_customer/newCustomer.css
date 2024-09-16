@@ -1,0 +1,22 @@
+
+
+.cust-top{
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cust-top button{
+    padding: .2rem .5rem;
+    border-radius: .3rem;
+}
+
+table{
+    margin-top: 1rem;
+}
+
+table tr td {
+    padding: 1rem 1.9rem;
+    text-align: start;
+}
