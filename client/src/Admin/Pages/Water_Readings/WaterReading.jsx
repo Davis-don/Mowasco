@@ -2,6 +2,8 @@ import React from "react";
 import "./water_reading.css";
 import { FaHistory } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { IoFilterSharp } from "react-icons/io5";
+
 const WaterReading = () => {
   const navigate = useNavigate();
 
@@ -15,7 +17,10 @@ const WaterReading = () => {
   return (
     <div className="water-readings">
       <div className="cust-top">
-        <h4>Water Readings</h4>
+        <span>Water Readings</span>
+      </div>
+      <h4 style={{ textAlign: "center", marginTop: "1rem" }}>Meter Readings</h4>
+      <div className="search-filter">
         <div className="search">
           <input
             className="search-input"
@@ -28,8 +33,14 @@ const WaterReading = () => {
           />
           <button>Search</button>
         </div>
+        <div className="search-filter-left">
+          <div className="filter">
+            <IoFilterSharp className="filter-icon" />
+            <span>Filter</span>
+          </div>
+        
+        </div>
       </div>
-      <h2 style={{ textAlign: "center", marginTop: "1rem" }}>Meter Readings</h2>
       <table>
         <tr>
           <th>Meter No.</th>

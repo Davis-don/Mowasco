@@ -8,6 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import * as Yup from "yup";
+import { IoFilterSharp } from "react-icons/io5";
+
 
 
 const Billing_payment = () => {
@@ -63,33 +65,42 @@ const Billing_payment = () => {
     return (
       <div className="customer-bills">
         <div className="cust-top">
-          <h4>Bills</h4>
+          <span>Bills</span>
+        </div>
+
+        <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
+          Customers Bills
+        </h4>
+        <div className="search-filter">
           <div className="search">
             <input
               className="search-input"
               type="text"
               name="fName"
-              value={fName}
+              value={""}
               placeholder="Search customer.."
-              onChange={(e) => setFName(e.target.value)}
+              onChange={""}
               required
             />
             <button>Search</button>
           </div>
+          <div className="search-filter-left">
+            <div className="filter">
+              <IoFilterSharp className="filter-icon" />
+              <span>Filter</span>
+            </div>
+          </div>
         </div>
+        
 
-        <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
-          Customers Bills
-        </h2>
-
-        <div className="select">
+        {/* <div className="select">
           <select name="customer" id="customer">
             <option value="zones">Zones</option>
             <option value="paid">Paid bills</option>
             <option value="unPaid">Unpaid bills</option>
             <option value="arrears">Arrears</option>
           </select>
-        </div>
+        </div> */}
 
         <table>
           <tr>

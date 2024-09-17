@@ -50,7 +50,7 @@ function App() {
             <Route path='/manage-water-readings' element={<WaterReading/>}/>
             <Route path='/add-new-customer' element={<AddNewCustomers/>}/>
             <Route path='/customer-details' element={<ViewCustomer/>}/>
-            <Route path='/update-customer' element={<UpdateCustomer/>}/>
+            <Route path='/update-customer/:cust_id' element={<UpdateCustomer/>}/>
             <Route path='/meter-history' element={<AboutMeter/>}/>
             <Route path='/customer-bill' element={<ViewBill/>}/>
             <Route path='/meter-readings-history' element={<MeterReadingHistory/>}/>

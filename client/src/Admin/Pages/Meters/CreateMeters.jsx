@@ -5,6 +5,7 @@ import "./createmeters.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { IoFilterSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import { MdNavigateNext } from "react-icons/md";
@@ -130,50 +131,66 @@ const CreateMeters = () => {
   return (
     <div>
       <div className="cust-top">
-        <h4>
-          Meters
-        </h4>
+        <span>Meters</span>
       </div>
-      <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
+      <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
         Registered Meters
-      </h2>
-
-      <div className="meters">
-        <table>
-          <tr>
-            <th>Meter no.</th>
-            <th>Zone</th>
-            <th>Meter Status</th>
-            <th>Installation Date</th>
-            <th>Repair Date</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>History</th>
-          </tr>
-          {meters.length > 0 ? (
-            meters.map((meter, key) => (
-              <tr key={key}>
-                <td>{meter.meterNumber}</td>
-                <td>{meter.zone}</td>
-                <td>Active</td>
-                <td>12th June, 2007</td>
-                <td>20th December, 2024</td>
-                <td>{<MdEdit />}</td>
-                <td>
-                  {
-                    <MdDeleteForever
-                      onClick={() => deleteMeter(meter.meter_id)}
-                    />
-                  }
-                </td>
-                <td>{<AiOutlineHistory onClick={viewHistory} />}</td>
-              </tr>
-            ))
-          ) : (
-            <p>Loading data ...</p>
-          )}
-        </table>
+      </h4>
+      <div className="search-filter">
+        <div className="search">
+          <input
+            className="search-input"
+            type="text"
+            name="fName"
+            value={""}
+            placeholder="Search customer.."
+            onChange={""}
+            required
+          />
+          <button>Search</button>
+        </div>
+        <div className="search-filter-left">
+          <div className="filter">
+            <IoFilterSharp className="filter-icon" />
+            <span>Filter</span>
+          </div>
+          
+        </div>
       </div>
+      <table>
+        <tr>
+          <th>Meter no.</th>
+          <th>Zone</th>
+          <th>Meter Status</th>
+          <th>Installation Date</th>
+          <th>Repair Date</th>
+          <th>Edit</th>
+          <th>Delete</th>
+          <th>History</th>
+        </tr>
+        {meters.length > 0 ? (
+          meters.map((meter, key) => (
+            <tr key={key}>
+              <td>{meter.meterNumber}</td>
+              <td>{meter.zone}</td>
+              <td>Active</td>
+              <td>12th June, 2007</td>
+              <td>20th December, 2024</td>
+              <td>{<MdEdit />}</td>
+              <td>
+                {
+                  <MdDeleteForever
+                    onClick={() => deleteMeter(meter.meter_id)}
+                  />
+                }
+              </td>
+              <td>{<AiOutlineHistory onClick={viewHistory} />}</td>
+            </tr>
+          ))
+        ) : (
+          <p>Loading data ...</p>
+        )}
+      </table>
     </div>
   );
 };
