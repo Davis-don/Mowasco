@@ -5,7 +5,7 @@ import ProtectedRoutes from './Utils/ProtectedRoutes';
 import Usergenarator from './Components/Usergenarator';
 import Receiptgen from './Components/Receiptgen';
 import Genwaterbill from './Components/Genwaterbill';
-import Dashboard from './Pages/Dashboard';
+import Userdashboard from './Pages/Userdashboard';
 import Admin from './Pages/Admin';
 import AddUser from './Components/AddUser';
 import Cookies from 'js-cookie';
@@ -15,12 +15,12 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <Routes>
-      {/* <Route path="/" element={<Admin />} /> */}
-        <Route path="/" element={<Login />} />
+      <Route path="/" element={<Userdashboard />} />
+        {/* <Route path="/" element={<Login />} />
             <Route element={<ProtectedRoutes/>}>
             <Route path="/Admin/Dashboard" element={<Admin />} />
             <Route path="/Account/login" element={<Dashboard />} />
-            </Route>
+            </Route> */}
       </Routes>
       </BrowserRouter>
     </div>
