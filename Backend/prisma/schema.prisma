@@ -35,7 +35,7 @@ model Meters {
   meter_id    String    @id @default(uuid())
   meterNumber Int       @unique @map("meter_number")
   createdAt   DateTime  @default(now())
-  zone_id     String    @unique
+  zone_id     String    
   zones       Zones     @relation(fields: [zone_id], references: [zone_id])
   cust_id     String    @unique
   customer    Customers @relation(fields: [cust_id], references: [cust_id])
@@ -50,7 +50,7 @@ model Meters {
 model Zones {
   zone_id  String     @id @default(uuid())
   zoneName String        @unique @map("zone_name")
-  meter    Meters?
+  meter    Meters[]
 
   @@map("zone_tb")
 }
