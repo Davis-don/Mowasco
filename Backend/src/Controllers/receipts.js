@@ -9,9 +9,13 @@ export const getAllReceipts = async(req, res) => {
             receiptNumber: true,
             amount_paid: true,
             deadline_date: true,
-            customer: true,
-            meters: true,
             billing:true,
+            billing:{
+                include:{
+                    customer:true,
+                    meters:true
+                }
+            }
             
         }
      })
@@ -32,21 +36,23 @@ export const getSingleReceipt = async(req, res) => {
 
     const getReceipt = await prisma.receipts.findUnique({
         where: {receipt_id:receipt_id},
-        include:{
-            customer:true,
-            customer:{
-                include:{
-                    meters:true,
-                    meters:{
-                        include:{
-                            zones:true
-                        }
+       include:{
+        billing:true,
+        billing:{
+            include:{
+                customer:true,
+                meters:true,
+                meters:{
+                    include:{
+                        zones:true
                     }
                 }
-            },
-            billing:true,
-            // zone:true
+            }
         }
+       }
+            
+            // zone:true
+        
     })
 
      if (getReceipt != null){
@@ -60,8 +66,9 @@ export const getSingleReceipt = async(req, res) => {
 }
 
 export const generateReceipt = async(req, res) => {
+    console.log('receipt', req.body)
     try {
-        const { amount_paid, bill_id,meter_id, cust_id} = req.body;
+        const { amount_paid, bill_id} = req.body;
 
         const generate = await prisma.receipts.create({
             data:{
@@ -71,16 +78,7 @@ export const generateReceipt = async(req, res) => {
                         bill_id:bill_id
                     }
                 },
-                meters: {
-                    connect:{
-                        meter_id:meter_id
-                    }
-                },
-                customer: {
-                    connect:{
-                        cust_id:cust_id
-                    }
-                }
+               
             }
         })
 

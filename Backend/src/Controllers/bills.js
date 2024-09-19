@@ -11,8 +11,8 @@ export const getAllBills = async(req, res)=>{
            billingDate: true,
            amountDue: true,
            consumption:true,
-           meters:true,
-           customer:true
+           customer:true,
+           meters:true
         }
     })
     if (getBills){
@@ -31,7 +31,15 @@ export const getSingleBill = async(req, res)=>{
         const {bill_id} = req.params;
 
         const checkBill = await prisma.billing.findUnique({
-            where: {bill_id: bill_id}
+            where: {bill_id: bill_id},
+            include:{
+                customer:true,
+                customer:{
+                    include:{
+                        meters:true,
+                    }
+                }
+            }
         })
          if (checkBill){
             res.status(200).json({success: true, message: 'Bill found successfully.', data: checkBill})
@@ -47,12 +55,13 @@ export const getSingleBill = async(req, res)=>{
 export const createBill = async(req, res)=>{
     
     try{
-        const {billingPeriod,  consumption,  amountDue, cust_id, meter_id  } = req.body;
-const meterID = '6af3d56e-3990-476e-a92a-27ae46b44df6'
+        const {billingPeriod,  consumption,  cust_id, meter_id} = req.body;
         const amoutPayable = await prisma.water_Reading.findFirst({
             where:{meter_id},
-            orderBy:{createdAt: 'desc'}
+            orderBy:{createdAt:'desc'}
         })
+
+        console.log('amount payable', amoutPayable)
 
         let totalCharges = 0;
         if(amoutPayable){
@@ -64,14 +73,14 @@ const meterID = '6af3d56e-3990-476e-a92a-27ae46b44df6'
                 billingPeriod,
                 consumption,
                 amountDue: totalCharges,
-                meters:{
-                    connect: {
-                        meter_id: meter_id
-                    }
-                },
                 customer:{
                     connect:{
                         cust_id: cust_id
+            }
+                },
+                meters:{
+                    connect:{
+                        meter_id:meter_id
                     }
                 }
             }

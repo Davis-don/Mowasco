@@ -7,7 +7,7 @@ router.get('/all/:meter_id/readings', getAllReadingsForOneMeter)
 
 router.get('/all/total-readings', totalAmountConsumed)
 
-router.get('/:reading_id', getSigleReading)
+router.get('/:meter_id', getSigleReading)
 
 router.post('/create',recordReading)
 

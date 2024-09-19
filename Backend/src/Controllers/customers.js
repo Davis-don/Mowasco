@@ -17,7 +17,8 @@ export const getAllCustomers = async (req,res) => {
                 meters:true,
                 meters:{
                     include:{
-                        zones:true
+                        zones:true,
+                        water_reading:true
                     }
                 }
             }

@@ -7,6 +7,7 @@ export const getAllReadings  = async(req,res) => {
         const getMeters = await prisma.water_Reading.findMany({
             select: {
                 meter_id:true,
+                meter:true,
                 reading_id: true,
                 currentReading:true, 
                 prevReading: true,
@@ -26,23 +27,23 @@ export const getAllReadings  = async(req,res) => {
 }
 
 export const getAllReadingsForOneMeter = async(req,res) => {
-    res.send('djkjkjk')
-    // try {
-    //     const { meter_id} = req.params;
-     
-    //     const findReading = await prisma.water_Reading.findMany({
-    //         where:{meter_id},
-    //         orderBy:{createdAt:'desc'}
-    //     })
 
-    //     if(findReading != null) {
-    //         res.status(200).json({success:true, message:'Meter reading has been found successfully.', data:findReading})
-    //     } else{
-    //         res.status(500).json({success:false, message:'Something went wrong. no details'})
-    //     }
-    // } catch (error) {
-    //         res.status(500).json({success:false, message:error.message})
-    // }
+    try {
+        const { meter_id} = req.params;
+     
+        const findReading = await prisma.water_Reading.findMany({
+            where:{meter_id},
+            orderBy:{createdAt:'desc'}
+        })
+
+        if(findReading != null) {
+            res.status(200).json({success:true, message:'Meter reading has been found successfully.', data:findReading})
+        } else{
+            res.status(500).json({success:false, message:'Something went wrong. no details'})
+        }
+    } catch (error) {
+            res.status(500).json({success:false, message:error.message})
+    }
 }
 
 
@@ -77,15 +78,16 @@ export const totalAmountConsumed = async(req, res)=>{
    }
 }
 
-
-
 export const getSigleReading = async(req,res) => {
     try {
-        const { custID} = req.params;
+        const { meter_id} = req.params;
      
         const findReading = await prisma.water_Reading.findFirst({
-            where:{custID},
-            orderBy:{createdAt:'desc'}
+            where:{meter_id},
+            orderBy: {createdAt:'desc'},
+            include:{
+                meter:true
+            }
         })
 
         if(findReading != null) {
@@ -94,7 +96,7 @@ export const getSigleReading = async(req,res) => {
             res.status(500).json({success:false, message:'Something went wrong. no details'})
         }
     } catch (error) {
-            res.status(500).json({success:false, message:error.message})
+            res.status(500).json({success:false, message:'it is here'})
     }
 }
 
@@ -109,7 +111,7 @@ export const recordReading = async(req,res) => {
 
     let amountConsumed = 0
     if(lastReading){
-        amountConsumed = currentReading - lastReading.prevReading;        
+        amountConsumed = currentReading - lastReading.currentReading;        
     }else{
         amountConsumed = currentReading
     }
@@ -121,7 +123,8 @@ export const recordReading = async(req,res) => {
             consumption: amountConsumed,
             meter:{
                 connect:{meter_id:meter_id}
-            }
+            },
+            
         }
     })
 
