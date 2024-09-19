@@ -19,7 +19,7 @@ const Customers = () => {
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState(null);
 
   //get and map all the users from the database.
 
@@ -36,18 +36,30 @@ const Customers = () => {
         });
 
       if (getUsers.status == 200) {
-        setCustomers(getUsers.data.data);
-
-        toast.success("All users have been found successfully.");
+        const data = getUsers.data.data;
+        setCustomers(data);
       } else {
         toast.warn("Something went wrong. Please try again later.");
       }
+
+      console.log("customer - ", customers);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+
+  const data = customers; 
+  console.log(data)
+
+  // if (loading) {
+  //   return <p>Loading...</p>; // Show a loading message while waiting for the API
+  // }
+
+  // if (!customers) {
+  //   return <p>No customer data available</p>; // Handle case when no data is available
+  // }
 
   const addNewCustomer = async () => {
     try {
@@ -57,21 +69,21 @@ const Customers = () => {
     }
   };
 
-  const updateCustomer = async(id) => {
+  const updateCustomer = async (id) => {
     try {
       navigate(`/update-customer/${id}`);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const viewCustomer = async() => {
+  const viewCustomer = async (id) => {
     try {
-      navigate("/customer-details");
+      navigate(`/customer-details/${id}`);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -143,12 +155,14 @@ const Customers = () => {
           </tr>
         </thead>
 
-        {customers && customers.length > 0 ? (
+        {customers != null && customers.length > 0 ? (
           customers.map((customer, key) => (
             <tbody>
               <tr key={key}>
-                <td>{customer.custMeterNumber}</td>
-                <td>{customer.custZone}</td>
+                <td>{customer.meters.meterNumber}</td>
+                <td>
+                  {customer.meters.zones.zoneName}
+                </td>
                 <td>{customer.custFirstName}</td>
                 <td>{customer.custLastName}</td>
                 <td>{customer.custPhoneNumber}</td>
@@ -166,7 +180,9 @@ const Customers = () => {
                     />
                   }
                 </td>
-                <td className="action">{<FaEye onClick={viewCustomer} />}</td>
+                <td className="action">
+                  {<FaEye onClick={() => viewCustomer(customer.cust_id)} />}
+                </td>
               </tr>
             </tbody>
           ))

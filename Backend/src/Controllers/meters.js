@@ -8,7 +8,8 @@ export const getAllMeters = async(req, res) => {
             meter_id: true,
             meterNumber: true,
             zones:true,
-            customer:true
+            customer:true,
+            createdAt:true
         }
     })
     if (getMeters != null) {

@@ -1,3 +1,67 @@
+.receipt-invoice{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.receipt-invoice .name-logo{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.name-logo h1, h3,span{
+    letter-spacing: 1.2;
+    text-transform: uppercase;
+    line-height: 1.6;
+}
+
+.office-details{
+    display: flex;
+    margin-top: .5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.office-left span{
+    text-transform: capitalize;
+}
+.office-details .office-contacts{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.office-details .office-contacts .email{
+    text-transform: lowercase;
+}
+.office-details .office-contacts .email span{
+    text-transform: capitalize;
+}
+
+
+
+
+/* table thead, tr,  th,
+table, tbody, tr, td{
+    border: 2px solid red;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width:640px){
 .overall-receipt-gen-container{
     

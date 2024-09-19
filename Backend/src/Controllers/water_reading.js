@@ -25,6 +25,27 @@ export const getAllReadings  = async(req,res) => {
     }
 }
 
+export const getAllReadingsForOneMeter = async(req,res) => {
+    res.send('djkjkjk')
+    // try {
+    //     const { meter_id} = req.params;
+     
+    //     const findReading = await prisma.water_Reading.findMany({
+    //         where:{meter_id},
+    //         orderBy:{createdAt:'desc'}
+    //     })
+
+    //     if(findReading != null) {
+    //         res.status(200).json({success:true, message:'Meter reading has been found successfully.', data:findReading})
+    //     } else{
+    //         res.status(500).json({success:false, message:'Something went wrong. no details'})
+    //     }
+    // } catch (error) {
+    //         res.status(500).json({success:false, message:error.message})
+    // }
+}
+
+
 export const totalAmountConsumed = async(req, res)=>{
    try{
     // find the latest month.
@@ -55,6 +76,7 @@ export const totalAmountConsumed = async(req, res)=>{
      res.status(500).json({success: false, message: error.message})
    }
 }
+
 
 
 export const getSigleReading = async(req,res) => {

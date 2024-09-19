@@ -41,7 +41,7 @@ function Genwaterbill() {
       const getReadings = await axios.get(`http://localhost:4000/customer/reading/${id}`).catch(error => console.log('water reading',error))
 
       if(getReadings.status == 200){
-        toast.success('Water readings found successfully')
+        
         setWaterReadings(getReadings.data.data)
       } else{
         toast.success('Something went wrong.')

@@ -29,53 +29,6 @@ const CreateMeters = () => {
     zone: Yup.string().required("Please provide a zone"),
   });
 
-  const getZones = async () => {
-    try {
-      setLoading(true);
-      const zones = await axios
-        .get("http://localhost:4000/zones/all")
-        .catch((error) => console.log(error));
-      if (zones) {
-        setZone(zones.data.data);
-      } else {
-        toast.warn("Zones were not found.");
-      }
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handleSubmit = async (values) => {
-    try {
-      setError(false);
-      setLoading(true);
-
-      const createMeter = await axios
-        .post(`http://localhost:4000/meters/create`, {
-          meterNumber: values.meterNumber,
-          zone: values.zone,
-          cust_id: cust_id
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Server error", { position: "bottom-center" });
-          setError(error);
-        });
-      if (createMeter.status == 200) {
-        toast.success("Meter recorded successfully.");
-      } else {
-        toast.warning("Something went wrong. Please try again later!");
-      }
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const getMeters = async () => {
     try {
       const getMeters = await axios
@@ -84,6 +37,7 @@ const CreateMeters = () => {
 
       if (getMeters) {
         setMeters(getMeters.data.data);
+        console.log(getMeters.data.data)
       } else {
         toast.warn("Something went wrong..");
       }
@@ -108,9 +62,9 @@ const CreateMeters = () => {
     }
   };
 
-  const viewHistory = async() => {
+  const viewHistory = async(id) => {
     try {
-      navigate("/meter-history");
+      navigate(`/${id}/meter-history`);
     } catch (error) {
       console.log(error)
     }
@@ -120,13 +74,11 @@ const CreateMeters = () => {
       meterNumber: "",
       zone: "",
     },
-    onSubmit: handleSubmit,
     validationSchema: validation,
   });
 
   useEffect(() => {
     getMeters();
-    getZones();
   }, []);
   return (
     <div>
@@ -154,7 +106,6 @@ const CreateMeters = () => {
             <IoFilterSharp className="filter-icon" />
             <span>Filter</span>
           </div>
-          
         </div>
       </div>
       <table>
@@ -164,27 +115,24 @@ const CreateMeters = () => {
           <th>Meter Status</th>
           <th>Installation Date</th>
           <th>Repair Date</th>
-          <th>Edit</th>
-          <th>Delete</th>
           <th>History</th>
         </tr>
         {meters.length > 0 ? (
           meters.map((meter, key) => (
             <tr key={key}>
               <td>{meter.meterNumber}</td>
-              <td>{meter.zone}</td>
-              <td>Active</td>
-              <td>12th June, 2007</td>
-              <td>20th December, 2024</td>
-              <td>{<MdEdit />}</td>
-              <td>
+              <td>{meter.zones.zoneName}</td>
+              <td>{meter.customer.custStatus}</td>
+              <td>{meter.createdAt}</td>
+              <td>{meter.createdAt}</td>
+              {/* <td>
                 {
                   <MdDeleteForever
                     onClick={() => deleteMeter(meter.meter_id)}
                   />
                 }
-              </td>
-              <td>{<AiOutlineHistory onClick={viewHistory} />}</td>
+              </td> */}
+              <td>{<AiOutlineHistory onClick={() => viewHistory(meter.meter_id)} />}</td>
             </tr>
           ))
         ) : (

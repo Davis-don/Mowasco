@@ -1,68 +1,119 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import { FaRegUser, FaUser } from "react-icons/fa";
+import { FaTachometerAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import "./createmeters.css";
+import { MdDateRange } from "react-icons/md";
+import axios, { Axios } from "axios";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import { VITE_API_URL_BASE } from "../../../Utils/config";
 const AboutMeter = () => {
-    const navigate = useNavigate();
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [fName, setFName] = useState("");
-    const [lName, setLName] = useState("");
-    const [IDNumber, setIDNumber] = useState();
-    const [phoneNumber, setPhoneNumber] = useState();
-    const [connectionType, setConnectionType] = useState("");
-    const validation = Yup.object({
-      meterNumber: Yup.number().required("Please provide a meter number"),
-      zone: Yup.number().required("Please provide a zone"),
-      fName: Yup.string().required("Please provide customer first name."),
-      lName: Yup.string().required("Please provide customers last name"),
-      IDNumber: Yup.number().required(
-        "Please provide national indentification number."
-      ),
-      phoneNumber: Yup.number().required("Provide customers phone number."),
-      connectionType: Yup.string().required("Provide the connection type."),
-    });
-    const handleSubmit = async () => {
-    try {
+  const {meter_id} = useParams()
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [meterHistory, setMeterHistory] = useState()
+
+    useEffect(() => {
+      const meterData = async () => {
+        try {
+          const meterDetails = await axios
+            .get(
+              `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`
+            )
+            .catch((errors) => console.log(errors));
+          if (meterDetails.status == 200) {
+            console.log("meter details", meterDetails);
+            setMeterHistory(meterDetails.data.data);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      if (meter_id) meterData();
+    }, [meter_id]);
+  
+    const getMeterReadings = async () => {
+      try {
+        const getReadings = await axios.get(`${process.env.REACT_APP_VITE_API_URL_BASE}/`)
         
-    } catch (error) {
+      } catch (error) {
         console.log(error)
+      }
     }
-    }
-   const formik = useFormik({
-     initialValues: {
-       fName: "",
-       lastName: "",
-       IDNumber: "",
-       phoneNumber: "",
-       connectionType: "",
-     },
-     onSubmit: handleSubmit,
-     validationSchema: validation,
-   });
-    return (
-      <div>
-        <div className="cust-top">
-          <h4>
-            Meters <MdNavigateNext /> Meter History
-          </h4>
+
+
+
+
+  return (
+    <div>
+      <div className="cust-top">
+        <span>
+          <Link className="link" to={"/manage-meters"}>
+            {" "}
+            Meters
+          </Link>
+          <MdNavigateNext /> <span>Meter History</span>
+        </span>
+      </div>
+      <h4 style={{ textAlign: "center", marginTop: "1rem" }}>Meter History</h4>
+
+      {meterHistory ? (
+        <div className="abt-meters">
+          <div className="abt-1">
+            <FaUser className="icons" />
+            <span>
+              {meterHistory.customer.custFirstName}
+              {meterHistory.customer.custLastName}
+            </span>
+          </div>
+          <div className="abt-1">
+            <FaTachometerAlt className="icons" />
+            <span>{meterHistory.meterNumber}</span>
+          </div>
+          <div className="abt-1">
+            <FaLocationDot className="icons" />
+            <span>{meterHistory.zones.zoneName}</span>
+          </div>
+          <div className="abt-1">
+            <MdDateRange className="icons" />
+            <span>{meterHistory.createdAt}</span>
+          </div>
         </div>
-        <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
-          Meter History
-        </h2>
-        <form action="" onSubmit={handleSubmit}>
+      ) : (
+        <p>Loading data ...</p>
+      )}
+
+      <div className="mtrs-form">
+        <h5>Meter water reading history</h5>
+        <table>
+          <thead>
+            <tr>
+              <th>Reading date</th>
+              <th>Current Reading</th>
+              <th>Previous Reading</th>
+              <th>Consumption</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr></tr>
+          </tbody>
+        </table>
+
+        {/* <form action=""  onSubmit={handleSubmit}>
           <div className="inputs">
             <input
               className="form-control"
               type="text"
               name="fName"
-              value={fName}
+              value={formik.values.fName}
               placeholder="First name"
-              onChange={(e) => setFName(e.target.value)}
               required
             />
           </div>
@@ -71,9 +122,8 @@ const AboutMeter = () => {
               type="text"
               name="lName"
               className="form-control m-2"
-              value={lName}
+              value={formik.values.lastName}
               placeholder="Last name"
-              onChange={(e) => setLName(e.target.value)}
               required
             />
           </div>
@@ -83,9 +133,8 @@ const AboutMeter = () => {
               type="number"
               name="IDNumber"
               className="form-control m-2"
-              value={IDNumber}
+              value={formik.values.IDNumber}
               placeholder="ID number"
-              onChange={(e) => setIDNumber(e.target.value)}
               required
             />
           </div>
@@ -95,8 +144,7 @@ const AboutMeter = () => {
               name="phoneNumber"
               placeholder="Phone number"
               className="form-control m-2"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={formik.values.phoneNumber}
               required
             />
           </div>
@@ -106,8 +154,7 @@ const AboutMeter = () => {
               name="connectionType"
               placeholder="Connection type"
               className="form-control m-2"
-              value={connectionType}
-              onChange={(e) => setConnectionType(e.target.value)}
+              value={formik.values.connectionType}
               required
             />
           </div>
@@ -117,11 +164,10 @@ const AboutMeter = () => {
             </button>
           </div>
           <ToastContainer />
-        </form>
+        </form> */}
       </div>
-    );
-}
-
-
+    </div>
+  );
+};
 
 export default AboutMeter;

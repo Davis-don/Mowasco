@@ -12,11 +12,7 @@ export const getAllReceipts = async(req, res) => {
             customer: true,
             meters: true,
             billing:true,
-            customer:{
-                include: {
-                    zone:true
-                }
-            }
+            
         }
      })
 
@@ -40,11 +36,16 @@ export const getSingleReceipt = async(req, res) => {
             customer:true,
             customer:{
                 include:{
-                    zone:true
+                    meters:true,
+                    meters:{
+                        include:{
+                            zones:true
+                        }
+                    }
                 }
             },
-            meters:true, 
-            billing:true
+            billing:true,
+            // zone:true
         }
     })
 

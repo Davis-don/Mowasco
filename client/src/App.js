@@ -20,6 +20,7 @@ import UpdateCustomer from './Admin/Pages/New_customer/UpdateCustomer';
 import AboutMeter from './Admin/Pages/Meters/AboutMeter';
 import ViewBill from './Admin/Pages/Billing_Payments/ViewBill';
 import MeterReadingHistory from './Admin/Pages/Water_Readings/MeterReadingHistory';
+import RegisterMeters from './Admin/Pages/Meters/RegisterMeters';
 function App() {
 
   return (
@@ -34,7 +35,7 @@ function App() {
             <Route path='/customer/current-reading/:id' element={<Water_reading/>}/>
             <Route path='/customer/meter/receipt/:id' element={<Receiptgen/>}/>
             <Route path="/Account/login" element={<Dashboard />} />
-            <Route path='/:cust_id/create-meter' element={<CreateMeters/>} />
+            {/* <Route path='/:cust_id/create-meter' element={<CreateMeters/>} /> */}
             </Route>
       </Routes>
       <div className='dis'>
@@ -49,11 +50,12 @@ function App() {
             <Route path='/manage-meters' element={<CreateMeters/>}/>
             <Route path='/manage-water-readings' element={<WaterReading/>}/>
             <Route path='/add-new-customer' element={<AddNewCustomers/>}/>
-            <Route path='/customer-details' element={<ViewCustomer/>}/>
+            <Route path='/customer-details/:cust_id' element={<ViewCustomer/>}/>
             <Route path='/update-customer/:cust_id' element={<UpdateCustomer/>}/>
-            <Route path='/meter-history' element={<AboutMeter/>}/>
+            <Route path='/:meter_id/meter-history' element={<AboutMeter/>}/>
             <Route path='/customer-bill' element={<ViewBill/>}/>
             <Route path='/meter-readings-history' element={<MeterReadingHistory/>}/>
+            <Route path='/customer/:cust_id/assign-meter' element={<RegisterMeters/>}/>
         </Routes>
 
         </div>

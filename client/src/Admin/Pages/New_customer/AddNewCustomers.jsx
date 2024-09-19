@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdNavigateNext } from "react-icons/md";
 const AddNewCustomers = () => {
     const navigate = useNavigate()
@@ -53,7 +53,7 @@ const AddNewCustomers = () => {
           toast("Sucessfull.", { position: "top-center" });
           const userData = postUser.data.data;
           const userID = userData.cust_id;
-          navigate(`/${userID}/create-meter`);
+          navigate(`/customer/${userID}/assign-meter`);
         } else {
           toast.warn("something went wrong. Try again later.", {
             position: "bottom-center",
@@ -80,9 +80,16 @@ const AddNewCustomers = () => {
     return (
       <div>
         <div className="cust-top">
-          <h4>Customers <MdNavigateNext/> New Customer </h4>
+          <span>
+            <Link className="link" to={"/manage-customers"}>
+              Customers
+            </Link>
+            <MdNavigateNext /> New Customer{" "}
+          </span>
         </div>
-        <h2 style={{ textAlign: "center", marginTop:'1rem' }}>Create a new Customer</h2>
+        <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
+          Register a new Customer
+        </h4>
 
         <form action="" onSubmit={handleSubmit}>
           <div className="inputs">
