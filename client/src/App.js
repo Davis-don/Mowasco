@@ -53,7 +53,7 @@ function App() {
             <Route path='/customer-details/:cust_id' element={<ViewCustomer/>}/>
             <Route path='/update-customer/:cust_id' element={<UpdateCustomer/>}/>
             <Route path='/:meter_id/meter-history' element={<AboutMeter/>}/>
-            <Route path='/customer-bill' element={<ViewBill/>}/>
+            <Route path='/customer-bill/:bill_id' element={<ViewBill/>}/>
             <Route path='/meter-readings-history' element={<MeterReadingHistory/>}/>
             <Route path='/customer/:cust_id/assign-meter' element={<RegisterMeters/>}/>
         </Routes>

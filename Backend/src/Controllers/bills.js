@@ -31,17 +31,23 @@ export const getAllBills = async(req, res)=>{
    }
 }
 
-export const getSingleBill = async(req, res)=>{
+export const getCustomersBills = async(req, res)=>{
     try{
-        const {bill_id} = req.params;
+        const {cust_id} = req.params;
 
-        const checkBill = await prisma.billing.findUnique({
-            where: {bill_id: bill_id},
+        const checkBill = await prisma.billing.findMany({
+            where: {cust_id},
+            // orderBy: {billingDate:'asc'},
             include:{
                 customer:true,
                 customer:{
                     include:{
                         meters:true,
+                        meters:{
+                            include:{
+                                zones:true
+                            }
+                        }
                     }
                 }
             }
@@ -56,6 +62,38 @@ export const getSingleBill = async(req, res)=>{
         res.status(500).json({success: false, message: error.message})
     }
 }
+
+export const getSingleBill = async(req, res)=>{
+    try{
+        const {bill_id} = req.params;
+
+        const checkBill = await prisma.billing.findUnique({
+            where: {bill_id: bill_id},
+            include:{
+                customer:true,
+                customer:{
+                    include:{
+                        meters:true,
+                        meters:{
+                            include:{
+                                zones:true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+         if (checkBill){
+            res.status(200).json({success: true, message: 'Bill found successfully.', data: checkBill})
+        } else{
+            res.status(500).json({success: false, message: 'Something went wrong.'})
+        } 
+
+    }catch(error){
+        res.status(500).json({success: false, message: error.message})
+    }
+}
+
 
 export const createBill = async(req, res)=>{
     

@@ -15,9 +15,9 @@ const Billing_payment = () => {
   const navigate = useNavigate();
   const [customerBills, setCustomerBills] = useState([]);
 
-  const viewCustomerBill = async () => {
+  const viewCustomerBill = async (id) => {
     try {
-      navigate("/customer-bill");
+      navigate(`/customer-bill/${id}`);
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +132,7 @@ const Billing_payment = () => {
               <td>{cstBill.otherCharges}</td>
               <td>{cstBill.amountDue}</td>
 
-              <td>{<FaEye onClick={viewCustomerBill} />}</td>
+              <td>{<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}</td>
             </tr>
           ))
         ) : (
