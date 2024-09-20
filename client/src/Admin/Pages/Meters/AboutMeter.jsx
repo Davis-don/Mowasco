@@ -11,44 +11,48 @@ import axios, { Axios } from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
-import { VITE_API_URL_BASE } from "../../../Utils/config";
 const AboutMeter = () => {
-  const {meter_id} = useParams()
+  const { meter_id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [meterHistory, setMeterHistory] = useState()
+  const [meterHistory, setMeterHistory] = useState();
+  const [meterReadingHistory, setMeterReadingHistory] = useState([]);
 
-    useEffect(() => {
-      const meterData = async () => {
-        try {
-          const meterDetails = await axios
-            .get(
-              `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`
-            )
-            .catch((errors) => console.log(errors));
-          if (meterDetails.status == 200) {
-            console.log("meter details", meterDetails);
-            setMeterHistory(meterDetails.data.data);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      if (meter_id) meterData();
-    }, [meter_id]);
-  
-    const getMeterReadings = async () => {
+  useEffect(() => {
+    const meterData = async () => {
       try {
-        const getReadings = await axios.get(`${process.env.REACT_APP_VITE_API_URL_BASE}/`)
-        
+        const meterDetails = await axios
+          .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`)
+          .catch((errors) => console.log(errors));
+        if (meterDetails.status == 200) {
+          setMeterHistory(meterDetails.data.data);
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
+    };
+    if (meter_id) meterData();
+    getMeterReadings();
+  }, [meter_id]);
+
+  const getMeterReadings = async () => {
+    try {
+      const getReadings = await axios
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`
+        )
+        .catch((error) => console.log(error));
+      if (getReadings.status == 200) {
+        setMeterReadingHistory(getReadings.data.data);
+        console.log(getReadings.data.data);
+      } else {
+        toast.warn("Something went wrong.");
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-
-
+  };
 
   return (
     <div>
@@ -94,6 +98,7 @@ const AboutMeter = () => {
         <table>
           <thead>
             <tr>
+              <th>Meter No.</th>
               <th>Reading date</th>
               <th>Current Reading</th>
               <th>Previous Reading</th>
@@ -102,69 +107,22 @@ const AboutMeter = () => {
             </tr>
           </thead>
           <tbody>
-            <tr></tr>
+            {meterReadingHistory && meterReadingHistory.length > 0 ? (
+              meterReadingHistory.map((history, key) => (
+                <tr key={key}>
+                  <td>{history.meter.meterNumber}</td>
+                  <td>{history.createdAt}</td>
+                  <td>{history.currentReading}</td>
+                  <td>{history.prevReading}</td>
+                  <td>{history.consumption}</td>
+                  <td>{history.amount}</td>
+                </tr>
+              ))
+            ) : (
+              <p className="error">No water readings recorded.</p>
+            )}
           </tbody>
         </table>
-
-        {/* <form action=""  onSubmit={handleSubmit}>
-          <div className="inputs">
-            <input
-              className="form-control"
-              type="text"
-              name="fName"
-              value={formik.values.fName}
-              placeholder="First name"
-              required
-            />
-          </div>
-          <div className="inputs">
-            <input
-              type="text"
-              name="lName"
-              className="form-control m-2"
-              value={formik.values.lastName}
-              placeholder="Last name"
-              required
-            />
-          </div>
-
-          <div className="inputs">
-            <input
-              type="number"
-              name="IDNumber"
-              className="form-control m-2"
-              value={formik.values.IDNumber}
-              placeholder="ID number"
-              required
-            />
-          </div>
-          <div className="inputs">
-            <input
-              type="number"
-              name="phoneNumber"
-              placeholder="Phone number"
-              className="form-control m-2"
-              value={formik.values.phoneNumber}
-              required
-            />
-          </div>
-          <div className="inputs">
-            <input
-              type="text"
-              name="connectionType"
-              placeholder="Connection type"
-              className="form-control m-2"
-              value={formik.values.connectionType}
-              required
-            />
-          </div>
-          <div className="adduser-button">
-            <button className="btn btn-outline-primary">
-              {loading ? "Submitting...." : "Submit"}
-            </button>
-          </div>
-          <ToastContainer />
-        </form> */}
       </div>
     </div>
   );

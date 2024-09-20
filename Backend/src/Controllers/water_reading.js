@@ -33,7 +33,15 @@ export const getAllReadingsForOneMeter = async(req,res) => {
      
         const findReading = await prisma.water_Reading.findMany({
             where:{meter_id},
-            orderBy:{createdAt:'desc'}
+            orderBy:{createdAt:'desc'},
+            include:{
+                meter:true,
+                meter:{
+                    include:{
+                        billing:true
+                    }
+                }
+            }
         })
 
         if(findReading != null) {

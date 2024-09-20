@@ -38,3 +38,10 @@ table tr td{
 .mtrs-form{
     margin-top: 1rem;
 }
+
+.error{
+    color: red;
+    padding: 1rem 0;
+    line-height: 2;
+
+}

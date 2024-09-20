@@ -12,7 +12,12 @@ export const getAllBills = async(req, res)=>{
            amountDue: true,
            consumption:true,
            customer:true,
-           meters:true
+           meters:true,
+           arrears:true,
+           waterBill:true,
+           otherCharges:true,
+           reconnection:true
+
         }
     })
     if (getBills){

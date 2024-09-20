@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Receiptgen.css";
-import { useFormik } from "formik";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 function Receiptgen() {
+  const navigate = useNavigate()
   const { id } = useParams();
   const [receiptData, setReceiptData] = useState();
   const [waterReadings, setWaterReadings] = useState();
@@ -37,8 +37,10 @@ function Receiptgen() {
         .catch((error) => console.log(error));
       console.log("receipt data", getReceiptData.data.data);
       if (getReceiptData.status == 200) {
+
         const receiptData = getReceiptData.data.data;
-        const meterID = receiptData.customer.meters.meter_id;
+        console.log('receipt data', receiptData)
+        const meterID = receiptData.billing.meters.meter_id;
         setReceiptData(receiptData);
         getWaterReadings(meterID);
       } else {
@@ -49,12 +51,22 @@ function Receiptgen() {
     }
   };
 
+  const navigateBack = () => {
+navigate('Account/login');
+  }
+
   useEffect(() => {
    getReceipt()
   },[])
   return (
     <div className="overall-receipt-gen-container">
       <div className="gen-water-receipt-form-div">
+        <button onClick={navigateBack}>
+          
+            Home
+          
+        </button>
+
         <div className="receipt-invoice">
           <h2>Invoice</h2>
           <div className="name-logo">
@@ -87,33 +99,32 @@ function Receiptgen() {
                   <tr>
                     <th>Member Name:</th>
                     <td>
-                      {receiptData.customer.custFirstName}{" "}
-                      {receiptData.customer.custLastName}
+                      {receiptData.billing.customer.custFirstName}{" "}
+                      {receiptData.billing.customer.custLastName}
                     </td>
                   </tr>
 
                   <tr className="rows" colSpan={2}>
                     <th>Member Number:</th>
-                    <td>{receiptData.customer.cust_id}</td>
+                    <td>{receiptData.billing.customer.cust_id}</td>
 
                     <th>Zone:</th>
-                    <td>{receiptData.customer.meters.zones.zoneName}</td>
+                    <td>{receiptData.billing.meters.zones.zoneName}</td>
                   </tr>
 
                   <tr rowspan={2}>
                     <th>Meter Number:</th>
-                    <td>{receiptData.customer.meters.meterNumber}</td>
+                    <td>{receiptData.billing.meters.meterNumber}</td>
                     <th>Tel:</th>
-                    <td>{receiptData.customer.custPhoneNumber}</td>
+                    <td>{receiptData.billing.customer.custPhoneNumber}</td>
                   </tr>
                   <tr>
                     <th>Date of issue</th>
-                    <td>{receiptData.customer.createdAt}</td>
+                    <td>{receiptData.createdAt}</td>
                   </tr>
                 </thead>
               </table>
 
-               
               <table border={"1px"}>
                 <thead>
                   <tr>

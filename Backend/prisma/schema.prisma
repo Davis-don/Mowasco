@@ -72,6 +72,11 @@ model Billing {
   consumption   Decimal  @map("consumption") @db.Decimal(10, 2)
   amountDue     Decimal  @map("amount_due") @db.Decimal(10, 2) @default(0)
   billingDate   DateTime @default(now())
+  arrears Int @default(0) @map("arrears")
+  waterBill Int @default(0) @map("water_bill")
+  reconnection Int @default(0) @map("reconnection")
+  otherCharges Int @default(0) @map("other_charges")
+
 
   customer Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
   cust_id  String    

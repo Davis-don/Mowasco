@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "bills_tb" ADD COLUMN     "arrears" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "other_charges" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "reconnection" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "water_bill" INTEGER NOT NULL DEFAULT 0;

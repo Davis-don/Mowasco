@@ -31,6 +31,7 @@ const Water_reading = () => {
   }, []);
   const handleSubmit = async (values) => {
     try {
+      console.log('values',values)
       const meterID = customer.meters.meter_id;
       const postRecordings = await axios
         .post(`http://localhost:4000/customer/reading/create`, {

@@ -10,16 +10,17 @@ import "react-toastify/dist/ReactToastify.css";
 function Genwaterbill() {
   const navigate = useNavigate()
   const {id} = useParams()
+  console.log('id', id)
   const [waterReadings, setWaterReadings] = useState()
   const [meter, setMeter] = useState()
   const [bill, setBill] = useState()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const getData = await axios.get(`http://localhost:4000/meters/${id}`).catch(error => console.log(error))    
         if (getData.status == 200){
-          toast.success('Meter found successfully.')
           setMeter(getData.data.data)
     
         }else{
@@ -41,7 +42,7 @@ function Genwaterbill() {
       const getReadings = await axios.get(`http://localhost:4000/customer/reading/${id}`).catch(error => console.log('water reading',error))
 
       if(getReadings.status == 200){
-        
+        console.log('readings', getReadings)
         setWaterReadings(getReadings.data.data)
       } else{
         toast.success('Something went wrong.')
@@ -58,7 +59,7 @@ function Genwaterbill() {
           meterNumber:meter.meterNumber,
           zone:meter.zones.zoneName,
           fName:meter.customer.custFirstName,
-          lName:meter.customer.custFirstName,
+          lName:meter.customer.custLastName,
           IDNumber:meter.customer.custID,
           phoneNumber:meter.customer.custPhoneNumber,
           prevWaterReading:waterReadings.prevReading,
@@ -67,6 +68,7 @@ function Genwaterbill() {
         });
       }
     };
+    // meter ? loadDetails():setLoading(true) 
     loadDetails();
     fetchMeterReadings()
   }, [meter]);
@@ -95,13 +97,16 @@ function Genwaterbill() {
  const getBillDetails = async (id) => {
 try {
       const billDetails = await axios.get(`http://localhost:4000/customer/bill/${id}`).catch(error => console.log(error))
+      console.log('bill details', billDetails)
+     
       if(billDetails.status == 200){
         
         const billData = billDetails.data.data
         const billID = billData.bill_id
-        const custID = billData.cust_id
-        const meterID = billData.meter_id;
+        const custID = billData.customer.cust_id
+        const meterID = billData.customer.meters.meter_id;
         const amountPaid = billData.amountDue
+        console.log('bill meter id', meterID)
         createReceipt(billID, custID, meterID, amountPaid)
       } else{
         toast.warn('Something went wrong.')
@@ -119,10 +124,9 @@ try {
         meter_id: meter.meter_id,
         consumption:values.consumption,
       }).catch(error => console.log(error))
-
+ 
       if (createBill.status == 200) {
         const bill = (createBill.data.data)
-         console.log('bill id', bill.bill_id)
         getBillDetails(bill.bill_id)
        
 

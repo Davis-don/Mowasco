@@ -7,11 +7,16 @@ import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { MdDateRange } from "react-icons/md";
+import { FaRegUser, FaUser } from "react-icons/fa";
+import { FaTachometerAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import * as Yup from "yup";
 
 
 const ViewBill = () => {
     const [error, setError] = useState(false);
+    const [customerBillHistory, setCustomerBillHistory] = useState([])
     const [loading, setLoading] = useState(false);
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
@@ -54,75 +59,35 @@ const ViewBill = () => {
           <h4>
             Bills <MdNavigateNext /> Customer Bills{" "}
           </h4>
-          
         </div>
         <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
           Customers Bills
         </h2>
-        <form action="" onSubmit={handleSubmit}>
-          <div className="inputs">
-            <input
-              className="form-control"
-              type="text"
-              name="fName"
-              value={fName}
-              placeholder="First name"
-              onChange={(e) => setFName(e.target.value)}
-              required
-            />
+        {customerBillHistory && customerBillHistory.length > 0 ? (
+          <div className="abt-meters">
+            <div className="abt-1">
+              <FaUser className="icons" />
+              <span>
+                {customerBillHistory.customer.custFirstName}
+                {customerBillHistory.customer.custLastName}
+              </span>
+            </div>
+            <div className="abt-1">
+              <FaTachometerAlt className="icons" />
+              <span>{customerBillHistory.meterNumber}</span>
+            </div>
+            <div className="abt-1">
+              <FaLocationDot className="icons" />
+              <span>{customerBillHistory.zones.zoneName}</span>
+            </div>
+            <div className="abt-1">
+              <MdDateRange className="icons" />
+              <span>{customerBillHistory.createdAt}</span>
+            </div>
           </div>
-          <div className="inputs">
-            <input
-              type="text"
-              name="lName"
-              className="form-control m-2"
-              value={lName}
-              placeholder="Last name"
-              onChange={(e) => setLName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="inputs">
-            <input
-              type="number"
-              name="IDNumber"
-              className="form-control m-2"
-              value={IDNumber}
-              placeholder="ID number"
-              onChange={(e) => setIDNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div className="inputs">
-            <input
-              type="number"
-              name="phoneNumber"
-              placeholder="Phone number"
-              className="form-control m-2"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div className="inputs">
-            <input
-              type="text"
-              name="connectionType"
-              placeholder="Connection type"
-              className="form-control m-2"
-              value={connectionType}
-              onChange={(e) => setConnectionType(e.target.value)}
-              required
-            />
-          </div>
-          <div className="adduser-button">
-            <button className="btn btn-outline-primary">
-              {loading ? "Generating Invoice...." : "Generate Invoice"}
-            </button>
-          </div>
-          <ToastContainer />
-        </form>
+        ) : (
+          <p>Loading data ...</p>
+        )}
       </div>
     );
 }
