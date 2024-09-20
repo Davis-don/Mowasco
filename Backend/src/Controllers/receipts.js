@@ -30,6 +30,40 @@ export const getAllReceipts = async(req, res) => {
    }
 }
 
+export const getSingleTransactionReceipt= async(req, res) => {
+   try {
+    const {bill_id} = req.params;
+
+    const getReceipt = await prisma.receipts.findUnique({
+     where: {bill_id},
+       include:{
+        billing:true,
+        billing:{
+            include:{
+                customer:true,
+                meters:true,
+                meters:{
+                    include:{
+                        zones:true
+                    }
+                }
+            }
+        }
+       }
+    })
+
+    console.log(getReceipt)
+     if (getReceipt != null){
+        res.status(200).json({success:true, message: 'Receipt found successfully.', data: getReceipt})
+     } else{
+        res.status(500).json({success:false, message: 'Something went wrong. Server error'})
+     }
+   } catch (error) {
+    res.status(500).json({success:false, message:error.message})
+   }
+}
+
+
 export const getSingleReceipt = async(req, res) => {
    try {
     const {receipt_id} = req.params;

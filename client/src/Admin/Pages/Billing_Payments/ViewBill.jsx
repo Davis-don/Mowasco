@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./billing_payment.css";
 import { MdNavigateNext } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -9,9 +9,9 @@ import { MdDateRange } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { FaTachometerAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-
 const ViewBill = () => {
   const {bill_id} = useParams()
+  const navigate = useNavigate()
     const [error, setError] = useState(false);
     const [customerBillHistory, setCustomerBillHistory] = useState()
     const [billingHistory, setBillingHistory] = useState([])
@@ -26,8 +26,7 @@ const ViewBill = () => {
       if(getBills.status == 200) {
         const custData = getBills.data.data
         const custID = custData.customer.cust_id;
-
-        setCustomerBillHistory()
+        setCustomerBillHistory(custData)
         getAllCustomerBills(custID)
       } else{
         toast.warn('Something went wrong.')
@@ -46,6 +45,14 @@ const ViewBill = () => {
         console.log('all bills', getAllBills.data.data)
         setBillingHistory(getAllBills.data.data)
       }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const generateInvoice = (id) => {
+    try {
+      navigate(`/customer/meter/receipt/${id}`);
     } catch (error) {
       console.log(error)
     }
@@ -119,7 +126,13 @@ getCustomerDetails()
                   <td>{blHistory.reconnection}</td>
                   <td>{blHistory.otherCharges}</td>
                   <td>{blHistory.amountDue}</td>
-                  <td>Invoice</td>
+                  <td
+                    onClick={() =>
+                      generateInvoice(blHistory.receipts.receipt_id)
+                    }
+                  >
+                    <span className="invoice">Invoice</span>
+                  </td>
                 </tr>
               ))
             ) : (

@@ -16,7 +16,8 @@ export const getAllBills = async(req, res)=>{
            arrears:true,
            waterBill:true,
            otherCharges:true,
-           reconnection:true
+           reconnection:true,
+           receipts:true
 
         }
     })
@@ -37,7 +38,7 @@ export const getCustomersBills = async(req, res)=>{
 
         const checkBill = await prisma.billing.findMany({
             where: {cust_id},
-            // orderBy: {billingDate:'asc'},
+            orderBy: {billingDate:'desc'},
             include:{
                 customer:true,
                 customer:{
@@ -49,7 +50,8 @@ export const getCustomersBills = async(req, res)=>{
                             }
                         }
                     }
-                }
+                },
+                receipts:true
             }
         })
          if (checkBill){

@@ -8,6 +8,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 function Receiptgen() {
   const navigate = useNavigate()
   const { id } = useParams();
+  console.log('receipt id', id)
   const [receiptData, setReceiptData] = useState();
   const [waterReadings, setWaterReadings] = useState();
 
@@ -37,7 +38,6 @@ function Receiptgen() {
         .catch((error) => console.log(error));
       console.log("receipt data", getReceiptData.data.data);
       if (getReceiptData.status == 200) {
-
         const receiptData = getReceiptData.data.data;
         console.log('receipt data', receiptData)
         const meterID = receiptData.billing.meters.meter_id;

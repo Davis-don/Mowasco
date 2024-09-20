@@ -23,3 +23,12 @@
 .customer-bills .select{
     float: right;
 }
+
+table tbody tr td .invoice{
+    color: red;
+    padding: 0.15em .4rem;
+    border: 2px solid red;
+    border-radius: .5rem;
+    font-size: .85rem;
+    cursor: pointer;
+}
