@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, Outlet } from "react-router-dom";
+import "../../Components/Admin.css";
+import Chart from "react-apexcharts";
+import { VscAccount } from "react-icons/vsc";
+import { FaMoneyBills } from "react-icons/fa6";
+import { BsSpeedometer } from "react-icons/bs";
+
 function AdminDashboard() {
   const [zones, setZones] = useState();
   const [customer, setCustomer] = useState();
   const [meters, setMeters] = useState();
+  const [chartsData, setChartsData] = useState([]);
 
   // 1. Get the number of zones
   const getZones = async () => {
@@ -16,8 +23,39 @@ function AdminDashboard() {
         .catch((error) => console.log(error));
 
       if (zones.status == 200) {
-        toast.success("Meters found successfully.");
         setZones(zones.data.data);
+        setChartsData({
+          // options: {
+          //   chart: {
+          //     id: "basic-bar",
+          //   },
+          //   xaxis: {
+          //     categories: chartsData.map(item => item?.zoneName)
+          //   },
+          // },
+          // series: [
+          //   {
+          //     name: "series-1",
+          //     data: [30, 40, 45, 50, 49, 60, 70, 91],
+          //   },
+          // ],
+
+          options: {
+            chart: {
+              id: "basic-bar",
+            },
+            xaxis: {
+              categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+              // categories: chartsData.map((item => item?.zoneName)),
+            },
+          },
+          series: [
+            {
+              name: "series-1",
+              data: [30, 40, 45, 50, 49, 60, 70, 91],
+            },
+          ],
+        });
       } else {
         toast.warn("Something went wrong.");
       }
@@ -26,6 +64,7 @@ function AdminDashboard() {
     }
   };
 
+  console.log("charts data", chartsData.data);
   // 2. get customers
 
   const getCustomer = async () => {
@@ -33,10 +72,7 @@ function AdminDashboard() {
       const customers = await axios
         .get(`http://localhost:4000/customers/all`)
         .catch((error) => console.log(error));
-
       if (customers.status == 200) {
-        toast.success("Customers found successfully.");
-
         setCustomer(customers.data.data);
       } else {
         toast.warn("Something went wrong.");
@@ -58,7 +94,6 @@ function AdminDashboard() {
 
       if (meters.status == 200) {
         setMeters(meters.data.data);
-        toast.success("Meters found successfully.");
       } else {
         toast.warn("Something went wrong.");
       }
@@ -89,134 +124,133 @@ function AdminDashboard() {
   return (
     <>
       <div className="adminSect">
-        <div className="admin-cards">
-          <div className="cards">
+        <div className="cards">
+          <div className="card-title">
+            <h4>Montly Consumption</h4>
+            <p>
+              Total amount: {12} M <sup>4</sup>
+            </p>
+            <span>1st Jan 2024 - 31st January, 2024</span>
+          </div>
+          <div className="card-title">
+            <h4>Total bills</h4>
+            <p>Mount collected: {12} Ksh</p>
+            <span>1st Jan 2024 - 31st January, 2024</span>
+          </div>
             <div className="card-title">
-              <h4>Total amount consumed for the month : {"January"}</h4>
-              <p>
-                Total amount: {12} M <sup>4</sup>
-              </p>
+              <h4>Customers</h4>
+              <p>Active customers: {12}</p>
+              <span>1st Jan 2024 - 31st January, 2024</span>
+            </div>
+            <div className="card-title">
+              <h4>Zones</h4>
+              <p>No of zones: {12}</p>
+              <span>1st Jan 2024 - 31st January, 2024</span>
+            </div>
+        </div>
+
+        <div className="charts">
+          {chartsData && chartsData?.series && (
+            <Chart
+              options={chartsData.options}
+              series={chartsData.series}
+              type="line"
+              className="chart"
+              width=""
+            />
+          )}
+
+          <div className="below">
+            <div className="below-left">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Meter no.</th>
+                    <th>Customer No.</th>
+                    <th>Customer Name</th>
+                    <th>
+                      Consumption{" "}
+                      <span>
+                        M <sup>3</sup>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1001</td>
+                    <td>293932</td>
+                    <td>Wilfred Muchire</td>
+                    <td>12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="below-right">
+              <h3>Other details</h3>
+              <div className="other-details">
+                <BsSpeedometer className="icon" />
+                <div className="infor">
+                  <h4>Pending meter readings.</h4>
+                  <span>
+                    {" "}
+                    <span>Meters:</span> 12
+                  </span>
+                  <span>
+                    <span>Zones:</span> 2
+                  </span>
+                </div>
+              </div>
+              <div className="other-details">
+                <FaMoneyBills className="icon" />
+                <div className="infor">
+                  <h4>Pending/Overdue bills</h4>
+                  <span>
+                    <span>Amount:</span> 12
+                  </span>
+                </div>
+              </div>
+              <div className="other-details">
+                <VscAccount className="icon" />
+                <div className="infor">
+                  <h4>Field Agents.</h4>
+                  <span>
+                    <span>Agents:</span> 12
+                  </span>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Zone</th>
+                        <th>Agent</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Zone 1</td>
+                        <td>Wilfred Kiama</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Total amount consumed for the month : {"January"}</h4>
-              <p>Total amount: {12}</p>
-            </div>
+
+          <div className="maps">
+            <h4>Geographical Zones View</h4>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d255346.11121110563!2d36.64821844264732!3d-0.24112909543004604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1828478867322aef%3A0xe6c9bc83d2b8522d!2sKieni%20West!5e0!3m2!1sen!2ske!4v1726915863622!5m2!1sen!2ske"
+              // width="600"
+              height="450"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4> Total number of consumers active consumers</h4>
-              {customer && customer.length > 0 ? (
-                <p>Active consumers: {customer.length}</p>
-              ) : (
-                <p>Loading customers...</p>
-              )}
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Zones</h4>
-              {zones && zones.length > 0 ? (
-                <p>Zones: {zones.length}</p>
-              ) : (
-                <p>Loading zones</p>
-              )}
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          {/* ADDDed here */}
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of Agents : {"January"}</h4>
-              <p>Agents: {12}</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of registered meters : {"January"}</h4>
-              {meters && meters.length > 0 ? (
-                <p>Meters: {meters.length}</p>
-              ) : (
-                <p>Loading meters ...</p>
-              )}
-            </div>
-          </div>
-          {/* /// added */}
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of registered meters : {"January"}</h4>
-              {meters && meters.length > 0 ? (
-                <p>Meters: {meters.length}</p>
-              ) : (
-                <p>Loading meters ...</p>
-              )}
-            </div>
-          </div>{" "}
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of registered meters : {"January"}</h4>
-              {meters && meters.length > 0 ? (
-                <p>Meters: {meters.length}</p>
-              ) : (
-                <p>Loading meters ...</p>
-              )}
-            </div>
-          </div>{" "}
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of registered meters : {"January"}</h4>
-              {meters && meters.length > 0 ? (
-                <p>Meters: {meters.length}</p>
-              ) : (
-                <p>Loading meters ...</p>
-              )}
-            </div>
-          </div>{" "}
-          <div className="cards">
-            <div className="card-title">
-              <h4>Number of registered meters : {"January"}</h4>
-              {meters && meters.length > 0 ? (
-                <p>Meters: {meters.length}</p>
-              ) : (
-                <p>Loading meters ...</p>
-              )}
-            </div>
+
+          <div className="bottom">
+            <h1>Mutitu Water Project</h1>
+            <span>Developed by WinkyWebers &copy; All rights reserved.</span>
           </div>
         </div>
         <ToastContainer />

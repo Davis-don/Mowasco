@@ -15,14 +15,6 @@
     --sky-blue:#87CEEB;
 }
 
-
-
-
-
-
-
-
-
  /* THE ADMIN PAGE */
 
  .dis{
@@ -128,7 +120,7 @@
     grid-area: content;
 overflow-y: auto;
     height: 100%;
-    padding: 1rem;
+    padding:.2rem .5rem;
     z-index: 1;
  }
 

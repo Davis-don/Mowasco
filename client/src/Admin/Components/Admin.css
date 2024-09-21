@@ -1,23 +1,142 @@
-.adminSect {
-    border: 2px solid red;
+
+.adminSect{
+    border: 2px solid blue;
+    min-width: 100%;
+    position: relative;
 }
-.admin-cards{
+
+
+.cards{
+    border: 1px solid green;
+    height: auto;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    border: 2px solid black;
-    margin: 1rem;
-    flex-wrap: wrap;
-    gap: 2rem;
+    min-width: 100%;
+    position: fixed;
+}
+.cards .card-title{
+    border-radius: 1rem;
+    background-color: #C2CBDC;
+    flex: 1 1;
+    padding: .5rem;
+    width: 20rem;
 }
 
-.admin-cards .cards{ 
-    /* min-width: ; */
+.card-title h4{
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.card-title p{
+    font-size: 1rem;
+}
+.card-title span{
+    font-size: .85rem;
+}
+
+.charts{
+    border: 2px solid red;
+    margin-top: 8rem;
+    width: 100%;
+}
+.charts .chart{
+    width: 100%;
+    max-width: 60%;
+    border: 2px solid black;
+}
+
+.below {
+    flex: 1 1;
+    border: 2px solid black;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-areas: 'below-left below-right';
+    grid-template-rows:  auto auto;
+
+}
+.below-left{
+    border: 1px solid blue;
+    grid-area: below-left;
+    padding: 0;
+    margin: 0;
+}
+.below-right{
+    border: 1px solid yellowgreen;
+    grid-area: below-right;
+    display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        gap: .8rem;
+    flex: 1 1;
+}
+
+.below-right h3{
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: .5rem 0;
+   
+}
+
+.below-right .other-details{
+    width: 20rem;
+    display: flex;
+    border: 1px solid black;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(#C2CBDC);
     padding: .5rem;
     border-radius: .5rem;
-    border: 2px solid blue;
-    flex:2 1 20rem; 
+}
+.other-details .infor{
+    display: flex;
+    flex-direction: column;
+    float: right;
+}
+.other-details .infor h4{
+    font-size: 1rem;
+    font-weight: 700;
 }
 
+.other-details .infor span{
+    font-size: .85rem;
+}
+.other-details .infor span span{
+    color: var(--navy-blue);
+}
 
+.other-details .icon{
+    font-size: 2.5rem;
+
+}
+.maps{
+    margin-top: 2rem;
+}
+.maps iframe{
+    width: 100%;
+    border-radius:  .4rem;
+    
+}
+
+.bottom{
+    flex: 1 1;
+    display: grid;
+    place-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.bottom h1{
+    text-align: center;
+    font-size: 1rem;
+
+}
+.bottom span{
+    font-size: .65rem;
+    color: var(--navy-blue);
+
+}
