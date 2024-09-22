@@ -10,8 +10,6 @@
     color:black;
 }
 
-
-
 table{
     margin-top: 1rem;
     width: 100%;
@@ -75,6 +73,7 @@ table tbody:nth-of-type(even){
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     gap: .5rem;
  }
  .filter span{
@@ -94,3 +93,35 @@ table tbody:nth-of-type(even){
     /* text-decoration: none; */
 
  }
+
+ @media screen and (max-width:500px) {
+    .search-filter{
+        display: flex;
+        flex-direction: column;
+        gap: .4rem;
+    }
+    
+    .search-filter-left{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+  
+ }
+
+  @media screen and (min-width:501px) and (max-width:800px){
+      .search-filter {
+          display: flex;
+          flex-direction: column;
+          gap: .4rem;
+      }
+
+      .search-filter-left {
+          display: flex;
+          width: 100%;
+          flex-direction: row;
+          justify-content: space-between;
+      }
+
+  }

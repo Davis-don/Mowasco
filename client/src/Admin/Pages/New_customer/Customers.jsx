@@ -50,8 +50,6 @@ const Customers = () => {
     }
   };
 
-  const data = customers; 
-  console.log(data)
 
   // if (loading) {
   //   return <p>Loading...</p>; // Show a loading message while waiting for the API
