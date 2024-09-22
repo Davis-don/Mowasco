@@ -123,8 +123,8 @@ function AdminDashboard() {
   }, []);
   return (
     <>
-      <div className="adminSect">
-        <div className="cards">
+      <div className="dashboard">
+        <div className="card-left card-1">
           <div className="card-title">
             <h4>Montly Consumption</h4>
             <p>
@@ -132,34 +132,40 @@ function AdminDashboard() {
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
+        </div>
+        <div className="card-center card-1">
           <div className="card-title">
-            <h4>Total bills</h4>
-            <p>Mount collected: {12} Ksh</p>
+            <h4>Montly Consumption</h4>
+            <p>
+              <span>Total amount:</span> {12} M <sup>4</sup>
+            </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
-            <div className="card-title">
-              <h4>Customers</h4>
-              <p>Active customers: {12}</p>
-              <span>1st Jan 2024 - 31st January, 2024</span>
-            </div>
-            <div className="card-title">
-              <h4>Zones</h4>
-              <p>No of zones: {12}</p>
-              <span>1st Jan 2024 - 31st January, 2024</span>
-            </div>
         </div>
-
-        <div className="charts">
-          {chartsData && chartsData?.series && (
-            <Chart
-              options={chartsData.options}
-              series={chartsData.series}
-              type="line"
-              className="chart"
-              width=""
-            />
-          )}
-
+        <div className="card-right card-1">
+          <div className="card-title">
+            <h4>Montly Consumption</h4>
+            <p>
+              Total amount: {12} M <sup>4</sup>
+            </p>
+            <span>1st Jan 2024 - 31st January, 2024</span>
+          </div>
+        </div>
+        <div className="graphs">
+          <div className="charts">
+            {chartsData && chartsData?.series && (
+              <Chart
+                options={chartsData.options}
+                series={chartsData.series}
+                type="line"
+                className="chart"
+                width=""
+              />
+            )}
+          </div>
+          <div className="pie"></div>
+        </div>
+        <div className="moreDetails">
           <div className="below">
             <div className="below-left">
               <table>
@@ -235,7 +241,8 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-
+        </div>
+        <div className="map">
           <div className="maps">
             <h4>Geographical Zones View</h4>
             <iframe
@@ -247,6 +254,40 @@ function AdminDashboard() {
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
+        </div>
+      </div>
+      {/* <div className="adminSect">
+        <div className="cards">
+          <div className="card-title">
+            <h4>Montly Consumption</h4>
+            <p>
+              Total amount: {12} M <sup>4</sup>
+            </p>
+            <span>1st Jan 2024 - 31st January, 2024</span>
+          </div>
+          <div className="card-title">
+            <h4>Total bills</h4>
+            <p>Mount collected: {12} Ksh</p>
+            <span>1st Jan 2024 - 31st January, 2024</span>
+          </div>
+            <div className="card-title">
+              <h4>Customers</h4>
+              <p>Active customers: {12}</p>
+              <span>1st Jan 2024 - 31st January, 2024</span>
+            </div>
+            <div className="card-title">
+              <h4>Zones</h4>
+              <p>No of zones: {12}</p>
+              <span>1st Jan 2024 - 31st January, 2024</span>
+            </div>
+        </div>
+
+        <div className="charts">
+          
+
+          
+
+         
 
           <div className="bottom">
             <h1>Mutitu Water Project</h1>
@@ -254,7 +295,7 @@ function AdminDashboard() {
           </div>
         </div>
         <ToastContainer />
-      </div>
+      </div>  */}
     </>
   );
 }

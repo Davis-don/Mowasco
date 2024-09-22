@@ -34,16 +34,6 @@
     font-size: .85rem;
 }
 
-.charts{
-    border: 2px solid red;
-    margin-top: 8rem;
-    width: 100%;
-}
-.charts .chart{
-    width: 100%;
-    max-width: 60%;
-    border: 2px solid black;
-}
 
 .below {
     flex: 1 1;
@@ -139,4 +129,111 @@
     font-size: .65rem;
     color: var(--navy-blue);
 
+}
+
+
+
+
+/* THE DASHBOARD */ 
+.dashboard{
+    position: relative;
+    border: 2px solid black;
+    display: grid;
+    max-width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 'card-left card-center card-right'
+                            'graphs graphs graphs'
+                            'moreDetails moreDetails moreDetails'
+                            'map map map';
+    justify-content:  center;
+    align-items: center;
+}
+.card-left{
+    width: 100%;
+    grid-area: card-left;
+    display: flex;
+    flex: 1 1;
+    display: flex;
+    padding: .5rem 0;
+        align-items: center;
+    justify-content: center;
+}
+.card-1 .card-title{
+    padding: .8rem;
+    border-radius: .5rem;
+    font-weight: 600px;
+    background-color: #C2CBDC;
+}
+.card-title h4{
+    font-size: 1.2rem;
+}
+.card-title p{
+    font-size: 1rem;
+}
+
+.card-title p span{
+    color: var(--navy-blue);
+}
+.card-center{
+    grid-area: card-center;
+    max-width: 100%;
+    display: flex;
+        align-items: center;
+        justify-content: center;
+}
+.card-right{
+    max-width: 100%;
+    grid-area: card-right;
+    display: flex;
+        align-items: center;
+        justify-content: center;
+}
+.graphs{
+    grid-area: graphs;
+    display: grid;
+    margin-top: 1rem;
+    grid-template-columns: 60% 50%;
+    grid-template-rows: auto;
+    grid-template-areas: 'charts pie';
+    flex: 1 1;
+}
+
+.charts{
+    grid-area: charts;
+    border: 2px solid red;
+}
+
+.pie{
+    grid-area: pie;
+}
+
+
+
+
+.moreDetails{
+    grid-area: moreDetails;
+}
+.map{
+    grid-area: map;
+}
+.top-cards{
+    background-color: aqua;
+}
+
+@media screen and (max-width: 500px) {
+    .dashboard{
+        display:flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .graphs{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .moreDetails .below{
+        display: flex;
+        flex-direction: column;
+    }
 }
