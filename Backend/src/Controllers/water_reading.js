@@ -8,6 +8,11 @@ export const getAllReadings  = async(req,res) => {
             select: {
                 meter_id:true,
                 meter:true,
+                meter:{
+                    include:{
+                        customer:true
+                    }
+                },
                 reading_id: true,
                 currentReading:true, 
                 prevReading: true,
@@ -94,7 +99,12 @@ export const getSigleReading = async(req,res) => {
             where:{meter_id},
             orderBy: {createdAt:'desc'},
             include:{
-                meter:true
+                meter:true,
+                meter:{
+                    include:{
+                        customer:true
+                    }
+                }
             }
         })
 

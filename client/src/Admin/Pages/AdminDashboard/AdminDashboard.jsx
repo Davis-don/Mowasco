@@ -13,7 +13,9 @@ function AdminDashboard() {
   const [zones, setZones] = useState();
   const [customer, setCustomer] = useState();
   const [meters, setMeters] = useState();
+  const [totalMonthlyConsumed,setTotalMontlyConsumed] = useState(0)
   const [chartsData, setChartsData] = useState([]);
+  const [waterReading, setWaterReadings] = useState([])
 
   // 1. Get the number of zones
   const getZones = async () => {
@@ -64,7 +66,6 @@ function AdminDashboard() {
     }
   };
 
-  console.log("charts data", chartsData.data);
   // 2. get customers
 
   const getCustomer = async () => {
@@ -73,6 +74,7 @@ function AdminDashboard() {
         .get(`http://localhost:4000/customers/all`)
         .catch((error) => console.log(error));
       if (customers.status == 200) {
+        console.log('active customers', customers)
         setCustomer(customers.data.data);
       } else {
         toast.warn("Something went wrong.");
@@ -109,17 +111,37 @@ function AdminDashboard() {
         .get(`http://localhost:4000/customer/reading/all/total-readings`)
         .catch((error) => console.log(error));
 
-      console.log(totalConsumed.data);
-    } catch (error) {
+      console.log('Total montly consumed', totalConsumed.data);
+      if(totalConsumed.status == 200){
+        setTotalMontlyConsumed(totalConsumed.data.data)
+      } else{
+        toast.warn('Something went wrong.')
+      }
+    } catch (error)  {
       console.log(error);
     }
   };
 
+
+  const recentWaterReadings = async () => {
+    try {
+      const getReadings = await axios.get(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`
+      ).catch(error=> console.log(error));
+      if (getReadings.status == 200) {
+        setWaterReadings(getReadings.data.data)
+      }
+    } catch (error) {
+      
+      console.log(error)
+    }
+  }
   useEffect(() => {
     getZones();
     getCustomer();
     getMeters();
     getTotalWaterConsumed();
+recentWaterReadings()
   }, []);
   return (
     <>
@@ -128,29 +150,30 @@ function AdminDashboard() {
           <div className="card-title">
             <h4>Montly Consumption</h4>
             <p>
-              Total amount: {12} M <sup>4</sup>
+              Total amount: {totalMonthlyConsumed} M <sup>3</sup>
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
         <div className="card-center card-1">
           <div className="card-title">
-            <h4>Montly Consumption</h4>
+            <h4>Customers</h4>
             <p>
-              <span>Total amount:</span> {12} M <sup>4</sup>
+              <span>Active Customers: </span> {customer?.length}
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
         <div className="card-right card-1">
           <div className="card-title">
-            <h4>Montly Consumption</h4>
+            <h4>Zones</h4>
             <p>
-              Total amount: {12} M <sup>4</sup>
+              No. of Zones: {zones?.length} (Zones)
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
+
         <div className="graphs">
           <div className="charts">
             {chartsData && chartsData?.series && (
@@ -183,12 +206,21 @@ function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1001</td>
-                    <td>293932</td>
-                    <td>Wilfred Muchire</td>
-                    <td>12</td>
-                  </tr>
+                  {waterReading && waterReading.length > 0 ? (
+                    waterReading.map((recentReading, key) => (
+                      <tr key={key}>
+                        <td>{recentReading.meter.meterNumber}</td>
+                        <td>{recentReading.meter.customer.cust_id}</td>
+                        <td>
+                          {recentReading.meter.customer.custFirstName}{" "}
+                          {recentReading.meter.customer.custLastName}
+                        </td>
+                        <td>{recentReading.consumption}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <p>Loading recent water readings.</p>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -199,7 +231,7 @@ function AdminDashboard() {
                 <div className="infor">
                   <h4>Pending meter readings.</h4>
                   <span>
-                    {" "}
+                    
                     <span>Meters:</span> 12
                   </span>
                   <span>
