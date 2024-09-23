@@ -112,6 +112,7 @@ async function checkUserCredentials(UserId, Password) {
     if(await getUserStatus(UserId)){
 // Generate a JWT token
 const token = jwt.sign({userId:UserId}, SECRET_KEY, { expiresIn: '1h' });
+res.cookie('access_token', token)
 // console.log(token);
 res.status(200).json({ Token:token,message:"Login successful",userRole:await getUserRole(UserId) });
     }

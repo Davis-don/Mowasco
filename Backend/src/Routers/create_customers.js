@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { getAllCustomers, getSingleCustomer, createCustomer, updateCustomer, deleteCustomer } from "../Controllers/customers.js";
+import verifyToken from "../Middleware/verifyToken.js";
 const router = Router()
 
-router.get('/all',getAllCustomers )
+router.get('/all',verifyToken, getAllCustomers )
 
 router.get('/:cust_id', getSingleCustomer)
 
