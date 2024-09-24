@@ -5,13 +5,13 @@ const router = Router()
 
 router.get('/all',verifyToken, getAllCustomers )
 
-router.get('/:cust_id', getSingleCustomer)
+router.get('/:cust_id',verifyToken, getSingleCustomer)
 
-router.post('/create', createCustomer)
+router.post('/create',verifyToken, createCustomer)
 
-router.patch('/update/:cust_id',updateCustomer)
+router.patch('/update/:cust_id',verifyToken,updateCustomer)
 
-router.delete('/delete/:cust_id', deleteCustomer)
+router.delete('/delete/:cust_id', verifyToken, deleteCustomer)
 
 
 

@@ -20,6 +20,7 @@ import configurations from './Databaseconfig'
 import Routes from './Login.js'
 import agents from './src/Routers/agents.js'
 import { config  } from 'dotenv';
+import cookieParser from 'cookie-parser'
 
 config()
 const app = express();
@@ -36,6 +37,7 @@ const corsOptions = {
  // Set the response status for successful preflight requests
 };
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 
 

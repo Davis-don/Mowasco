@@ -109,9 +109,12 @@ model Agents{
   lastName String @map("last_name")
   age Int @map("age")
   contact Int @map("contact")
-  password Int @map("password")
+  password String @map("password")
   status STATUS @default(INACTIVE) @map("status")
   role ROLE @default(AGENT) @map("role")
+
+
+  @@map("agents_tb")
 }
 
 enum ROLE{

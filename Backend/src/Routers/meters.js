@@ -1,15 +1,16 @@
 import { Router } from "express";
+import verifyToken from "../Middleware/verifyToken.js";
 import { getAllMeters, getSingleMeter, createNewMeter, updateMeter, deleteMeter } from "../Controllers/meters.js";
 const router = Router()
 
-router.get('/all',getAllMeters )
+router.get('/all',verifyToken, getAllMeters )
 
-router.get('/:meter_id',getSingleMeter)
+router.get('/:meter_id',verifyToken, getSingleMeter)
 
-router.post('/create',createNewMeter)
+router.post('/create',verifyToken, createNewMeter)
 
-router.patch('/:meter_id',updateMeter)
+router.patch('/:meter_id',verifyToken, updateMeter)
 
-router.delete('/:meter_id',deleteMeter)
+router.delete('/:meter_id',verifyToken, deleteMeter)
 
 export default router;
