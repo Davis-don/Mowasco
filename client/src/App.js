@@ -23,25 +23,35 @@ import MeterReadingHistory from './Admin/Pages/Water_Readings/MeterReadingHistor
 import RegisterMeters from './Admin/Pages/Meters/RegisterMeters';
 import Header from './Admin/Components/Header';
 import AddUser from './User/pages/Create_User/AddUser';
+import UserDasboard from './User/Components/UserDasboard';
+import store from './store/dataStore';
 function App() {
+  const user = store((state) => state.user)
+  console.log('user', user)
 
   return (
     <div className="App">
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        
+          <Route path="/" element={<Login />} />
+        <Route path='/agent/register' element={<AddUser/>}/> 
+
       </Routes>
 
       <div className='dis'>
         {/* <Header/> */}
-        <Navigation/>
-        <SideNav/>
+         
+            <Navigation/>
+            <SideNav/>
+        
         <div className='content'>
-          <Routes>
-            <Route element={<ProtectedRoutes/>}>
-            <Route path='/manage-customers' element={<Customers/>}/>
-            <Route path='/billing-payment' element={<Billing_payment/>}/>
-            <Route path='/dashboard' element={<AdminDashboard/>}/>
+         
+          
+                <Routes>
+                <Route path='/manage-customers' element={<Customers/>}/>
+             <Route path='/billing-payment' element={<Billing_payment/>}/>
+             <Route path='/dashboard' element={<AdminDashboard/>}/>
             <Route path='/manage-meters' element={<CreateMeters/>}/>
             <Route path='/manage-water-readings' element={<WaterReading/>}/>
             <Route path='/add-new-customer' element={<AddNewCustomers/>}/>
@@ -51,20 +61,28 @@ function App() {
             <Route path='/customer-bill/:bill_id' element={<ViewBill/>}/>
             <Route path='/meter-readings-history' element={<MeterReadingHistory/>}/>
             <Route path='/customer/:cust_id/assign-meter' element={<RegisterMeters/>}/>
-            </Route>
         </Routes>
-        <Routes>
+              
+           
+                   <Routes>
           <Route element={<ProtectedRoutes/>}>
-        <Route path='/agent/register' element={<AddUser/>}/> 
+            <Route path="/agent/dashboard" element={<UserDasboard />} />
             <Route path="/Admin/Dashboard" element={<Admin />} />
             <Route path='/customer/meter/:id' element={<Genwaterbill/>}/>
             <Route path='/customer/current-reading/:id' element={<Water_reading/>}/>
             <Route path='/customer/meter/receipt/:id' element={<Receiptgen/>}/>
             <Route path="/Account/login" element={<Dashboard />} />
             </Route>
+                    </Routes>
+      
+    
+     
+            
+             
+      
 
-        </Routes>
 
+   
         </div>
       </div>
       </BrowserRouter>

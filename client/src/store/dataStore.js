@@ -1,8 +1,9 @@
 import { create } from 'zustand'
-
-const store = create ((set) => ({
-    user:'',
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
+const store = create (
+    persist((set) => ({
+    user:null,
     getUserData:(data) => set(() =>({user: data}))
-}))
+})))
 
 export default store

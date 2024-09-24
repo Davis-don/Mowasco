@@ -61,7 +61,8 @@ function Login() {
         const data = login.data.data
         getUserData(data)
         if(data.role === 'AGENT'){
-          navigate('/Account/login') 
+          // navigate('/Account/login') 
+          navigate('/agent/dashboard')
         } else{
   navigate('/Dashboard')
         }

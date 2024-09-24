@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Usergenarator from '../../User/pages/User_Generator/Usergenarator';
 import Genwaterbill from '../../User/pages/Bill/Genwaterbill';
 import Receiptgen from '../../User/pages/Receipt/Receiptgen';
-import Homecomponent from '../../User/Components/Homecomponent'
+import Homecomponent from '../../User/Components/UserDasboard'
 import CreateMeters from '../Pages/Meters/CreateMeters';
 import Navigation from './Navigation';
 

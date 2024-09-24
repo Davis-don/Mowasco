@@ -52,7 +52,7 @@ function Receiptgen() {
   };
 
   const navigateBack = () => {
-navigate('Account/login');
+navigate("/agent/dashboard");
   }
 
   useEffect(() => {

@@ -18,6 +18,7 @@ function Usergenarator() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
  
+  console.log('user', userName)
 
   const getZones = async() => {
     try {
@@ -43,9 +44,10 @@ function Usergenarator() {
 
    const handleSubmit = async (values) => {
     try {
-      if(!userName){
-        return
-      }
+      // if(!userName){
+      //   console.log('no user found')
+      //   return
+      // }
 
 
       setError(false)
@@ -129,24 +131,54 @@ function Usergenarator() {
          <div className='overall-usergen-container-form'>
     <div className='form-user-gen-left'>
     <p style={{ textAlign: 'center' }}>Please enter the customer's zone and meter details below</p>
-          <form className='user-gen-form'>
+     <form className='user-gen-form' onSubmit={formik.handleSubmit}>
             <div>
+              <select className="form-select form-control"  name='zones' value={formik.values.zones} onChange={formik.handleChange} id="sel1">
+               
+                     <option  >Zones</option>
+                {
+                  zone && zone.length > 0 ? (
+                    zone.map((zone, key) => (
 
-
-    <select  className="form-select form-control" id="sel1" name="zone">
-      <option>Zone</option>
-      <option>Mugunda</option>
-      <option>Gatarakwa</option>
-      <option>Kiawara</option>
-    </select>
-    </div>
-    <div>
-              <input className="form-control" placeholder="Meter number"/>
-              </div>
+                      <option value={zone.zone_id}>{zone.zoneName}</option>
+                    ))
+                  ) : (
+                  <p>Loading zones...</p>
+                  )
+                }
+              </select>
+            </div>
+            <div>
+              <input className="form-control" name='meterNumber' type='number' value={formik.values.meterNumber} onChange={formik.handleChange} placeholder='Meter Number'/>
+            </div>
             <div style={{ width: 'max-content', margin: 'auto' }}>
-              <button className='btn btn-primary actual-generate-customer-btn'>Generate Customer</button>
+               <button>{loading ? 'Generating ...':'Generate Customer'}</button>
             </div>
           </form>
+          {/* <form className='user-gen-form'>
+             <div>
+              <select className="form-select form-control"  name='zones' value={formik.values.zones} onChange={formik.handleChange} id="sel1">
+               
+                     <option  >Zones</option>
+                {
+                  zone && zone.length > 0 ? (
+                    zone.map((zone, key) => (
+
+                      <option value={zone.zone_id}>{zone.zoneName}</option>
+                    ))
+                  ) : (
+                  <p>Loading zones...</p>
+                  )
+                }
+              </select>
+            </div>
+            <div>
+              <input className="form-control" name='meterNumber' type='number' value={formik.values.meterNumber} onChange={formik.handleChange} placeholder='Meter Number'/>
+            </div>
+               <div style={{ width: 'max-content', margin: 'auto' }}>
+               <button>{loading ? 'Generating ...':'Generate Customer'}</button>
+            </div>
+          </form> */}
     </div>
     <div className='image-right-user-gen'>
      <img className='ocean-background' src={oceanimg} alt='water in lake'/>

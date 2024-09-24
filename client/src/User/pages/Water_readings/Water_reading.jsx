@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import "./water_reading.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,9 +68,10 @@ const Water_reading = () => {
         <div className="gen-water-bill-form-div">
           <h1>Please enter the current meter readings.</h1>
           <form className="user-gen-form" onSubmit={formik.handleSubmit}>
-            <div>
+            <div className="input">
+              <label htmlFor="currentReading">Current Reading:</label>
               <input
-                className="form-control"
+                className="form-control water-reading"
                 name="currentReading"
                 type="number"
                 value={formik.values.currentReading}
@@ -77,9 +79,11 @@ const Water_reading = () => {
                 placeholder="Current reading"
               />
             </div>
-            <div style={{ width: "max-content", margin: "auto" }}>
+
+            <div style={{ width: "max-content", margin: "auto", marginTop:".5rem" }}>
               <button>{loading ? "Generating ..." : "Generate bill"}</button>
             </div>
+
           </form>
           <ToastContainer />
         </div>

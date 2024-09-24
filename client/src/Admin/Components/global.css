@@ -14,6 +14,7 @@
 :root{
     --navy-blue: #000080;
     --sky-blue:#87CEEB;
+    --agent-background:#F5F5DC;
 }
 
  /* THE ADMIN PAGE */
@@ -158,6 +159,11 @@ width: 3rem;
     height: 3rem;
     overflow: hidden;
  }
+ .nav-right h4 span{
+    color:beige;
+    font-size: 1.2rem;
+
+ }
   .nav-top .nav-right .admin-img img{
     width: 100%;
     height: 100%;
@@ -204,3 +210,19 @@ width: 3rem;
     display: none;
    }
   }
+
+  button{
+    
+   padding: .85rem 2rem;
+   border-radius: .5rem;
+   background-color: var(--sky-blue);
+   border: none;
+   font-size: 1.5rem;
+   font-weight: 650;
+letter-spacing: .09rem;
+transition: all ease .5s;
+  }
+ button:hover{
+    background-color: var(--navy-blue);
+    color: var(--sky-blue);
+ }
