@@ -17,7 +17,9 @@ const RegisterMeters = () => {
     try {
       setLoading(true);
       const zones = await axios
-        .get("http://localhost:4000/zones/all")
+        .get("http://localhost:4000/zones/all",{
+          withCredentials:true
+        })
         .catch((error) => console.log(error));
       if (zones) {
         setZone(zones.data.data);
@@ -42,6 +44,8 @@ const RegisterMeters = () => {
           meterNumber: values.meterNumber,
           zone: values.zone,
           cust_id: cust_id,
+        },{
+          withCredentials:true
         })
         .catch((error) => {
           console.log(error);

@@ -23,7 +23,12 @@ const AboutMeter = () => {
     const meterData = async () => {
       try {
         const meterDetails = await axios
-          .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`)
+          .get(
+            `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
+            {
+              withCredentials: true,
+            }
+          )
           .catch((errors) => console.log(errors));
         if (meterDetails.status == 200) {
           setMeterHistory(meterDetails.data.data);
@@ -40,12 +45,14 @@ const AboutMeter = () => {
     try {
       const getReadings = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
+          {
+            withCredentials: true,
+          }
         )
         .catch((error) => console.log(error));
       if (getReadings.status == 200) {
         setMeterReadingHistory(getReadings.data.data);
-        console.log(getReadings.data.data);
       } else {
         toast.warn("Something went wrong.");
       }

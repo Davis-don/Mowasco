@@ -9,9 +9,11 @@ import waterImage from '../../../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import axios from 'axios'
 // import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import { IoFileTray } from 'react-icons/io5';
+import store from '../../../store/dataStore';
 function Login() {
   // const Token = sessionStorage.getItem('userToken');
   // console.log(Token);
+  const getUserData = store((state) => state.getUserData)
   const navigate = useNavigate();
   const [cookieValue, setCookieValue] = useState(null);
   const [passwordShown, setPasswordShown] = useState(false);
@@ -32,44 +34,64 @@ function Login() {
     })
   }
 
+  const registerUser = () => {
+    navigate('/agent/register')
+  }
 
   const handlePost = async (e) => {
     e.preventDefault();
   
     try {
     
-      const response = await fetch('http://localhost:4000/User/Login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userCred)
-      }).catch(error=>{console.log(error)})
-
-      console.log(response)
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-       // Parse the JSON response
-       const responseData = await response.json();
-        if(responseData.Token){
+      // const response = await fetch('http://localhost:4000/user/agent/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(userCred)
+      // }).catch(error=>{console.log(error)})
+      const login = await axios.post(`${process.env.REACT_APP_VITE_API_URL_BASE}/user/agent/login`,{
+        password:userCred.Password,
+         employeeID:parseInt(userCred.UserId)
+      },{
+        withCredentials:true
+      }).catch(error => console.log(error))
+      
+      if (login.status == 200){
+        const data = login.data.data
+        getUserData(data)
+        if(data.role === 'AGENT'){
+          navigate('/Account/login') 
+        } else{
+  navigate('/Dashboard')
+        }
+        console.log(login)
+          }
+        // if(login.Token){
            // Store the received token in a cookie
           //  Cookies.set('userToken', responseData.Token, { expires: 7 }); // Expires in 7 days
          // Cookies.set('userToken', responseData.Token);
-          sessionStorage.setItem('userToken', responseData.Token);
-           console.log(responseData.userRole);
-          if(responseData.userRole == 'admin'){
-           navigate('/Dashboard')
-          }
-          else if(responseData.userRole == 'user'){
-            navigate('/Account/login') 
-          }
-        }
-        else{
-
-        }
+//           sessionStorage.setItem('userToken', login.Token);
+//           if(login.userRole == 'admin'){
+//            navigate('/Dashboard')
+//           }
+//           else if(login.userRole == 'user'){
+//             navigate('/Account/login') 
+//           }
+//         }
+//         else{
+// console.log('error found')
+//         }
+      // }
+    
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+       // Parse the JSON response
+      //  const responseData = await response.json();
+        
       // update message to current state
-      setServerMessage(responseData.message);
+      setServerMessage(login.message);
       //set servercomponent to true
       setServerComponent(true);
       setForm(false);
@@ -117,7 +139,7 @@ function Login() {
               </span>
             </div>
             <p style={{ float: 'right' }}>
-              <a href='#' className='text-danger fs-8'>Forgot password</a>
+              <a href='#' className='text-danger fs-8' onClick={registerUser}>Forgot password</a>
             </p>
             <div style={{ width: 'max-content', margin: 'auto' }}>
               <button type='submit' className='btn btn-primary actual-signin-btn'>Sign in</button>

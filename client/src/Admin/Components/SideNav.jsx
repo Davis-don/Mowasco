@@ -6,48 +6,44 @@ import { FaUsers } from "react-icons/fa6";
 import { IoSpeedometerSharp } from "react-icons/io5";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import { FaRegRectangleList } from "react-icons/fa6";
+import { FaLessThan } from "react-icons/fa";
+
 
 const SideNav = () => {
     return (
       <div>
         <div className="aside">
+          {/* <FaLessThan className="menu" /> */}
           <div className="nav-links">
             <div className="nav-1">
               <Link className="li" to={"/dashboard"}>
                 <MdDashboardCustomize className="icons" />
-                Dashboard
+                <span>Dashboard</span>
               </Link>
             </div>
-
             <div className="nav-1">
               <Link className="li" to={"/manage-customers"}>
                 <FaUsers className="icons" />
-                Customers
+                <span> Customers</span>
               </Link>
             </div>
-
             <div className="nav-1">
               <Link className="li" to={"/manage-meters"}>
                 <IoSpeedometerSharp className="icons" />
-                Meters Management
+                <span>Meters Management</span>
               </Link>
             </div>
-
             <div className="nav-1">
               <Link className="li" to={"/billing-payment"}>
                 <LuFileSpreadsheet className="icons" />
-                Billing and Payments
+                <span>Billing and Payments</span>
               </Link>
             </div>
-
             <div className="nav-1">
               <Link className="li" to={"/manage-water-readings"}>
                 <FaRegRectangleList className="icons" />
-                Water readings
+                <span>Water readings</span>
               </Link>
-            </div>
-            <div className="nav-1">
-              <Link className="li">Settings</Link>
             </div>
           </div>
 

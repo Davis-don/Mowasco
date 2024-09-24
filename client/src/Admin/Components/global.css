@@ -1,6 +1,7 @@
 /* Header section  */
 
 .navigation{
+    position: relative;
     padding: .5rem;
     display: flex;
     flex-direction: row;
@@ -21,25 +22,25 @@
     position: fixed;
     width: 100%;
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: auto 1fr;
     grid-template-rows:5rem 1fr;
-    grid-template-areas: 'header header-right'
+    grid-template-areas: 'header header'
                         'aside content';
         height: 100vh;
     
  }
  .navigation{
-    grid-area: header-right;
+    grid-area: header;
     background-color: var(--navy-blue);
     z-index: 999;
     color: var(--sky-blue);
  }
 
  .header{
+    grid-area: header;
     display:flex;
     flex-direction: row;
     font-size: 1.3rem;
-    background-color: var(--navy-blue);
     font-weight: 600;
     text-transform: capitalize;
     line-height: 1.6;
@@ -66,6 +67,7 @@
 
 
 .aside {
+    padding-top: 1rem;
     grid-area: sidebar;
     height: 100%;
     background-color: var(--navy-blue);
@@ -75,8 +77,10 @@
     color: var(--sky-blue);
     padding-left: .5rem;
     flex-direction: column;
-
+    overflow: hidden;
+position: relative;
     }
+       
 .aside button{
     width: 7rem;
     border-radius: .3rem;
@@ -90,6 +94,10 @@
     flex-direction: column;
     gap: 1rem;
 }
+.nav-1 .li .icons{
+font-size: 2.5rem;
+}
+
 
 .aside .nav-links .nav-1 {
     padding: .5rem;
@@ -107,11 +115,7 @@
     gap: 1rem;
 }
 
-.nav-1 .li .icons{
-    font-size: 1.5rem;
-    /* color:var(--sky-blue); */
 
-}
 
 .aside .nav-links .nav-1:hover{
     background-color: var(--sky-blue);
@@ -160,4 +164,43 @@ width: 3rem;
     display: block;
     object-fit: cover;
     border-radius: 50%;
+  }
+  
+.menu{
+    position: absolute;
+    float: left;
+
+    float: right;
+    right: 0;
+    font-size: 3rem;
+    color: white;
+
+}
+
+  @media screen and (max-width:500px) {
+   .dis{
+    display: grid;
+    grid-template-columns: 15%  1fr;
+    grid-template-areas: 'aside navigation'
+                         'aside  content';
+    height: 100%;
+   }
+   .navigation{
+    grid-area: navigation;
+   }
+   .navigation h4, span{
+    display: none;
+   }
+ 
+   .aside{
+    height:100vh;
+    grid-area: aside;
+   }
+  
+   .content{
+    grid-area: content;
+   }
+   .aside .nav-links .nav-1 .li span{
+    display: none;
+   }
   }

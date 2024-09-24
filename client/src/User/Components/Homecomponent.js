@@ -3,7 +3,7 @@ import './Homecomponent.css'
 function Homecomponent() {
   return (
     <div className='overall-home-component'>
-        <h1>Dashboard</h1>
+        <h1>Dashboard -- </h1>
         </div>
   )
 }

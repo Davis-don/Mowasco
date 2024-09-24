@@ -32,7 +32,9 @@ const CreateMeters = () => {
   const getMeters = async () => {
     try {
       const getMeters = await axios
-        .get(`http://localhost:4000/meters/all`)
+        .get(`http://localhost:4000/meters/all`, {
+          withCredentials:true
+        })
         .catch((error) => console.log(error));
 
       if (getMeters) {
@@ -50,7 +52,9 @@ const CreateMeters = () => {
   const deleteMeter = async (id) => {
     try {
       const remove = await axios
-        .delete(`http://localhost:4000/meters/${id}`)
+        .delete(`http://localhost:4000/meters/${id}`, {
+          withCredentials: true,
+        })
         .catch((error) => console.log(error));
       if (remove) {
         alert("Meter deleted");

@@ -20,7 +20,7 @@ import SideNav from "./SideNav";
 import Billing_payment from "../Pages/Billing_Payments/Billing_payment";
 import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
 
-function Admin() {
+function Header() {
   const [sidebar, setSidebar] = useState(false);
   const [Home, setHome] = useState(true);
   const [User, setUser] = useState(false);
@@ -176,4 +176,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Header;

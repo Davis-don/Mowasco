@@ -8,7 +8,6 @@ import { FaArrowRightLong } from "react-icons/fa6";
 function Receiptgen() {
   const navigate = useNavigate()
   const { id } = useParams();
-  console.log('receipt id', id)
   const [receiptData, setReceiptData] = useState();
   const [waterReadings, setWaterReadings] = useState();
 
@@ -17,11 +16,11 @@ function Receiptgen() {
   const getWaterReadings = async (meterID) => {
     try {
       const getData = await axios
-        .get(`http://localhost:4000/customer/reading/${meterID}`)
+        .get(`http://localhost:4000/customer/reading/${meterID}`, {
+          withCredentials: true,
+        })
         .catch((error) => console.log(error));
-
       if (getData.status == 200) {
-        console.log("water readings", getData.data.data);
         setWaterReadings(getData.data.data);
       } else {
         toast.warning("Something went wrong. Please try again later!!");
@@ -34,12 +33,13 @@ function Receiptgen() {
   const getReceipt = async () => {
     try {
       const getReceiptData = await axios
-        .get(`http://localhost:4000/customer/receipt/${id}`)
+        .get(`http://localhost:4000/customer/receipt/${id}`, {
+          withCredentials: true,
+        })
         .catch((error) => console.log(error));
-      console.log("receipt data", getReceiptData.data.data);
       if (getReceiptData.status == 200) {
         const receiptData = getReceiptData.data.data;
-        console.log('receipt data', receiptData)
+
         const meterID = receiptData.billing.meters.meter_id;
         setReceiptData(receiptData);
         getWaterReadings(meterID);

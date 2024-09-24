@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 function Genwaterbill() {
   const navigate = useNavigate()
   const {id} = useParams()
-  console.log('id', id)
   const [waterReadings, setWaterReadings] = useState()
   const [meter, setMeter] = useState()
   const [bill, setBill] = useState()
@@ -19,10 +18,11 @@ function Genwaterbill() {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const getData = await axios.get(`http://localhost:4000/meters/${id}`).catch(error => console.log(error))    
+        const getData = await axios.get(`http://localhost:4000/meters/${id}`, {
+          withCredentials:true
+        }).catch(error => console.log(error))    
         if (getData.status == 200){
           setMeter(getData.data.data)
-    
         }else{
           toast.success('Something went wrong.')
         }
@@ -30,7 +30,6 @@ function Genwaterbill() {
         console.log(error)
       }
     }
-
     fetchDetails()
   }, [])
 
@@ -39,10 +38,11 @@ function Genwaterbill() {
   const fetchMeterReadings = async () => {
     try {
     //  const meterID = (customer.meters.meter_id)
-      const getReadings = await axios.get(`http://localhost:4000/customer/reading/${id}`).catch(error => console.log('water reading',error))
+      const getReadings = await axios.get(`http://localhost:4000/customer/reading/${id}`, {
+          withCredentials:true
+        }).catch(error => console.log('water reading',error))
 
       if(getReadings.status == 200){
-        console.log('readings', getReadings)
         setWaterReadings(getReadings.data.data)
       } else{
         toast.success('Something went wrong.')
@@ -62,9 +62,9 @@ function Genwaterbill() {
           lName:meter.customer.custLastName,
           IDNumber:meter.customer.custID,
           phoneNumber:meter.customer.custPhoneNumber,
-          prevWaterReading:waterReadings.prevReading,
-          consumption:waterReadings.consumption,
-          currentWaterReadings: waterReadings.currentReading
+          prevWaterReading:waterReadings?.prevReading,
+          consumption:waterReadings?.consumption,
+          currentWaterReadings: waterReadings?.currentReading
         });
       }
     };
@@ -80,7 +80,9 @@ function Genwaterbill() {
         bill_id:billID,
         cust_id:custID,
         meter_id:meterID 
-      }).catch(error => console.log(error))
+      }, {
+          withCredentials:true
+        }).catch(error => console.log(error))
 
       if(receipt.status == 200){
         const receiptData= receipt.data.data
@@ -96,8 +98,9 @@ function Genwaterbill() {
   }
  const getBillDetails = async (id) => {
 try {
-      const billDetails = await axios.get(`http://localhost:4000/customer/bill/${id}`).catch(error => console.log(error))
-      console.log('bill details', billDetails)
+      const billDetails = await axios.get(`http://localhost:4000/customer/bill/${id}`, {
+          withCredentials:true
+        }).catch(error => console.log(error))
      
       if(billDetails.status == 200){
         
@@ -106,7 +109,6 @@ try {
         const custID = billData.customer.cust_id
         const meterID = billData.customer.meters.meter_id;
         const amountPaid = billData.amountDue
-        console.log('bill meter id', meterID)
         createReceipt(billID, custID, meterID, amountPaid)
       } else{
         toast.warn('Something went wrong.')
@@ -123,22 +125,19 @@ try {
         cust_id: meter.customer.cust_id,
         meter_id: meter.meter_id,
         consumption:values.consumption,
-      }).catch(error => console.log(error))
+      }, {
+          withCredentials:true
+        }).catch(error => console.log(error))
  
       if (createBill.status == 200) {
         const bill = (createBill.data.data)
         getBillDetails(bill.bill_id)
-       
-
       } else{
         alert('something went wrong.')
       }
-
-
     } catch (error) {
       console.log(error)
     }
-    
   }
   const formik= useFormik({
     initialValues: {
@@ -174,11 +173,11 @@ try {
 
             <div>
               <label>Current Water readings</label>
-            <input type='number'value={formik.values.currentWaterReadings} name='currentWaterReadings' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
+            <input type='number'value={formik.values?.currentWaterReadings} name='currentWaterReadings' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
             <label>Previous Water readings</label>
-            <input type='number' value={formik.values.prevWaterReading} name='prevWaterReading' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
+            <input type='number' value={formik.values?.prevWaterReading} name='prevWaterReading' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
             <label>Total consumed</label>
-            <input type='number'value={formik.values.consumption} name='consumption' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
+            <input type='number'value={formik.values?.consumption} name='consumption' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
                 </div>
                 <div style={{ width: 'max-content', margin: 'auto',padding:'20px' }}>
               <button className='btn btn-primary  '>Generate Bill</button>

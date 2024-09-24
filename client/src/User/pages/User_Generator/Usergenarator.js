@@ -10,7 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios'
 import Water_reading from '../Water_readings/Water_reading';
 import { useNavigate } from 'react-router-dom';
+import store from '../../../store/dataStore';
 function Usergenarator() {
+  const userName = store((state) => state.user)
   const [zone, setZone] = useState([])
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -19,8 +21,13 @@ function Usergenarator() {
 
   const getZones = async() => {
     try {
+      if(!userName){
+        return
+      }
       setLoading(true)
-      const zones = await axios.get('http://localhost:4000/zones/all').catch(error => console.log(error))
+      const zones = await axios.get('http://localhost:4000/zones/all',{
+        withCredentials:true
+      }).catch(error => console.log(error))
       if(zones){
        setZone(zones.data.data)
       } else{
@@ -36,12 +43,18 @@ function Usergenarator() {
 
    const handleSubmit = async (values) => {
     try {
-      
+      if(!userName){
+        return
+      }
+
+
       setError(false)
       setLoading(true)
-      const queryUser = await axios.post(`http://localhost:4000/api/customers/search-customer`, {
+      const queryUser = await axios.post(`http://localhost:4000/api/customers/search-customer`,{
         meterNumber: values.meterNumber,
         zones:values.zones
+      },{
+        withCredentials:true
       }).catch(error => {console.log(error)
         setError(error)
         toast.error('Invalid inputs. Meter number not associated with that zone.')

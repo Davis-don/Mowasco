@@ -5,7 +5,7 @@ import ProtectedRoutes from './Utils/ProtectedRoutes';
 import Receiptgen from './User/pages/Receipt/Receiptgen'
 import Genwaterbill from './User/pages/Bill/Genwaterbill';
 import Dashboard from './Admin/Components/Dashboard';
-import Admin from './Admin/Components/Admin';
+import Admin from './Admin/Components/Header';
 import CreateMeters from './Admin/Pages/Meters/CreateMeters';
 import Water_reading from './User/pages/Water_readings/Water_reading';
 import Billing_payment from './Admin/Pages/Billing_Payments/Billing_payment';
@@ -21,29 +21,24 @@ import AboutMeter from './Admin/Pages/Meters/AboutMeter';
 import ViewBill from './Admin/Pages/Billing_Payments/ViewBill';
 import MeterReadingHistory from './Admin/Pages/Water_Readings/MeterReadingHistory';
 import RegisterMeters from './Admin/Pages/Meters/RegisterMeters';
+import Header from './Admin/Components/Header';
+import AddUser from './User/pages/Create_User/AddUser';
 function App() {
 
   return (
     <div className="App">
       <BrowserRouter>
-      
       <Routes>
         <Route path="/" element={<Login />} />
-            <Route element={<ProtectedRoutes/>}>
-            <Route path="/Admin/Dashboard" element={<Admin />} />
-            <Route path='/customer/meter/:id' element={<Genwaterbill/>}/>
-            <Route path='/customer/current-reading/:id' element={<Water_reading/>}/>
-            <Route path='/customer/meter/receipt/:id' element={<Receiptgen/>}/>
-            <Route path="/Account/login" element={<Dashboard />} />
-            {/* <Route path='/:cust_id/create-meter' element={<CreateMeters/>} /> */}
-            </Route>
       </Routes>
+
       <div className='dis'>
-        <Admin/>
+        {/* <Header/> */}
         <Navigation/>
         <SideNav/>
         <div className='content'>
           <Routes>
+            <Route element={<ProtectedRoutes/>}>
             <Route path='/manage-customers' element={<Customers/>}/>
             <Route path='/billing-payment' element={<Billing_payment/>}/>
             <Route path='/dashboard' element={<AdminDashboard/>}/>
@@ -56,6 +51,18 @@ function App() {
             <Route path='/customer-bill/:bill_id' element={<ViewBill/>}/>
             <Route path='/meter-readings-history' element={<MeterReadingHistory/>}/>
             <Route path='/customer/:cust_id/assign-meter' element={<RegisterMeters/>}/>
+            </Route>
+        </Routes>
+        <Routes>
+          <Route element={<ProtectedRoutes/>}>
+        <Route path='/agent/register' element={<AddUser/>}/> 
+            <Route path="/Admin/Dashboard" element={<Admin />} />
+            <Route path='/customer/meter/:id' element={<Genwaterbill/>}/>
+            <Route path='/customer/current-reading/:id' element={<Water_reading/>}/>
+            <Route path='/customer/meter/receipt/:id' element={<Receiptgen/>}/>
+            <Route path="/Account/login" element={<Dashboard />} />
+            </Route>
+
         </Routes>
 
         </div>

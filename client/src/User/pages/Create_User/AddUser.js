@@ -8,15 +8,14 @@ function AddUser() {
   const [displayServerComponent,setServerComponent]=useState(false)
   const [form,setForm]=useState(true)
   const [userData,setUserData]=useState({
-    EmployeeId:"",
-    FullNames:"",
-    Gender:"",
-    Age:"",
-    Contact:"",
-    Password:"",
-    ConfirmPassword:"",
-    Status:"",
-    Role:""
+    employeeId:0,
+    firstName:'',
+    lastName:"",
+    gender:"",
+    age:0,
+    contact:"",
+    password:"",
+    confirmPassword:""
   })
   const handleForm=(e)=>{
 setUserData({
@@ -29,18 +28,29 @@ console.log(userData);
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:4000/EmployeesUser/Add/User', {
+      // const response = await fetch('http://localhost:4000/EmployeesUser/Add/User', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(userData)
+      // });
+
+      const response = await fetch('http://localhost:4000/user/agent/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(userData)
-      });
+      }).catch(error => {
+        console.log('errors',error)
+      })
   
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
   
+      console.log('response,', response)
       // Parse the JSON response
       const responseData = await response.json();
   
@@ -69,10 +79,12 @@ console.log(userData);
   <strong>{serverMessage}</strong>
 </div>}
         {form && <form onSubmit={handlePost}>
-    <input onChange={handleForm} name='EmployeeId' required type='number'placeholder='Employee id'className='form-control m-2'/>
-    <input onChange={handleForm} name='FullNames' required type='text'placeholder='Names'className='form-control m-2'/>
+    <input onChange={handleForm} name='employeeId' required type='number'placeholder='Employee id'className='form-control m-2'/>
+    <input onChange={handleForm} name='firstName' required type='text'placeholder='First Name'className='form-control m-2'/>
+    <input onChange={handleForm} name='lastName' required type='text'placeholder='Last Name'className='form-control m-2'/>
+
     {/* <input onChange={handleForm} name='Gender' required type='text'placeholder='gender'className='form-control m-2'/> */}
-    <select onChange={handleForm} name="Gender" className='form-control m-2'>
+    <select onChange={handleForm} name="gender" className='form-control m-2'>
   <option value="">Gender</option>
   <option value="Male">Male</option>
   <option value="Female">Female</option>
@@ -81,22 +93,22 @@ console.log(userData);
 
 
 
-    <input onChange={handleForm} name='Age' required type='number'placeholder='age'className='form-control m-2'/>
+    <input onChange={handleForm} name='age' required type='number'placeholder='age'className='form-control m-2'/>
     
                  <input
     required
     onChange={handleForm}
-    name='Contact'
-    type='text'
+    name='contact'
+    type='number'
     placeholder='Enter Kenyan phone number'
     className='form-control'
     pattern="(\+2547[0-9]{8}|\+2541[0-9]{8}|07[0-9]{8}|01[0-9]{8})"
     title="Please enter a valid Kenyan phone number"
 />
 
-    <input onChange={handleForm} name='Password' required type='password'placeholder='password'className='form-control m-2'/>
-    <input onChange={handleForm} name='ConfirmPassword' required type='password'placeholder='confirm password'className='form-control m-2'/>
-<select onChange={handleForm} name="Status" className='form-control m-2'>
+    <input onChange={handleForm} name='password' required type='number'placeholder='password'className='form-control m-2'/>
+    <input onChange={handleForm} name='confirmPassword' required type='number'placeholder='confirm password'className='form-control m-2'/>
+{/* <select onChange={handleForm} name="Status" className='form-control m-2'>
   <option value="">status</option>
   <option value="active">active</option>
   <option value="inactive">inactive</option>
@@ -105,7 +117,7 @@ console.log(userData);
   <option value="">role</option>
   <option value="admin">admin</option>
   <option value="user">user</option>
-</select>
+</select> */}
     <div className='adduser-button'>
         <button type='submit' className='btn btn-outline-primary'>Submit</button>
     </div>

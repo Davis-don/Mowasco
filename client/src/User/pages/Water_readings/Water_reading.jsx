@@ -14,10 +14,12 @@ const Water_reading = () => {
     const fetchDetails = async () => {
       try {
         const getData = await axios
-          .get(`http://localhost:4000/customers/${id}`)
+          .get(`http://localhost:4000/customers/${id}`, {
+            withCredentials:true
+          })
           .catch((error) => console.log(error));
         if (getData.status == 200) {
-          toast.success("Customer found successfully.");
+          toast.success("Customer found successfully.",{position:'bottom-center'});
           setCustomer(getData.data.data);
         } else {
           toast.success("Something went wrong.");
@@ -31,16 +33,20 @@ const Water_reading = () => {
   }, []);
   const handleSubmit = async (values) => {
     try {
-      console.log('values',values)
       const meterID = customer.meters.meter_id;
       const postRecordings = await axios
-        .post(`http://localhost:4000/customer/reading/create`, {
-          meter_id: meterID,
-          currentReading: values.currentReading,
-        })
+        .post(
+          `http://localhost:4000/customer/reading/create`,
+          {
+            meter_id: meterID,
+            currentReading: values.currentReading,
+          },
+          {
+            withCredentials: true,
+          }
+        )
         .catch((error) => console.log(error));
       if (postRecordings.status == 200) {
-        toast.success('Water has been recorded successfully.')
         navigate(`/customer/meter/${meterID}`);
       } else {
         alert("something went wrong.");
