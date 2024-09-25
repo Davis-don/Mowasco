@@ -5,7 +5,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowRightLong } from "react-icons/fa6";
+import logo from "../../../../src/images/logo.jpeg";
+import store from "../../../store/dataStore";
 function Receiptgen() {
+  const user = store((state) => state.user);
   const navigate = useNavigate();
   const { id } = useParams();
   const [receiptData, setReceiptData] = useState();
@@ -66,10 +69,16 @@ function Receiptgen() {
         <div className="receipt-invoice">
           <h2>Invoice</h2>
           <div className="name-logo">
-            <img src="" alt="company logo" />
-            <h1>Mutitu water project</h1>
-            <h3>Caritas</h3>
-            <span>NYERI, NYANDARUA, AND LAIKIPIA COUNTIES</span>
+            <div className="company-logo">
+              <img src={logo} alt="company logo" />
+            </div>{" "}
+            <div className="company-name">
+              <h1>Mutitu water project</h1>
+              <h3>
+                <i>Caritas</i>
+              </h3>
+              <span>NYERI, NYANDARUA, AND LAIKIPIA COUNTIES</span>
+            </div>
           </div>
           <div className="office-details">
             <div className="office-left">
@@ -92,31 +101,39 @@ function Receiptgen() {
             <div className="receipt-details">
               <table>
                 <thead className="receipt-tbl">
-                  <tr>
+                  <tr className="tr">
                     <th>Member Name:</th>
-                    <td>
+                    <td className="td">
                       {receiptData.billing.customer.custFirstName}{" "}
                       {receiptData.billing.customer.custLastName}
                     </td>
                   </tr>
 
-                  <tr className="rows" colSpan={2}>
+                  <tr className="rows tr" colSpan={2}>
                     <th>Member Number:</th>
-                    <td>{receiptData.billing.customer.cust_id}</td>
+                    <td className="td">
+                      {receiptData.billing.customer.cust_id}
+                    </td>
 
                     <th>Zone:</th>
-                    <td>{receiptData.billing.meters.zones.zoneName}</td>
+                    <td className="td">
+                      {receiptData.billing.meters.zones.zoneName}
+                    </td>
                   </tr>
 
-                  <tr rowspan={2}>
+                  <tr className="tr" rowspan={2}>
                     <th>Meter Number:</th>
-                    <td>{receiptData.billing.meters.meterNumber}</td>
+                    <td className="td">
+                      {receiptData.billing.meters.meterNumber}
+                    </td>
                     <th>Tel:</th>
-                    <td>{receiptData.billing.customer.custPhoneNumber}</td>
+                    <td className="td">
+                      {receiptData.billing.customer.custPhoneNumber}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr className="tr">
                     <th>Date of issue</th>
-                    <td>{receiptData.createdAt}</td>
+                    <td className="td">{receiptData.createdAt}</td>
                   </tr>
                 </thead>
               </table>
@@ -165,10 +182,10 @@ function Receiptgen() {
                   </tr>
                   <tr>
                     <td rowSpan={3} colSpan={2}>
-                      <span>Domestic:</span>
-                      <span>TOWNSHIP:</span>
-                      <span>INSTITUTION:</span>
-                      <span>Due Date:</span>
+                      <span>Domestic:</span> <br />
+                      <span>TOWNSHIP:</span> <br />
+                      <span>INSTITUTION:</span> <br />
+                      <span>Due Date:</span> br
                     </td>
                     <td>Adjustments</td>
                     <td></td>
@@ -181,7 +198,12 @@ function Receiptgen() {
                     <td>Less Payment</td>
                   </tr>
                   <tr>
-                    <td>Server</td>
+                    <td>
+                      Served by :{" "}
+                      <span className="server">
+                        {user.first_name} {user.lastName}
+                      </span>
+                    </td>
                     <td></td>
                     <td>Total amount:</td>
                     <td>{receiptData.billing.amountDue}</td>
@@ -191,25 +213,32 @@ function Receiptgen() {
             </div>
             <div className="bottom">
               <h4>MPESA PAYBILL</h4>
-              <div className="steps">
-                <FaArrowRightLong /> <span>LIPA NA MPESA</span>
-                <FaArrowRightLong /> <span>PAYBILL</span>
-                <FaArrowRightLong /> <span>BUSSINESS NUMBER: 522522</span>
+              <div className="payment-process">
+                <div className="steps">
+                  <FaArrowRightLong className="next" />{" "}
+                  <span>LIPA NA MPESA</span>
+                  <FaArrowRightLong className="next" /> <span>PAYBILL</span>
+                  <FaArrowRightLong className="next" />{" "}
+                  <span>BUSSINESS NUMBER: 522522</span>
+                </div>
+                <div className="account">
+                  <span>
+                    ACCOUNT No. 6243794 #......customer payment number........
+                  </span>
+                  <FaArrowRightLong className="next" /> <span>AMOUNT</span>{" "}
+                  <FaArrowRightLong className="next" />
+                  <span>PIN</span>
+                </div>
               </div>
-              <span>
-                ACCOUNT No. 6243794 #......customer payment number........
-              </span>
-              <FaArrowRightLong /> <span>AMOUNT</span> <FaArrowRightLong />
-              <span>PIN</span>
             </div>
-            <p>
+            <p className="notice">
               This utility is payable within fourteen days from date of issue.
               Your supply is liable for disconnestion without any further
               notice. Should your supply be disconnected, in addition to
               settling the bill you will be charged reconnection bill of{" "}
               <span>Ksh. 2000</span>{" "}
             </p>
-            <span>{receiptData.receiptNumber}</span>
+            <p className="receipt-no">{receiptData.receiptNumber}</p>
           </div>
         ) : (
           <p>Loading data ....</p>

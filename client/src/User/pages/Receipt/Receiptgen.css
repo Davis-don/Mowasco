@@ -6,13 +6,45 @@
 }
 
 .receipt-invoice .name-logo {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1;
-  justify-content: space-around;
-  align-items: center;
+ display: grid;  
+ grid-template-columns: 0.4fr 1fr;
+ grid-template-rows: auto;
+ grid-template-areas: 'left right';
+ align-items: start;
+ justify-content: center;
 }
 
+
+.company-logo{
+  grid-area: left;
+}
+.company-name{
+  grid-area: right;
+}
+.overall-receipt-gen-container{
+  width: 100%;
+}
+
+table{
+  width: 100%;
+}
+table thead tr th{
+  border: none;
+}
+
+table .tr .td{
+  border-bottom: 2px solid black;
+  border-style: dotted;
+}
+
+table tr td .server{
+  color: var(--navy-blue);
+  text-transform: capitalize;
+}
+.name-logo h1{
+  letter-spacing: .3rem;
+  font-weight: 700;
+}
 .name-logo h1,
 h3,
 span {
@@ -21,6 +53,10 @@ span {
   line-height: 1.6;
 }
 
+
+.company-name h3{
+  text-align: center;
+}
 .office-details {
   display: flex;
   margin-top: 0.5rem;
@@ -28,7 +64,9 @@ span {
   justify-content: space-between;
   width: 100%;
 }
-
+.office-left h4{
+  text-align: start;
+}
 .office-left span {
   text-transform: capitalize;
 }
@@ -44,18 +82,60 @@ span {
   text-transform: capitalize;
 }
 
-/* table thead, tr,  th,
-table, tbody, tr, td{
-    border: 2px solid red;
-} */
+.bottom .steps span{
+  font-size: 1.2rem;
+  letter-spacing: .2rem;
+  line-height: 1.6;
+}
 
-@media (max-width: 640px) {
-  .overall-receipt-gen-container {
-  }
+.bottom .account span{
+  padding: .2rem 0;
+  font-size: 1.2rem;
+    letter-spacing: .05rem;
+    line-height: 1.6;
+}
+.payment-process{
+  padding: 1rem 0;
+}
+.next{
+  font-size: 1.2rem;
+  width: 3rem;
+}
+.notice{
+  text-align: justify;
+  padding: 0 1rem;
+  letter-spacing: 5;
+  line-height: 1.6;
+}
+.receipt-no{
+  text-align: center;
+}
+.name-logo img{
+  width: 8rem;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+
+}
+
+@media screen and (max-width: 500px) {
+ .name-logo{
+   border: 1px solid red;
+  display:flex;
+  flex-direction: column;
+ }
+ 
+ .name-logo .company-logo{
+  display: none;
+ }
+.company-name{
+  width: 100%;
+  border: 2px solid green;
+}
   .gen-water-receipt-form-div {
-    padding: 30px;
-    width: 80vw;
-    margin: auto;
+    padding: 0;
+      width: 100%;
   }
 }
 @media screen and (min-width: 641px) and (max-width: 1025px) {

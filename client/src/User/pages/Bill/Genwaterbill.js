@@ -238,7 +238,7 @@ function Genwaterbill() {
                   disabled
                 />
               </div>
-              <div className="input">
+              <div className="inputs">
                 <label>Phone number</label>
                 <input
                   type="number"
