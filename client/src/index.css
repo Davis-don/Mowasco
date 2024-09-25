@@ -3,8 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 :root {
   --navy-blue: #000080;
   --sky-blue: #87ceeb;
+}
+
+body{
+  font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }

@@ -174,7 +174,7 @@ function AdminDashboard() {
           <div className="card-title">
             <h4>Montly Consumption</h4>
             <p>
-              Total amount: {totalMonthlyConsumed} M <sup>3</sup>
+              <span>Total amount</span>: {totalMonthlyConsumed} M <sup>3</sup>
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
@@ -191,7 +191,9 @@ function AdminDashboard() {
         <div className="card-right card-1">
           <div className="card-title">
             <h4>Zones</h4>
-            <p>No. of Zones: {zones?.length} (Zones)</p>
+            <p>
+              <span>No. of Zones</span>: {zones?.length} (Zones)
+            </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
@@ -284,19 +286,18 @@ function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                    {
-                    fieldAgents && fieldAgents.length > 0 ? (
-                    fieldAgents.map((agent, key) => (
-                    <tr key={key}>
-                        <td>Zone 1</td>
-                        <td>{agent.first_name} {agent.lastName}</td>
-                      </tr>
-                      ))
-                      ):(
-                      <p>Loading agents...</p>
-                      )
-                    }
-                      
+                      {fieldAgents && fieldAgents.length > 0 ? (
+                        fieldAgents.map((agent, key) => (
+                          <tr key={key}>
+                            <td>Zone 1</td>
+                            <td>
+                              {agent.first_name} {agent.lastName}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <p>Loading agents...</p>
+                      )}
                     </tbody>
                   </table>
                 </div>

@@ -7,11 +7,14 @@ import { IoSpeedometerSharp } from "react-icons/io5";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import { FaRegRectangleList } from "react-icons/fa6";
 import { FaLessThan } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 import store from "../../store/dataStore";
 
 const SideNav = () => {
   const user = store((state) => state.user);
-
+const handleLogout = async () => {
+  
+}
   return (
     <div>
       <div className="aside">
@@ -61,9 +64,9 @@ const SideNav = () => {
             </>
           )}
         </div>
-
-        <div className="logout">
-          <button>Log out</button>
+        <div className="logout" onClick={handleLogout}>
+          <FiLogOut className="logout-icon" />
+          <span>Log out</span>
         </div>
       </div>
     </div>

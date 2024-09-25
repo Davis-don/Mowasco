@@ -67,7 +67,7 @@
 }
 
 .aside {
-  padding-top: 1rem;
+  padding: 1rem 0;
   grid-area: sidebar;
   height: 100%;
   background-color: var(--navy-blue);
@@ -75,18 +75,12 @@
   justify-content: space-between;
   align-items: start;
   color: var(--sky-blue);
-  padding-left: 0.5rem;
   flex-direction: column;
   overflow: hidden;
   position: relative;
 }
 
-.aside button {
-  width: 7rem;
-  border-radius: 0.3rem;
-  height: 2rem;
-  margin-bottom: 1rem;
-}
+
 
 .aside .nav-links {
   width: 100%;
@@ -95,7 +89,11 @@
   gap: 1rem;
 }
 .nav-1 .li .icons {
-  font-size: 2.5rem;
+  font-size: 2rem;
+}
+.nav-1 .li span{
+  font-size: 1rem;
+  font-weight: 650;
 }
 
 .aside .nav-links .nav-1 {
@@ -111,7 +109,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: .4rem;
 }
 
 .aside .nav-links .nav-1:hover {
@@ -260,7 +258,29 @@ button:hover {
 }
 
 
+/* // logout */
+.logout{
+  padding: .2rem .8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  cursor: pointer;
+  border: 1px solid var(--inputs-color);
+  margin: 0 1rem;
+  border-radius: .5rem;
 
+}
+.logout .logout-icon, span{
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.logout:hover{
+background-color: var(--inputs-color);
+color: black;
+}
 @media screen and (max-width: 500px) {
   .dis {
     display: grid;
