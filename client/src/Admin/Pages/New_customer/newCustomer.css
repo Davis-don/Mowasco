@@ -27,6 +27,16 @@ table tr td {
 
 .action {
   text-align: center;
+  
+}
+
+.action span{
+  font-size: .85rem;
+  padding: .4rem;
+}
+
+.action .icons{
+  font-size: 1.5rem;
 }
 table th {
   text-align: start;
@@ -45,81 +55,7 @@ table tbody:nth-of-type(even) {
   background-color: rebeccapurple;
 }
 
-/* THE SEARCH AND FILTER SECTION  */
-.search-filter {
-  margin: 1rem 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.search-filter-left {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  height: 100%;
-}
-.search-filter-left button {
-  padding: 0 0.4rem;
-  border-radius: 0.2rem;
-  background-color: var(--sky-blue);
-  border: none;
-}
 
-.filter {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  gap: 0.5rem;
-}
-.filter span {
-  display: inline-flex;
-  padding: 0.3rem 0.4rem;
-  background-color: var(--sky-blue);
-  border-radius: 0.2rem;
-}
-
-.filter .filter-icon {
-  font-size: 1.5rem;
-  /* padding: .1rem 0; */
-}
-
-.link {
-  color: black;
-  /* text-decoration: none; */
-}
-
-@media screen and (max-width: 500px) {
-  .search-filter {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .search-filter-left {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-@media screen and (min-width: 501px) and (max-width: 800px) {
-  .search-filter {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .search-filter-left {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
 
 .forms{
   display: flex;
@@ -159,8 +95,38 @@ table tbody:nth-of-type(even) {
 
 
 
-@media screen and (max-width:500px) {
-.update_customer{
-  width: 100%;
+
+@media screen and (max-width: 500px) {
+  .search-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+    .update_customer {
+      width: 100%;
+    }
+
+
+  .search-filter-left {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+  .search-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .search-filter-left {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

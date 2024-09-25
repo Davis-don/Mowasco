@@ -93,70 +93,81 @@ const AddNewCustomers = () => {
         Register a new Customer
       </h4>
 
-      <form action="" onSubmit={handleSubmit}>
-        <div className="inputs">
-          <input
-            className="form-control"
-            type="text"
-            name="fName"
-            value={fName}
-            placeholder="First name"
-            onChange={(e) => setFName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            name="lName"
-            className="form-control m-2"
-            value={lName}
-            placeholder="Last name"
-            onChange={(e) => setLName(e.target.value)}
-            required
-          />
-        </div>
+      <div className="forms">
+        <form action="" className="update_customer" onSubmit={handleSubmit}>
+          <div className="inputs">
+            <label htmlFor="fName">First Name:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="fName"
+              value={fName}
+              placeholder="First name"
+              onChange={(e) => setFName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label htmlFor="fName">Last Name:</label>
 
-        <div className="inputs">
-          <input
-            type="number"
-            name="IDNumber"
-            className="form-control m-2"
-            value={IDNumber}
-            placeholder="ID number"
-            onChange={(e) => setIDNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="number"
-            name="phoneNumber"
-            placeholder="Phone number"
-            className="form-control m-2"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            name="connectionType"
-            placeholder="Connection type"
-            className="form-control m-2"
-            value={connectionType}
-            onChange={(e) => setConnectionType(e.target.value)}
-            required
-          />
-        </div>
-        <div className="adduser-button">
-          <button className="btn btn-outline-primary">
-            {loading ? "Submitting...." : "Submit"}
-          </button>
-        </div>
-        <ToastContainer />
-      </form>
+            <input
+              type="text"
+              name="lName"
+              className="form-control"
+              value={lName}
+              placeholder="Last name"
+              onChange={(e) => setLName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="inputs">
+            <label htmlFor="fName">ID No.:</label>
+
+            <input
+              type="number"
+              name="IDNumber"
+              className="form-control"
+              value={IDNumber}
+              placeholder="ID number"
+              onChange={(e) => setIDNumber(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label htmlFor="fName">Phone Number:</label>
+
+            <input
+              type="number"
+              name="phoneNumber"
+              placeholder="Phone number"
+              className="form-control"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label htmlFor="fName">Connection type</label>
+
+            <input
+              type="text"
+              name="connectionType"
+              placeholder="Connection type"
+              className="form-control"
+              value={connectionType}
+              onChange={(e) => setConnectionType(e.target.value)}
+              required
+            />
+          </div>
+          <div className="adduser-button">
+            <button>
+              {loading ? "Registering...." : "Register"}
+            </button>
+          </div>
+          <ToastContainer />
+        </form>
+      </div>
     </div>
   );
 };

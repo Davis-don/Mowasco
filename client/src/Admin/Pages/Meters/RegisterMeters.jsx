@@ -101,52 +101,61 @@ const RegisterMeters = () => {
       <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
         Register a new Customer
       </h4>
-      <form action="" onSubmit={formik.handleSubmit}>
-        <div className="inputs">
-          <select
-            className="form-select form-control"
-            name="zone"
-            value={formik.values.zone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <option>Zones</option>
-            {zone && zone.length > 0 ? (
-              zone.map((zone, key) => (
-                <option value={zone.zone_id}>{zone.zoneName}</option>
-              ))
-            ) : (
-              <p>Loading zones...</p>
+      <div className="forms">
+        <form
+          action=""
+          className="update_customer"
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="inputs">
+            <label htmlFor="zone">Select zone:</label>
+            <select
+              className="form-select form-control"
+              name="zone"
+              value={formik.values.zone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <option>Zones</option>
+              {zone && zone.length > 0 ? (
+                zone.map((zone, key) => (
+                  <option value={zone.zone_id}>{zone.zoneName}</option>
+                ))
+              ) : (
+                <p>Loading zones...</p>
+              )}
+            </select>
+            {formik.touched.zone && formik.errors.zone && (
+              <p>{formik.errors.zone}</p>
             )}
-          </select>
-          {formik.touched.zone && formik.errors.zone && (
-            <p>{formik.errors.zone}</p>
-          )}
-        </div>
+          </div>
 
-        <div className="inputs">
-          <input
-            className="form-control"
-            type="number"
-            name="meterNumber"
-            value={formik.values.meterNumber}
-            placeholder="Meter number"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            required
-          />
-          {formik.touched.meterNumber && formik.errors.meterNumber && (
-            <p>{formik.errors.meterNumber}</p>
-          )}
-        </div>
+          <div className="inputs">
+            <label htmlFor="meterNumber">Assign Meter No.:</label>
 
-        <div className="adduser-button">
-          <button className="btn btn-outline-primary">
-            {loading ? "Assignign meter...." : "Assign meter"}
-          </button>
-        </div>
-        <ToastContainer />
-      </form>
+            <input
+              className="form-control"
+              type="number"
+              name="meterNumber"
+              value={formik.values.meterNumber}
+              placeholder="Meter number"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              required
+            />
+            {formik.touched.meterNumber && formik.errors.meterNumber && (
+              <p>{formik.errors.meterNumber}</p>
+            )}
+          </div>
+
+          <div className="adduser-button">
+            <button >
+              {loading ? "Assigning meter...." : "Assign meter"}
+            </button>
+          </div>
+          <ToastContainer />
+        </form>
+      </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 import { MdEdit } from "react-icons/md";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { IoFilterSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const Customers = () => {
       setError(false);
       const getUsers = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/all`, {
-          withCredentials:true
+          withCredentials: true,
         })
         .catch((error) => {
           console.log(error);
@@ -39,7 +39,7 @@ const Customers = () => {
 
       if (getUsers.status == 200) {
         const data = getUsers.data.data;
-        console.log('customer', data)
+        console.log("customer", data);
         setCustomers(data);
       } else {
         toast.warn("Something went wrong. Please try again later.");
@@ -50,14 +50,6 @@ const Customers = () => {
       setLoading(false);
     }
   };
-
-  // if (loading) {
-  //   return <p>Loading...</p>; // Show a loading message while waiting for the API
-  // }
-
-  // if (!customers) {
-  //   return <p>No customer data available</p>; // Handle case when no data is available
-  // }
 
   const addNewCustomer = async () => {
     try {
@@ -86,9 +78,12 @@ const Customers = () => {
   const handleDelete = async (id) => {
     try {
       const deleteCustomer = await axios
-        .delete(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/delete/${id}`, {
-          withCredentials:true
-        })
+        .delete(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/delete/${id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .catch((error) => {
           console.log(error);
           toast.warn("Server error");
@@ -169,17 +164,28 @@ const Customers = () => {
                   <span className="status">{customer.custStatus}</span>
                 </td>
                 <td className="action">
-                  {<MdEdit onClick={() => updateCustomer(customer.cust_id)} />}
+                  {
+                    <MdEdit
+                      className="icons"
+                      onClick={() => updateCustomer(customer.cust_id)}
+                    />
+                  }
                 </td>
                 <td className="action">
                   {
-                    <MdDeleteForever
+                    <MdDelete
+                      className="icons"
                       onClick={() => handleDelete(customer.cust_id)}
                     />
                   }
                 </td>
                 <td className="action">
-                  {<FaEye onClick={() => viewCustomer(customer.cust_id)} />}
+                  {
+                    <FaEye
+                      className="icons"
+                      onClick={() => viewCustomer(customer.cust_id)}
+                    />
+                  }
                 </td>
               </tr>
             </tbody>
