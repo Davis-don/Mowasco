@@ -22,7 +22,7 @@ const MeterReadingHistory = () => {
     fName: Yup.string().required("Please provide customer first name."),
     lName: Yup.string().required("Please provide customers last name"),
     IDNumber: Yup.number().required(
-      "Please provide national indentification number."
+      "Please provide national indentification number.",
     ),
     phoneNumber: Yup.number().required("Provide customers phone number."),
     connectionType: Yup.string().required("Provide the connection type."),
@@ -162,7 +162,6 @@ const MeterReadingHistory = () => {
         </div>
         <ToastContainer />
       </form>
-      
     </div>
   );
 };

@@ -38,7 +38,6 @@ const WaterReading = () => {
             <IoFilterSharp className="filter-icon" />
             <span>Filter</span>
           </div>
-        
         </div>
       </div>
       <table>

@@ -27,7 +27,7 @@ const Billing_payment = () => {
     try {
       let getBills = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`)
-        .catch((error => console.log(error)));
+        .catch((error) => console.log(error));
       if (getBills.status == 200) {
         console.log(getBills);
         setCustomerBills(getBills.data.data);
@@ -47,7 +47,7 @@ const Billing_payment = () => {
     fName: Yup.string().required("Please provide customer first name."),
     lName: Yup.string().required("Please provide customers last name"),
     IDNumber: Yup.number().required(
-      "Please provide national indentification number."
+      "Please provide national indentification number.",
     ),
     phoneNumber: Yup.number().required("Provide customers phone number."),
     connectionType: Yup.string().required("Provide the connection type."),
@@ -132,7 +132,9 @@ const Billing_payment = () => {
               <td>{cstBill.otherCharges}</td>
               <td>{cstBill.amountDue}</td>
 
-              <td>{<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}</td>
+              <td>
+                {<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}
+              </td>
             </tr>
           ))
         ) : (

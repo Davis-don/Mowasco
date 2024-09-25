@@ -1,192 +1,305 @@
-import React, { useEffect, useState } from 'react'
-import './Genwaterbill.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { useFormik } from 'formik'
-import axios from 'axios'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast, ToastContainer } from 'react-toastify'
+import React, { useEffect, useState } from "react";
+import "./Genwaterbill.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useFormik } from "formik";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Genwaterbill() {
-  const navigate = useNavigate()
-  const {id} = useParams()
-  const [waterReadings, setWaterReadings] = useState()
-  const [meter, setMeter] = useState()
-  const [bill, setBill] = useState()
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [waterReadings, setWaterReadings] = useState();
+  const [meter, setMeter] = useState();
+  const [bill, setBill] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const getData = await axios.get(`http://localhost:4000/meters/${id}`, {
-          withCredentials:true
-        }).catch(error => console.log(error))    
-        if (getData.status == 200){
-          setMeter(getData.data.data)
-        }else{
-          toast.success('Something went wrong.')
+        const getData = await axios
+          .get(`http://localhost:4000/meters/${id}`, {
+            withCredentials: true,
+          })
+          .catch((error) => console.log(error));
+        if (getData.status == 200) {
+          setMeter(getData.data.data);
+        } else {
+          toast.success("Something went wrong.");
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchDetails()
-  }, [])
+    };
+    fetchDetails();
+  }, []);
 
-
-  // // fetch the meter readings. 
+  // // fetch the meter readings.
   const fetchMeterReadings = async () => {
     try {
-    //  const meterID = (customer.meters.meter_id)
-      const getReadings = await axios.get(`http://localhost:4000/customer/reading/${id}`, {
-          withCredentials:true
-        }).catch(error => console.log('water reading',error))
+      //  const meterID = (customer.meters.meter_id)
+      const getReadings = await axios
+        .get(`http://localhost:4000/customer/reading/${id}`, {
+          withCredentials: true,
+        })
+        .catch((error) => console.log("water reading", error));
 
-      if(getReadings.status == 200){
-        setWaterReadings(getReadings.data.data)
-      } else{
-        toast.success('Something went wrong.')
+      if (getReadings.status == 200) {
+        setWaterReadings(getReadings.data.data);
+      } else {
+        toast.success("Something went wrong.");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-   useEffect(() => {
+  useEffect(() => {
     const loadDetails = () => {
       if (meter) {
         formik.setValues({
-          meterNumber:meter.meterNumber,
-          zone:meter.zones.zoneName,
-          fName:meter.customer.custFirstName,
-          lName:meter.customer.custLastName,
-          IDNumber:meter.customer.custID,
-          phoneNumber:meter.customer.custPhoneNumber,
-          prevWaterReading:waterReadings?.prevReading,
-          consumption:waterReadings?.consumption,
-          currentWaterReadings: waterReadings?.currentReading
+          meterNumber: meter.meterNumber,
+          zone: meter.zones.zoneName,
+          fName: meter.customer.custFirstName,
+          lName: meter.customer.custLastName,
+          IDNumber: meter.customer.custID,
+          phoneNumber: meter.customer.custPhoneNumber,
+          prevWaterReading: waterReadings?.prevReading,
+          consumption: waterReadings?.consumption,
+          currentWaterReadings: waterReadings?.currentReading,
         });
       }
     };
-    // meter ? loadDetails():setLoading(true) 
+    // meter ? loadDetails():setLoading(true)
     loadDetails();
-    fetchMeterReadings()
+    fetchMeterReadings();
   }, [meter]);
 
-    const createReceipt = async(billID, custID, meterID, amountPaid) => {
+  const createReceipt = async (billID, custID, meterID, amountPaid) => {
     try {
-      const receipt = await axios.post(`http://localhost:4000/customer/receipt/generate`, {
-        amount_paid:amountPaid,
-        bill_id:billID,
-        cust_id:custID,
-        meter_id:meterID 
-      }, {
-          withCredentials:true
-        }).catch(error => console.log(error))
+      const receipt = await axios
+        .post(
+          `http://localhost:4000/customer/receipt/generate`,
+          {
+            amount_paid: amountPaid,
+            bill_id: billID,
+            cust_id: custID,
+            meter_id: meterID,
+          },
+          {
+            withCredentials: true,
+          },
+        )
+        .catch((error) => console.log(error));
 
-      if(receipt.status == 200){
-        const receiptData= receipt.data.data
+      if (receipt.status == 200) {
+        const receiptData = receipt.data.data;
         const receiptID = receiptData.receipt_id;
-        navigate(`/customer/meter/receipt/${receiptID}`)
-      } else{
-        toast.warn('Something went wrong.')
+        navigate(`/customer/meter/receipt/${receiptID}`);
+      } else {
+        toast.warn("Something went wrong.");
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
- const getBillDetails = async (id) => {
-try {
-      const billDetails = await axios.get(`http://localhost:4000/customer/bill/${id}`, {
-          withCredentials:true
-        }).catch(error => console.log(error))
-     
-      if(billDetails.status == 200){
-        
-        const billData = billDetails.data.data
-        const billID = billData.bill_id
-        const custID = billData.customer.cust_id
-        const meterID = billData.customer.meters.meter_id;
-        const amountPaid = billData.amountDue
-        createReceipt(billID, custID, meterID, amountPaid)
-      } else{
-        toast.warn('Something went wrong.')
-      }
-      
-    } catch (error) {
-      console.log(error)
-    }
- }
-
-  const handleSubmit = async(values) => {
+  };
+  const getBillDetails = async (id) => {
     try {
-      const createBill = await axios.post(`http://localhost:4000/customer/bill/create`, {
-        cust_id: meter.customer.cust_id,
-        meter_id: meter.meter_id,
-        consumption:values.consumption,
-      }, {
-          withCredentials:true
-        }).catch(error => console.log(error))
- 
-      if (createBill.status == 200) {
-        const bill = (createBill.data.data)
-        getBillDetails(bill.bill_id)
-      } else{
-        alert('something went wrong.')
+      const billDetails = await axios
+        .get(`http://localhost:4000/customer/bill/${id}`, {
+          withCredentials: true,
+        })
+        .catch((error) => console.log(error));
+
+      if (billDetails.status == 200) {
+        const billData = billDetails.data.data;
+        const billID = billData.bill_id;
+        const custID = billData.customer.cust_id;
+        const meterID = billData.customer.meters.meter_id;
+        const amountPaid = billData.amountDue;
+        createReceipt(billID, custID, meterID, amountPaid);
+      } else {
+        toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  const formik= useFormik({
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      const createBill = await axios
+        .post(
+          `http://localhost:4000/customer/bill/create`,
+          {
+            cust_id: meter.customer.cust_id,
+            meter_id: meter.meter_id,
+            consumption: values.consumption,
+          },
+          {
+            withCredentials: true,
+          },
+        )
+        .catch((error) => console.log(error));
+
+      if (createBill.status == 200) {
+        const bill = createBill.data.data;
+        getBillDetails(bill.bill_id);
+      } else {
+        alert("something went wrong.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const formik = useFormik({
     initialValues: {
-      meterNumber:'',
-      zone:"",
-      fName:'',
-      lName:'',
-      IDNumber:'',
-      phoneNumber:'',
-      currentWaterReadings:'',
-      prevWaterReading:'',
-      consumption:''
+      meterNumber: "",
+      // customerNumber:'',
+      zone: "",
+      fName: "",
+      lName: "",
+      IDNumber: "",
+      phoneNumber: "",
+      currentWaterReadings: "",
+      prevWaterReading: "",
+      consumption: "",
     },
-    onSubmit: handleSubmit
-  })
+    onSubmit: handleSubmit,
+  });
   return (
-    <div className='overall-gen-water-bill-container container-fluid'>
-        <div className='gen-water-bill-form-div'>
-             <h6>Customer details</h6>
-        <form className='container-fluid' onSubmit={formik.handleSubmit}>
-        <div  className='overall-customer-details-container'>
-                
-              <input  type='text' value={formik.values.meterNumber} placeholder='customer-number'className='form-control m-2'/>
-              <input type='number' value={formik.values.zone} placeholder='Zone Area'className='form-control  m-2'/>
-              <input type='text' value={formik.values.fName} placeholder='First Name'className='form-control  m-2'/>
-              <input type='text' value={formik.values.lName} placeholder='Last Name'className='form-control  m-2'/>
-              <input type='number' value={formik.values.IDNumber} placeholder='ID Number'className='form-control  m-2'/>
-              <input type='number' value={formik.values.phoneNumber} placeholder='Phone Number'className='form-control  m-2'/>
+    <div className="overall-gen-water-bill-container container-fluid">
+      <div className="gen-water-bill-form-div cust-readings">
+        <h4>Customer <span> details</span>
+        </h4>
+        <form className="container-fluid" onSubmit={formik.handleSubmit}>
+          <div className="overall-customer-details-container">
+            <div className="customer-top">
+              <div className="input">
+                <label>Meter No.</label>
+                <input
+                  type="text"
+                  value={formik.values.meterNumber}
+                  placeholder="customer-number"
+                  className="form-control m-2"
+                  disabled
+                />
+              </div>
+              <div className="input">
+                <label>Customer No.</label>
+                <input
+                  type="number"
+                  value={formik.values.zone}
+                  placeholder="Zone Area"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
+              <div className="input">
+                <label>Zone Area</label>
+                <input
+                  type="number"
+                  value={formik.values.zone}
+                  placeholder="Zone Area"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="customer-top">
+              <div className="input">
+                <label>First Name.</label>
+                <input
+                  type="text"
+                  value={formik.values.fName}
+                  placeholder="First Name"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
+              <div className="input">
+                <label>Last Name.</label>
+                <input
+                  type="text"
+                  value={formik.values.lName}
+                  placeholder="Last Name"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
+              <div className="input">
+                <label>ID No.</label>
+                <input
+                  type="number"
+                  value={formik.values.IDNumber}
+                  placeholder="ID Number"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
+              <div className="input">
+                <label>Phone number</label>
+                <input
+                  type="number"
+                  value={formik.values.phoneNumber}
+                  placeholder="Phone Number"
+                  className="form-control  m-2"
+                  disabled
+                />
+              </div>
             </div>
 
-
-            <h6>Water readings</h6>
-
-            <div>
-              <label>Current Water readings</label>
-            <input type='number'value={formik.values?.currentWaterReadings} name='currentWaterReadings' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
-            <label>Previous Water readings</label>
-            <input type='number' value={formik.values?.prevWaterReading} name='prevWaterReading' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
-            <label>Total consumed</label>
-            <input type='number'value={formik.values?.consumption} name='consumption' placeholder='0' onChange={formik.handleChange} className='form-control  m-2'/>
-                </div>
-                <div style={{ width: 'max-content', margin: 'auto',padding:'20px' }}>
-              <button className='btn btn-primary  '>Generate Bill</button>
+            <div className="water-readings">
+              <h4>Meter <span>readings</span></h4>
+              <div>
+                <label>Current water reading</label>
+                <input
+                  type="number"
+                  value={formik.values?.currentWaterReadings}
+                  name="currentWaterReadings"
+                  placeholder="0"
+                  disabled
+                  onChange={formik.handleChange}
+                  className="form-control  m-2"
+                />
+              </div>
+              <div>
+                <label>Previous Water reading</label>
+                <input
+                  type="number"
+                  disabled
+                  value={formik.values?.prevWaterReading}
+                  name="prevWaterReading"
+                  placeholder="0"
+                  onChange={formik.handleChange}
+                  className="form-control  m-2"
+                />
+              </div>
+              <div>
+                <label>Consumption</label>
+                <input
+                  type="number"
+                  value={formik.values?.consumption}
+                  name="consumption"
+                  disabled
+                  placeholder="0"
+                  onChange={formik.handleChange}
+                  className="form-control  m-2"
+                />
+              </div>
             </div>
+            <div
+              style={{ width: "max-content", margin: "auto", padding: "20px" }}
+            >
+              <button className="btn btn-primary  ">Generate Bill</button>
+            </div>
+          </div>
         </form>
-        <ToastContainer/>
-        </div>
-        </div>
-  )
+        <ToastContainer />
+      </div>
+    </div>
+  );
 }
 
-export default Genwaterbill
+export default Genwaterbill;

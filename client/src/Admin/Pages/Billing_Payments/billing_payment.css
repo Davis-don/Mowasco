@@ -1,34 +1,33 @@
-.search{
-    border: 2px solid var(--sky-blue);
-    border-radius: .5rem;
-    overflow: hidden;
+.search {
+  border: 2px solid var(--sky-blue);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
-.search .search-input{
-    height: 2.1rem;
-    border: none;
-    padding-inline-start: .3rem;
-    outline: none;
+.search .search-input {
+  height: 2.1rem;
+  border: none;
+  padding-inline-start: 0.3rem;
+  outline: none;
 }
-.search .search-input:focus{
-    border: none;
+.search .search-input:focus {
+  border: none;
 }
-.search button{
-    padding: .3rem .3rem;
-    border: none;
-    background-color: var(--sky-blue);
-}
-
-
-.customer-bills .select{
-    float: right;
+.search button {
+  padding: 0.3rem 0.3rem;
+  border: none;
+  background-color: var(--sky-blue);
 }
 
-table tbody tr td .invoice{
-    color: red;
-    padding: 0.15em .4rem;
-    border: 2px solid red;
-    border-radius: .5rem;
-    font-size: .85rem;
-    cursor: pointer;
+.customer-bills .select {
+  float: right;
+}
+
+table tbody tr td .invoice {
+  color: red;
+  padding: 0.15em 0.4rem;
+  border: 2px solid red;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
 }

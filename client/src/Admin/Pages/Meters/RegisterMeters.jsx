@@ -7,23 +7,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 const RegisterMeters = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [zone, setZone] = useState();
-  const {cust_id} = useParams();
+  const { cust_id } = useParams();
 
   const getZones = async () => {
     try {
       setLoading(true);
       const zones = await axios
-        .get("http://localhost:4000/zones/all",{
-          withCredentials:true
+        .get("http://localhost:4000/zones/all", {
+          withCredentials: true,
         })
         .catch((error) => console.log(error));
       if (zones) {
         setZone(zones.data.data);
-        console.log('zones', zones.data.data)
+        console.log("zones", zones.data.data);
       } else {
         toast.warn("Zones were not found.");
       }
@@ -40,24 +40,27 @@ const RegisterMeters = () => {
       setLoading(true);
 
       const createMeter = await axios
-        .post(`http://localhost:4000/meters/create`, {
-          meterNumber: values.meterNumber,
-          zone: values.zone,
-          cust_id: cust_id,
-        },{
-          withCredentials:true
-        })
+        .post(
+          `http://localhost:4000/meters/create`,
+          {
+            meterNumber: values.meterNumber,
+            zone: values.zone,
+            cust_id: cust_id,
+          },
+          {
+            withCredentials: true,
+          },
+        )
         .catch((error) => {
           console.log(error);
           toast.error("Server error", { position: "bottom-center" });
           setError(error);
         });
-        console.log("zones",values.zone);
-        console.log("zones", values.meterNumber);
-
+      console.log("zones", values.zone);
+      console.log("zones", values.meterNumber);
 
       if (createMeter.status == 200) {
-        navigate(`/manage-customers`)
+        navigate(`/manage-customers`);
       } else {
         toast.warning("Something went wrong. Please try again later!");
       }

@@ -1,265 +1,247 @@
-
-
-.card-title h4{
-    font-size: 1.3rem;
-    text-align: center;
+.card-title h4 {
+  font-size: 1.3rem;
+  text-align: center;
 }
 
-.card-title p{
-    font-size: 1rem;
+.card-title p {
+  font-size: 1rem;
 }
-.card-title span{
-    font-size: .85rem;
+.card-title span {
+  font-size: 0.85rem;
 }
-
 
 .below {
-    flex: 1 1;
-    margin-top: 2rem;
-    align-items: start;
-    display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-areas: 'below-left below-right';
-    grid-template-rows:  auto auto;
-
+  flex: 1 1;
+  margin-top: 2rem;
+  align-items: start;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-areas: "below-left below-right";
+  grid-template-rows: auto auto;
 }
-.below-left{
-    grid-area: below-left;
-    padding: 0;
-    margin: 0;
+.below-left {
+  grid-area: below-left;
+  padding: 0;
+  margin: 0;
 }
-.below-right{
-    grid-area: below-right;
-    display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        width: 100%;
-        gap: .8rem;
-    flex: 1 1;
-}
-
-.below-right h3{
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: .5rem 0;
-   
+.below-right {
+  grid-area: below-right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.8rem;
+  flex: 1 1;
 }
 
-.below-right .other-details{
-    width: 20rem;
-    display: flex;
-    border: 1px solid black;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    background-color: var(#C2CBDC);
-    padding: .5rem;
-    border-radius: .5rem;
-}
-.other-details .infor{
-    display: flex;
-    flex-direction: column;
-    float: right;
-}
-.other-details .infor h4{
-    font-size: 1rem;
-    font-weight: 700;
+.below-right h3 {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
 }
 
-.other-details .infor span{
-    font-size: .85rem;
+.below-right .other-details {
+  width: 20rem;
+  display: flex;
+  border: 1px solid black;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(#c2cbdc);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
-.other-details .infor span span{
-    color: var(--navy-blue);
+.other-details .infor {
+  display: flex;
+  flex-direction: column;
+  float: right;
 }
-
-.other-details .icon{
-    font-size: 2.5rem;
-
-}
-.maps{
-    margin-top: 2rem;
-    width: 100%;
-}
-.maps iframe{
-    width: 100%;
-    border-radius:  .4rem;
-    
-}
-
-.bottom{
-    flex: 1 1;
-    display: grid;
-    place-content: center;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-}
-.bottom h1{
-    text-align: center;
-    font-size: 1rem;
-
-}
-.bottom span{
-    font-size: .65rem;
-    color: var(--navy-blue);
-
+.other-details .infor h4 {
+  font-size: 1rem;
+  font-weight: 700;
 }
 
-
-
-
-/* THE DASHBOARD */ 
-.dashboard{
-    position: relative;
-    display: grid;
-    max-width: 100%;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas: 'card-left card-center card-right'
-                            'graphs graphs graphs'
-                            'moreDetails moreDetails moreDetails'
-                            'map map map';
-    justify-content:  center;
-    align-items: center;
+.other-details .infor span {
+  font-size: 0.85rem;
 }
-.card-left{
-    width: 100%;
-    grid-area: card-left;
-    display: flex;
-    flex: 1 1;
-    display: flex;
-    padding: .5rem 0;
-        align-items: center;
-    justify-content: center;
-}
-.card-1 .card-title{
-    padding: .8rem;
-    border-radius: .5rem;
-    font-weight: 600px;
-    background-color: #C2CBDC;
-}
-.card-title h4{
-    font-size: 1.2rem;
-}
-.card-title p{
-    font-size: 1rem;
+.other-details .infor span span {
+  color: var(--navy-blue);
 }
 
-.card-title p span{
-    color: var(--navy-blue);
+.other-details .icon {
+  font-size: 2.5rem;
 }
-.card-center{
-    grid-area: card-center;
-    max-width: 100%;
-    display: flex;
-        align-items: center;
-        justify-content: center;
+.maps {
+  margin-top: 2rem;
+  width: 100%;
 }
-.card-right{
-    max-width: 100%;
-    grid-area: card-right;
-    display: flex;
-        align-items: center;
-        justify-content: center;
-}
-.graphs{
-    grid-area: graphs;
-    display: grid;
-    margin-top: 1rem;
-    grid-template-columns: 60% 50%;
-    grid-template-rows: auto;
-    grid-template-areas: 'charts pie';
-    flex: 1 1;
+.maps iframe {
+  width: 100%;
+  border-radius: 0.4rem;
 }
 
-.charts{
-    grid-area: charts;
+.bottom {
+  flex: 1 1;
+  display: grid;
+  place-content: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.bottom h1 {
+  text-align: center;
+  font-size: 1rem;
+}
+.bottom span {
+  font-size: 0.65rem;
+  color: var(--navy-blue);
 }
 
-.pie{
-    grid-area: pie;
+/* THE DASHBOARD */
+.dashboard {
+  position: relative;
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "card-left card-center card-right"
+    "graphs graphs graphs"
+    "moreDetails moreDetails moreDetails"
+    "map map map";
+  justify-content: center;
+  align-items: center;
+}
+.card-left {
+  width: 100%;
+  grid-area: card-left;
+  display: flex;
+  flex: 1 1;
+  display: flex;
+  padding: 0.5rem 0;
+  align-items: center;
+  justify-content: center;
+}
+.card-1 .card-title {
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600px;
+  background-color: #c2cbdc;
+}
+.card-title h4 {
+  font-size: 1.2rem;
+}
+.card-title p {
+  font-size: 1rem;
 }
 
-
-
-
-.moreDetails{
-    grid-area: moreDetails;
+.card-title p span {
+  color: var(--navy-blue);
 }
-.map{
-    grid-area: map;
-    width: 100%;
+.card-center {
+  grid-area: card-center;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.top-cards{
-    background-color: aqua;
+.card-right {
+  max-width: 100%;
+  grid-area: card-right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.graphs {
+  grid-area: graphs;
+  display: grid;
+  margin-top: 1rem;
+  grid-template-columns: 60% 50%;
+  grid-template-rows: auto;
+  grid-template-areas: "charts pie";
+  flex: 1 1;
+}
+
+.charts {
+  grid-area: charts;
+}
+
+.pie {
+  grid-area: pie;
+}
+
+.moreDetails {
+  grid-area: moreDetails;
+}
+.map {
+  grid-area: map;
+  width: 100%;
+}
+.top-cards {
+  background-color: aqua;
 }
 
 @media screen and (max-width: 500px) {
-    .dashboard{
-        display:flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    .graphs{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    .moreDetails .below{
-        display: flex;
-        flex-direction: column;
-        margin-top: 0;
-        align-items: center;
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .moreDetails .below {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    align-items: center;
+  }
 
-    }
-
-    .below-left{
-        width: 100%;
-    }
-    .below-right{
-        width: auto;
-    }
-    .below-right .other-details{
-        width: 16rem;
-    }
+  .below-left {
+    width: 100%;
+  }
+  .below-right {
+    width: auto;
+  }
+  .below-right .other-details {
+    width: 16rem;
+  }
 }
 
+@media screen and (min-width: 501px) and (max-width: 820px) {
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px solid black;
+  }
 
-@media screen and (min-width: 501px) and (max-width:820px) {
-    .dashboard {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        border: 2px solid black;
-    }
+  .graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .graphs {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+  .moreDetails .below {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    align-items: center;
+  }
 
-    .moreDetails .below {
-        display: flex;
-        flex-direction: column;
-        margin-top: 0;
-        align-items: center;
+  .below-left {
+    width: 100%;
+  }
 
-    }
+  .below-right {
+    width: auto;
+  }
 
-    .below-left {
-        width: 100%;
-    }
-
-    .below-right {
-        width: auto;
-    }
-
-    .below-right .other-details {
-        width: 16rem;
-    }
-
+  .below-right .other-details {
+    width: 16rem;
+  }
 }

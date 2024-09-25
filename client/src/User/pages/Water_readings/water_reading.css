@@ -1,30 +1,30 @@
-.water-reading{
-    height: 3.4rem;
-    border: 2px solid var(--navy-blue);
+.water-reading {
+  height: 3.4rem;
+  border: 2px solid var(--navy-blue);
 }
 
-.gen-water-bill-form-div{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
-    width: 80%;
-    border: 1px var(--navy-blue) solid;
-    padding: 1rem;
-    border-radius: 1rem;
-    height: 100%;
-    background-color:var(--agent-background);
+.gen-water-bill-form-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  width: 80%;
+  border: 1px var(--navy-blue) solid;
+  padding: 1rem;
+  border-radius: 1rem;
+  height: 100%;
+  background-color: var(--agent-background);
 }
-.gen-water-bill-form-div h1{
-    text-align: center;
-    font-weight: 600;
+.gen-water-bill-form-div h1 {
+  text-align: center;
+  font-weight: 600;
 }
-form{
-   min-width: 70%;
+form {
+  min-width: 70%;
 }
-label{
-    padding: .5rem 0;
-    font-size: 1.3rem;
-    font-weight: 600;
+label {
+  padding: 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
 }

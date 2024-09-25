@@ -27,7 +27,7 @@ const AboutMeter = () => {
             `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
             {
               withCredentials: true,
-            }
+            },
           )
           .catch((errors) => console.log(errors));
         if (meterDetails.status == 200) {
@@ -48,7 +48,7 @@ const AboutMeter = () => {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => console.log(error));
       if (getReadings.status == 200) {

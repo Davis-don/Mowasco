@@ -9,18 +9,20 @@ const Water_reading = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState();
   const [customer, setCustomer] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const getData = await axios
           .get(`http://localhost:4000/customers/${id}`, {
-            withCredentials:true
+            withCredentials: true,
           })
           .catch((error) => console.log(error));
         if (getData.status == 200) {
-          toast.success("Customer found successfully.",{position:'bottom-center'});
+          toast.success("Customer found successfully.", {
+            position: "bottom-center",
+          });
           setCustomer(getData.data.data);
         } else {
           toast.success("Something went wrong.");
@@ -44,7 +46,7 @@ const Water_reading = () => {
           },
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => console.log(error));
       if (postRecordings.status == 200) {
@@ -80,10 +82,15 @@ const Water_reading = () => {
               />
             </div>
 
-            <div style={{ width: "max-content", margin: "auto", marginTop:".5rem" }}>
+            <div
+              style={{
+                width: "max-content",
+                margin: "auto",
+                marginTop: ".5rem",
+              }}
+            >
               <button>{loading ? "Generating ..." : "Generate bill"}</button>
             </div>
-
           </form>
           <ToastContainer />
         </div>

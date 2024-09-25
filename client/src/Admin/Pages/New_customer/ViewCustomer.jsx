@@ -26,7 +26,7 @@ const ViewCustomer = () => {
     fName: Yup.string().required("Please provide customer first name."),
     lName: Yup.string().required("Please provide customers last name"),
     IDNumber: Yup.number().required(
-      "Please provide national indentification number."
+      "Please provide national indentification number.",
     ),
     phoneNumber: Yup.number().required("Provide customers phone number."),
     connectionType: Yup.string().required("Provide the connection type."),
@@ -47,33 +47,33 @@ const ViewCustomer = () => {
     }
   };
 
-    useEffect(() => {
-      const formatDate = (createAT) => {
-        const date = new Date(createAT);
-        const formattedDate = date.toLocaleDateString("en-US", {
-          day:'numeric',
-          year: "numeric",
-          month: "long",
+  useEffect(() => {
+    const formatDate = (createAT) => {
+      const date = new Date(createAT);
+      const formattedDate = date.toLocaleDateString("en-US", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      });
+      return formattedDate; // Output: "September 2024"
+    };
+    const loadDetails = () => {
+      if (customer) {
+        formik.setValues({
+          meterNumber: customer.meters.meterNumber,
+          zone: customer.meters.zones.zoneName,
+          fName: customer.custFirstName,
+          lName: customer.custLastName,
+          IDNumber: customer.custID,
+          phoneNumber: customer.custPhoneNumber,
+          connectionType: customer.custConnectionType,
+          status: customer.custStatus,
+          createdAt: formatDate(customer.createdAt),
         });
-        return formattedDate // Output: "September 2024"
       }
-      const loadDetails = () => {
-        if (customer) {
-          formik.setValues({
-            meterNumber: customer.meters.meterNumber,
-            zone: customer.meters.zones.zoneName,
-            fName: customer.custFirstName,
-            lName: customer.custLastName,
-            IDNumber: customer.custID,
-            phoneNumber: customer.custPhoneNumber,
-            connectionType: customer.custConnectionType,
-            status: customer.custStatus,
-            createdAt: formatDate(customer.createdAt)
-          });
-        }
-      };
-      loadDetails();
-    }, [customer]);
+    };
+    loadDetails();
+  }, [customer]);
   const handleSubmit = () => {};
   const formik = useFormik({
     initialValues: {
@@ -82,12 +82,11 @@ const ViewCustomer = () => {
       IDNumber: "",
       phoneNumber: "",
       connectionType: "",
-      meterNumber:'',
-      zone:'',
-      status:'',
-      bills:'',
-      createdAt:''
-      
+      meterNumber: "",
+      zone: "",
+      status: "",
+      bills: "",
+      createdAt: "",
     },
     onSubmit: handleSubmit,
     validationSchema: validation,
@@ -99,7 +98,7 @@ const ViewCustomer = () => {
     <div>
       <div className="cust-top">
         <span>
-          <Link className="link" to={'/manage-customers'}>
+          <Link className="link" to={"/manage-customers"}>
             Customers
           </Link>
           <MdNavigateNext /> View Customer{" "}

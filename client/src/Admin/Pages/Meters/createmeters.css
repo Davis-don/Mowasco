@@ -1,47 +1,45 @@
-.meters{
-    display: grid;
-    place-content: center;
+.meters {
+  display: grid;
+  place-content: center;
 }
-table tr td{
-    text-align: center;
-    padding: .5rem;
+table tr td {
+  text-align: center;
+  padding: 0.5rem;
 }
-.abt-meters{
-    padding:1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    border-radius: .5rem;
-    background-color: #C2CBDC;
+.abt-meters {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 0.5rem;
+  background-color: #c2cbdc;
 }
 
-.abt-meters .abt-1{
-    display: flex;
-    flex-direction: column;
-    flex: 1 1;
-    align-items: center;
-
+.abt-meters .abt-1 {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  align-items: center;
 }
 .abt-meters .abt-1 .icons {
-    font-size: 1.7rem;
+  font-size: 1.7rem;
 }
-.abt-meters .abt-1 span{
-    padding: .5rem 0;
-}
-
-.meter-details{
-    display: flex;
-    flex-direction: row;
+.abt-meters .abt-1 span {
+  padding: 0.5rem 0;
 }
 
-.mtrs-form{
-    margin-top: 1rem;
+.meter-details {
+  display: flex;
+  flex-direction: row;
 }
 
-.error{
-    color: red;
-    padding: 1rem 0;
-    line-height: 2;
+.mtrs-form {
+  margin-top: 1rem;
+}
 
+.error {
+  color: red;
+  padding: 1rem 0;
+  line-height: 2;
 }

@@ -1,104 +1,88 @@
-.receipt-invoice{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.receipt-invoice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.receipt-invoice .name-logo{
-    display: flex;
-    flex-direction: column;
-    flex: 1 1;
-    justify-content: space-around;
-    align-items: center;
+.receipt-invoice .name-logo {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.name-logo h1, h3,span{
-    letter-spacing: 1.2;
-    text-transform: uppercase;
-    line-height: 1.6;
+.name-logo h1,
+h3,
+span {
+  letter-spacing: 1.2;
+  text-transform: uppercase;
+  line-height: 1.6;
 }
 
-.office-details{
-    display: flex;
-    margin-top: .5rem;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+.office-details {
+  display: flex;
+  margin-top: 0.5rem;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.office-left span{
-    text-transform: capitalize;
+.office-left span {
+  text-transform: capitalize;
 }
-.office-details .office-contacts{
-    display: flex;
-    flex-direction: column;
-    
-}
-
-.office-details .office-contacts .email{
-    text-transform: lowercase;
-}
-.office-details .office-contacts .email span{
-    text-transform: capitalize;
+.office-details .office-contacts {
+  display: flex;
+  flex-direction: column;
 }
 
-
-
+.office-details .office-contacts .email {
+  text-transform: lowercase;
+}
+.office-details .office-contacts .email span {
+  text-transform: capitalize;
+}
 
 /* table thead, tr,  th,
 table, tbody, tr, td{
     border: 2px solid red;
 } */
 
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width:640px){
-.overall-receipt-gen-container{
-    
-    }
-.gen-water-receipt-form-div{
-padding: 30px;
-width: 80vw;
-margin: auto;
+@media (max-width: 640px) {
+  .overall-receipt-gen-container {
+  }
+  .gen-water-receipt-form-div {
+    padding: 30px;
+    width: 80vw;
+    margin: auto;
+  }
 }
+@media screen and (min-width: 641px) and (max-width: 1025px) {
+  .overall-receipt-gen-container {
+  }
+  .gen-water-receipt-form-div {
+    padding: 30px;
+    width: 80vw;
+    margin: auto;
+  }
+  .generate-receipt-overall-form-div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 20px;
+  }
 }
-@media screen and (min-width:641px) and (max-width:1025px){
-    .overall-receipt-gen-container{
-    
-    }
-.gen-water-receipt-form-div{
-padding: 30px;
-width: 80vw;
-margin: auto;
-}
-.generate-receipt-overall-form-div{
-display: grid;
-grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
-gap:20px;
-}
-}
-@media screen and (min-width:1026px){
-    .overall-receipt-gen-container{
-    
-    }
-.gen-water-receipt-form-div{
-padding: 30px;
-width: 80vw;
-margin: auto;
-}
-.generate-receipt-overall-form-div{
-display: grid;
-grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
-gap:20px;
-}
+@media screen and (min-width: 1026px) {
+  .overall-receipt-gen-container {
+  }
+  .gen-water-receipt-form-div {
+    padding: 30px;
+    width: 80vw;
+    margin: auto;
+  }
+  .generate-receipt-overall-form-div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 20px;
+  }
 }

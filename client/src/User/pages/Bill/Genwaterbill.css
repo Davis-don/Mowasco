@@ -1,42 +1,101 @@
-@media (max-width:640px){
 .overall-gen-water-bill-container{
-padding: 30px;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
 }
-.gen-water-bill-form-div{
-width: 80vw;
-margin: auto;
+
+.overall-gen-water-bill-container .gen-water-bill-form-div{
+    width: 80%;
+    padding: 0;
+    margin: 0;
 }
-.overall-customer-details-container{
-border-bottom:  2px solid grey;
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+  /* border: 2px solid red; */
+}
+.container-fluid .overall-customer-details-container {
+  display: flex;
+  flex-direction: column;
+}
+.customer-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.input {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.input input {
+  max-width: 100%;
+  height: 3rem;
+  width: 10rem;
+  font-weight: 600;
+}
+
+.water-readings {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+h4 {
+  text-align: center;
+}
+
+h4 span{
+    color: var(--navy-blue);
+    text-transform: lowercase;
+}
+@media screen and (max-width:500px){
+
+.overall-gen-water-bill-container .gen-water-bill-form-div{
+    min-width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.customer-top, .water-readings{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 }
-@media screen and (min-width:641px) and (max-width:1025px){
-    .overall-gen-water-bill-container{
-        padding: 30px;
-        }
-        .gen-water-bill-form-div{
-        width: 80vw;
-        margin: auto;
-        }
-        .overall-customer-details-container{
-        border-bottom:  2px solid grey;
-        display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
-        gap:20px;
-        }
+
+
+@media screen and (min-width: 641px) and (max-width: 1025px) {
+  .overall-gen-water-bill-container {
+    padding: 30px;
+  }
+  .gen-water-bill-form-div {
+    width: 80vw;
+    margin: auto;
+  }
+  .overall-customer-details-container {
+    border-bottom: 2px solid grey;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 20px;
+  }
 }
-@media screen and (min-width:1026px){
-    .overall-gen-water-bill-container{
-        padding: 30px;
-        }
-        .gen-water-bill-form-div{
-        width: 80vw;
-        margin: auto;
-        }
-        .overall-customer-details-container{
-        border-bottom:  2px solid grey;
-        display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(50px,1fr));
-        gap:20px;
-        }
+@media screen and (min-width: 1026px) {
+  .overall-gen-water-bill-container {
+    padding: 30px;
+  }
+  .gen-water-bill-form-div {
+    width: 80vw;
+    margin: auto;
+  }
+  .overall-customer-details-container {
+    border-bottom: 2px solid grey;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 20px;
+  }
 }

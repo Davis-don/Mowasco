@@ -13,9 +13,9 @@ function AdminDashboard() {
   const [zones, setZones] = useState();
   const [customer, setCustomer] = useState();
   const [meters, setMeters] = useState();
-  const [totalMonthlyConsumed,setTotalMontlyConsumed] = useState(0)
+  const [totalMonthlyConsumed, setTotalMontlyConsumed] = useState(0);
   const [chartsData, setChartsData] = useState([]);
-  const [waterReading, setWaterReadings] = useState([])
+  const [waterReading, setWaterReadings] = useState([]);
 
   // 1. Get the number of zones
   const getZones = async () => {
@@ -74,7 +74,7 @@ function AdminDashboard() {
         .get(`http://localhost:4000/customers/all`)
         .catch((error) => console.log(error));
       if (customers.status == 200) {
-        console.log('active customers', customers)
+        console.log("active customers", customers);
         setCustomer(customers.data.data);
       } else {
         toast.warn("Something went wrong.");
@@ -111,37 +111,35 @@ function AdminDashboard() {
         .get(`http://localhost:4000/customer/reading/all/total-readings`)
         .catch((error) => console.log(error));
 
-      console.log('Total montly consumed', totalConsumed.data);
-      if(totalConsumed.status == 200){
-        setTotalMontlyConsumed(totalConsumed.data.data)
-      } else{
-        toast.warn('Something went wrong.')
+      console.log("Total montly consumed", totalConsumed.data);
+      if (totalConsumed.status == 200) {
+        setTotalMontlyConsumed(totalConsumed.data.data);
+      } else {
+        toast.warn("Something went wrong.");
       }
-    } catch (error)  {
+    } catch (error) {
       console.log(error);
     }
   };
 
-
   const recentWaterReadings = async () => {
     try {
-      const getReadings = await axios.get(
-        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`
-      ).catch(error=> console.log(error));
+      const getReadings = await axios
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`)
+        .catch((error) => console.log(error));
       if (getReadings.status == 200) {
-        setWaterReadings(getReadings.data.data)
+        setWaterReadings(getReadings.data.data);
       }
     } catch (error) {
-      
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
     getZones();
     getCustomer();
     getMeters();
     getTotalWaterConsumed();
-recentWaterReadings()
+    recentWaterReadings();
   }, []);
   return (
     <>
@@ -167,9 +165,7 @@ recentWaterReadings()
         <div className="card-right card-1">
           <div className="card-title">
             <h4>Zones</h4>
-            <p>
-              No. of Zones: {zones?.length} (Zones)
-            </p>
+            <p>No. of Zones: {zones?.length} (Zones)</p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
@@ -231,7 +227,6 @@ recentWaterReadings()
                 <div className="infor">
                   <h4>Pending meter readings.</h4>
                   <span>
-                    
                     <span>Meters:</span> 12
                   </span>
                   <span>

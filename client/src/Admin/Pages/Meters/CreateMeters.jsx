@@ -13,8 +13,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineHistory } from "react-icons/ai";
 
 const CreateMeters = () => {
-  const navigate = useNavigate()
-  const {cust_id} = useParams()
+  const navigate = useNavigate();
+  const { cust_id } = useParams();
 
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
@@ -33,13 +33,13 @@ const CreateMeters = () => {
     try {
       const getMeters = await axios
         .get(`http://localhost:4000/meters/all`, {
-          withCredentials:true
+          withCredentials: true,
         })
         .catch((error) => console.log(error));
 
       if (getMeters) {
         setMeters(getMeters.data.data);
-        console.log(getMeters.data.data)
+        console.log(getMeters.data.data);
       } else {
         toast.warn("Something went wrong..");
       }
@@ -66,13 +66,13 @@ const CreateMeters = () => {
     }
   };
 
-  const viewHistory = async(id) => {
+  const viewHistory = async (id) => {
     try {
       navigate(`/${id}/meter-history`);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const formik = useFormik({
     initialValues: {
       meterNumber: "",
@@ -136,7 +136,13 @@ const CreateMeters = () => {
                   />
                 }
               </td> */}
-              <td>{<AiOutlineHistory onClick={() => viewHistory(meter.meter_id)} />}</td>
+              <td>
+                {
+                  <AiOutlineHistory
+                    onClick={() => viewHistory(meter.meter_id)}
+                  />
+                }
+              </td>
             </tr>
           ))
         ) : (

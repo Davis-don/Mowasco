@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 function Receiptgen() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const [receiptData, setReceiptData] = useState();
   const [waterReadings, setWaterReadings] = useState();
@@ -52,20 +52,16 @@ function Receiptgen() {
   };
 
   const navigateBack = () => {
-navigate("/agent/dashboard");
-  }
+    navigate("/agent/dashboard");
+  };
 
   useEffect(() => {
-   getReceipt()
-  },[])
+    getReceipt();
+  }, []);
   return (
     <div className="overall-receipt-gen-container">
       <div className="gen-water-receipt-form-div">
-        <button onClick={navigateBack}>
-          
-            Home
-          
-        </button>
+        <button onClick={navigateBack}>Home</button>
 
         <div className="receipt-invoice">
           <h2>Invoice</h2>

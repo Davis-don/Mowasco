@@ -50,7 +50,6 @@ const Customers = () => {
     }
   };
 
-
   // if (loading) {
   //   return <p>Loading...</p>; // Show a loading message while waiting for the API
   // }
@@ -158,9 +157,7 @@ const Customers = () => {
             <tbody>
               <tr key={key}>
                 <td>{customer.meters.meterNumber}</td>
-                <td>
-                  {customer.meters.zones.zoneName}
-                </td>
+                <td>{customer.meters.zones.zoneName}</td>
                 <td>{customer.custFirstName}</td>
                 <td>{customer.custLastName}</td>
                 <td>{customer.custPhoneNumber}</td>

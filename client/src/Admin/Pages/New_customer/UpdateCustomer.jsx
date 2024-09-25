@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import * as Yup from "yup";
-import './newCustomer.css'
+import "./newCustomer.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
 const UpdateCustomer = () => {
@@ -25,7 +25,7 @@ const UpdateCustomer = () => {
     fName: Yup.string().required("Please provide customer first name."),
     lName: Yup.string().required("Please provide customers last name"),
     IDNumber: Yup.number().required(
-      "Please provide national indentification number."
+      "Please provide national indentification number.",
     ),
     phoneNumber: Yup.number().required("Provide customers phone number."),
     connectionType: Yup.string().required("Provide the connection type."),
@@ -62,7 +62,7 @@ const UpdateCustomer = () => {
 
   useEffect(() => {
     const loadDetails = () => {
-      console.log('first name', customer)
+      console.log("first name", customer);
       if (customer) {
         formik.setValues({
           fName: customer.custFirstName,
@@ -83,8 +83,10 @@ const UpdateCustomer = () => {
     <div>
       <div className="cust-top">
         <span>
-          <Link className="link" to={"/manage-customers"}>Customers</Link> <MdNavigateNext />{" "}
-          Update Details{" "}
+          <Link className="link" to={"/manage-customers"}>
+            Customers
+          </Link>{" "}
+          <MdNavigateNext /> Update Details{" "}
         </span>
       </div>
       <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
