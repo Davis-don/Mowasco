@@ -34,11 +34,15 @@ const UpdateCustomer = () => {
   const getCustomerDetails = async () => {
     try {
       const customerData = await axios
-        .get(`http://localhost:4000/customers/${cust_id}`)
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .catch((error) => console.log(error));
       if (customerData.status == 200) {
         setCustomer(customerData.data.data);
-        console.log(customerData.data.data);
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
@@ -46,7 +50,9 @@ const UpdateCustomer = () => {
       console.log(error);
     }
   };
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values) => {
+    console.log(values)
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -92,71 +98,91 @@ const UpdateCustomer = () => {
       <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
         Update Customer Details.
       </h4>
+      <div className="forms">
+        <form
+          action=""
+          className="update_customer"
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="inputs">
+            <label>First Name:</label>
+            <input
+              className="form-control"
+              type="text"
+              onBlur={formik.handleBlur}
+              name="fName"
+              value={formik.values.fName}
+              onChange={formik.handleChange}
+              placeholder="First name"
+              // onChange={(e) => setFName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label>Last Name:</label>
+            <input
+              type="text"
+              name="lName"
+              className="form-control"
+              value={formik.values.lName}
+              onBlur={formik.handleBlur}
+              placeholder="Last name"
+              onChange={formik.handleChange}
+              // onChange={(e) => setLName(e.target.value)}
+              required
+            />
+          </div>
 
-      <form action="" onSubmit={handleSubmit}>
-        <div className="inputs">
-          <input
-            className="form-control"
-            type="text"
-            name="fName"
-            value={formik.values.fName}
-            placeholder="First name"
-            onChange={(e) => setFName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            name="lName"
-            className="form-control m-2"
-            value={formik.values.lName}
-            placeholder="Last name"
-            onChange={(e) => setLName(e.target.value)}
-            required
-          />
-        </div>
+          <div className="inputs">
+            <label>ID Name:</label>
+            <input
+              type="number"
+              name="IDNumber"
+              className="form-control"
+              value={formik.values.IDNumber}
+              placeholder="ID number"
+              onChange={formik.handleChange}
+              // onChange={(e) => setIDNumber(e.target.value)}
+              onBlur={formik.handleBlur}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label>Phone number:</label>
 
-        <div className="inputs">
-          <input
-            type="number"
-            name="IDNumber"
-            className="form-control m-2"
-            value={formik.values.IDNumber}
-            placeholder="ID number"
-            onChange={(e) => setIDNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="number"
-            name="phoneNumber"
-            placeholder="Phone number"
-            className="form-control m-2"
-            value={formik.values.phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            name="connectionType"
-            placeholder="Connection type"
-            className="form-control m-2"
-            value={formik.values.connectionType}
-            onChange={(e) => setConnectionType(e.target.value)}
-            required
-          />
-        </div>
-        <div className="adduser-button">
-          <button className="btn btn-outline-primary">
-            {loading ? "Submitting...." : "Submit"}
-          </button>
-        </div>
-        <ToastContainer />
-      </form>
+            <input
+              type="number"
+              name="phoneNumber"
+              placeholder="Phone number"
+              className="form-control"
+              onBlur={formik.handleBlur}
+              value={formik.values.phoneNumber}
+              onChange={formik.handleChange}
+              // onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputs">
+            <label>Connection type:</label>
+
+            <input
+              type="text"
+              name="connectionType"
+              placeholder="Connection type"
+              className="form-control"
+              value={formik.values.connectionType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              // onChange={(e) => setConnectionType(e.target.value)}
+              required
+            />
+          </div>
+          <div className="adduser-button">
+            <button>{loading ? "Updating details..." : "Update"}</button>
+          </div>
+          <ToastContainer />
+        </form>
+      </div>
     </div>
   );
 };

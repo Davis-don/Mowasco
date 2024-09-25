@@ -31,3 +31,10 @@ table tbody tr td .invoice {
   font-size: 0.85rem;
   cursor: pointer;
 }
+
+
+.cust-details{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

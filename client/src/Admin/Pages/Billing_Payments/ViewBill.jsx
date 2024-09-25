@@ -20,7 +20,9 @@ const ViewBill = () => {
     try {
       const getBills = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/${bill_id}`,
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/${bill_id}`,{
+            withCredentials:true
+          }
         )
         .catch((error) => console.log(error));
 
@@ -41,11 +43,12 @@ const ViewBill = () => {
     try {
       const getAllBills = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/customer/all/${id}`,
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/customer/all/${id}`,{
+            withCredentials:true
+          }
         )
         .catch((error) => console.log(error));
       if (getAllBills.status == 200) {
-        console.log("all bills", getAllBills.data.data);
         setBillingHistory(getAllBills.data.data);
       }
     } catch (error) {

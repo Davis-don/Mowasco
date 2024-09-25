@@ -17,13 +17,12 @@ const RegisterMeters = () => {
     try {
       setLoading(true);
       const zones = await axios
-        .get("http://localhost:4000/zones/all", {
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/zones/all`, {
           withCredentials: true,
         })
         .catch((error) => console.log(error));
       if (zones) {
         setZone(zones.data.data);
-        console.log("zones", zones.data.data);
       } else {
         toast.warn("Zones were not found.");
       }
@@ -41,7 +40,7 @@ const RegisterMeters = () => {
 
       const createMeter = await axios
         .post(
-          `http://localhost:4000/meters/create`,
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/create`,
           {
             meterNumber: values.meterNumber,
             zone: values.zone,
@@ -49,16 +48,12 @@ const RegisterMeters = () => {
           },
           {
             withCredentials: true,
-          },
+          }
         )
         .catch((error) => {
-          console.log(error);
           toast.error("Server error", { position: "bottom-center" });
           setError(error);
         });
-      console.log("zones", values.zone);
-      console.log("zones", values.meterNumber);
-
       if (createMeter.status == 200) {
         navigate(`/manage-customers`);
       } else {

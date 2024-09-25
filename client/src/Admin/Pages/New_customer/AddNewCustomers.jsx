@@ -33,12 +33,14 @@ const AddNewCustomers = () => {
     try {
       setLoading(true);
       const postUser = await axios
-        .post("http://localhost:4000/customers/create", {
+        .post(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/create`, {
           custFirstName: fName,
           custLastName: lName,
           custID: parseInt(IDNumber),
           custPhoneNumber: parseInt(phoneNumber),
           custConnectionType: connectionType,
+        }, {
+          withCredentials:true
         })
         .catch((error) => {
           console.log(error);

@@ -26,10 +26,11 @@ const Billing_payment = () => {
   const getCustomerBills = async () => {
     try {
       let getBills = await axios
-        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`)
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`, {
+          withCredentials:true
+        })
         .catch((error) => console.log(error));
       if (getBills.status == 200) {
-        console.log(getBills);
         setCustomerBills(getBills.data.data);
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });

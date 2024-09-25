@@ -16,12 +16,15 @@ function AdminDashboard() {
   const [totalMonthlyConsumed, setTotalMontlyConsumed] = useState(0);
   const [chartsData, setChartsData] = useState([]);
   const [waterReading, setWaterReadings] = useState([]);
+  const [fieldAgents, setFieldAgents] = useState([])
 
   // 1. Get the number of zones
   const getZones = async () => {
     try {
       const zones = await axios
-        .get("http://localhost:4000/zones/all")
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/zones/all`, {
+          withCredentials: true,
+        })
         .catch((error) => console.log(error));
 
       if (zones.status == 200) {
@@ -71,10 +74,11 @@ function AdminDashboard() {
   const getCustomer = async () => {
     try {
       const customers = await axios
-        .get(`http://localhost:4000/customers/all`)
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/all`, {
+          withCredentials: true,
+        })
         .catch((error) => console.log(error));
       if (customers.status == 200) {
-        console.log("active customers", customers);
         setCustomer(customers.data.data);
       } else {
         toast.warn("Something went wrong.");
@@ -88,10 +92,12 @@ function AdminDashboard() {
   const getMeters = async () => {
     try {
       const meters = await axios
-        .get(`http://localhost:4000/meters/all`)
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/meters/all`, {
+          withCredentials: true,
+        })
         .catch((error) => {
           toast.warn("Error. Please try again later.");
-          console.log(error);
+       
         });
 
       if (meters.status == 200) {
@@ -108,7 +114,10 @@ function AdminDashboard() {
   const getTotalWaterConsumed = async () => {
     try {
       const totalConsumed = await axios
-        .get(`http://localhost:4000/customer/reading/all/total-readings`)
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/total-readings`, {
+          withCredentials:true}
+        )
         .catch((error) => console.log(error));
 
       console.log("Total montly consumed", totalConsumed.data);
@@ -125,7 +134,8 @@ function AdminDashboard() {
   const recentWaterReadings = async () => {
     try {
       const getReadings = await axios
-        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`)
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`, {
+        withCredentials:true})
         .catch((error) => console.log(error));
       if (getReadings.status == 200) {
         setWaterReadings(getReadings.data.data);
@@ -134,12 +144,28 @@ function AdminDashboard() {
       console.log(error);
     }
   };
+
+  const agents = async () => {
+  try {
+    const getAgents = await axios.get(
+      `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agents/all`, {
+      withCredentials:true}
+    ).catch(error => console.log(error))
+
+    if (getAgents.status == 200){
+    setFieldAgents(getAgents.data.data)
+    } else {
+    toast.warn('Something went wrong')}
+  } catch (error) {
+    console.log(error)
+  }}
   useEffect(() => {
     getZones();
     getCustomer();
     getMeters();
     getTotalWaterConsumed();
     recentWaterReadings();
+    agents()  
   }, []);
   return (
     <>
@@ -174,8 +200,8 @@ function AdminDashboard() {
           <div className="charts">
             {chartsData && chartsData?.series && (
               <Chart
-                options={chartsData.options}
-                series={chartsData.series}
+                options={chartsData?.options}
+                series={chartsData?.series}
                 type="line"
                 className="chart"
                 width=""
@@ -248,7 +274,7 @@ function AdminDashboard() {
                 <div className="infor">
                   <h4>Field Agents.</h4>
                   <span>
-                    <span>Agents:</span> 12
+                    <span>Agents:</span> {fieldAgents.length}
                   </span>
                   <table>
                     <thead>
@@ -258,10 +284,19 @@ function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                    {
+                    fieldAgents && fieldAgents.length > 0 ? (
+                    fieldAgents.map((agent, key) => (
+                    <tr key={key}>
                         <td>Zone 1</td>
-                        <td>Wilfred Kiama</td>
+                        <td>{agent.first_name} {agent.lastName}</td>
                       </tr>
+                      ))
+                      ):(
+                      <p>Loading agents...</p>
+                      )
+                    }
+                      
                     </tbody>
                   </table>
                 </div>

@@ -19,7 +19,7 @@ const Customers = () => {
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState(null);
+  const [customers, setCustomers] = useState([]);
 
   //get and map all the users from the database.
 
@@ -28,7 +28,9 @@ const Customers = () => {
       setLoading(true);
       setError(false);
       const getUsers = await axios
-        .get(`http://localhost:4000/customers/all`)
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/all`, {
+          withCredentials:true
+        })
         .catch((error) => {
           console.log(error);
           toast.error("Server error.", error.message);
@@ -37,12 +39,11 @@ const Customers = () => {
 
       if (getUsers.status == 200) {
         const data = getUsers.data.data;
+        console.log('customer', data)
         setCustomers(data);
       } else {
         toast.warn("Something went wrong. Please try again later.");
       }
-
-      console.log("customer - ", customers);
     } catch (error) {
       console.log(error);
     } finally {
@@ -85,7 +86,9 @@ const Customers = () => {
   const handleDelete = async (id) => {
     try {
       const deleteCustomer = await axios
-        .delete(`http://localhost:4000/customers/delete/${id}`)
+        .delete(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/delete/${id}`, {
+          withCredentials:true
+        })
         .catch((error) => {
           console.log(error);
           toast.warn("Server error");
@@ -152,12 +155,12 @@ const Customers = () => {
           </tr>
         </thead>
 
-        {customers != null && customers.length > 0 ? (
+        {customers && customers.length > 0 ? (
           customers.map((customer, key) => (
             <tbody>
               <tr key={key}>
-                <td>{customer.meters.meterNumber}</td>
-                <td>{customer.meters.zones.zoneName}</td>
+                <td>{customer.meters?.meterNumber}</td>
+                <td>{customer.meters?.zones.zoneName}</td>
                 <td>{customer.custFirstName}</td>
                 <td>{customer.custLastName}</td>
                 <td>{customer.custPhoneNumber}</td>
