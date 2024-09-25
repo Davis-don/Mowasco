@@ -6,11 +6,12 @@ import { config } from "dotenv";
 config();
 
 
-export const getAllAgents = async (req, res){
+export const getAllAgents = async (req, res) => {
   try {
     
     const getAgents = await prisma.agents.findMany({
       select:{
+        agent_id:true,
          employeeID:true,
       first_name:true,
       lastName:true,
