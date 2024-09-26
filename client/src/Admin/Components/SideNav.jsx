@@ -1,26 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./global.css";
 import { MdDashboardCustomize } from "react-icons/md";
 import { FaUsers } from "react-icons/fa6";
 import { IoSpeedometerSharp } from "react-icons/io5";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import { FaRegRectangleList } from "react-icons/fa6";
-import { FaLessThan } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import store from "../../store/dataStore";
 
+
 const SideNav = () => {
   const user = store((state) => state.user);
+  const logoutUser = store((state) => state.logoutUser);
 const handleLogout = async () => {
-  
+  logoutUser()
+  return <Navigate to={'/'}/>
 }
   return (
     <div>
       <div className="aside">
         {/* <FaLessThan className="menu" /> */}
         <div className="nav-links">
-          {user && user.role == "ADMIN" ? (
+          {user && user?.role == "ADMIN" ? (
             <>
               <div className="nav-1">
                 <Link className="li" to={"/dashboard"}>

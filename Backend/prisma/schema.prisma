@@ -15,18 +15,17 @@ datasource db {
 
 model Customers {
   cust_id            String   @id @default(uuid())
+  cust_no            Int      @default(autoincrement()) @map("customer_number")
   custFirstName      String   @map("first_name")
   custLastName       String   @map("last_name")
   custID             Int      @map("cust_ID")
-  custPhoneNumber    Int      @map("phone_number")
+  custPhoneNumber    BigInt   @map("phone_number")
   custConnectionType String   @map("connection_type")
   custStatus         String   @default("Active") @map("status")
   createdAt          DateTime @default(now())
-  meters Meters?
+  meters             Meters?
 
-  billing  Billing[]
-
-
+  billing Billing[]
 
   @@map("customers_tb")
 }
@@ -35,20 +34,20 @@ model Meters {
   meter_id    String    @id @default(uuid())
   meterNumber Int       @unique @map("meter_number")
   createdAt   DateTime  @default(now())
-  zone_id     String    
+  zone_id     String
   zones       Zones     @relation(fields: [zone_id], references: [zone_id])
   cust_id     String    @unique
   customer    Customers @relation(fields: [cust_id], references: [cust_id])
 
   water_reading Water_Reading[]
- billing Billing[]
+  billing       Billing[]
 
   @@map("meters_tb")
 }
 
 model Zones {
-  zone_id  String     @id @default(uuid())
-  zoneName String        @unique @map("zone_name")
+  zone_id  String   @id @default(uuid())
+  zoneName String   @unique @map("zone_name")
   meter    Meters[]
 
   @@map("zone_tb")
@@ -56,11 +55,11 @@ model Zones {
 
 model Water_Reading {
   reading_id     String   @id @default(uuid())
-  currentReading Decimal  @map("current_reading") @db.Decimal(10, 2) @default(0)
-  prevReading    Decimal  @map("prev_reading") @db.Decimal(10, 2) @default(0)
-  consumption    Decimal  @map("consumption") @db.Decimal(10, 2)@default(0)
+  currentReading Decimal  @default(0) @map("current_reading") @db.Decimal(10, 2)
+  prevReading    Decimal  @default(0) @map("prev_reading") @db.Decimal(10, 2)
+  consumption    Decimal  @default(0) @map("consumption") @db.Decimal(10, 2)
   createdAt      DateTime @default(now()) @map("reading date")
-  meter_id       String   
+  meter_id       String
   meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
 
   @@map("water_reading_tb")
@@ -68,20 +67,19 @@ model Water_Reading {
 
 model Billing {
   bill_id       String   @id @default(uuid())
-  billingPeriod DateTime @default(now())  @map("billing_period")
+  billingPeriod DateTime @default(now()) @map("billing_period")
   consumption   Decimal  @map("consumption") @db.Decimal(10, 2)
-  amountDue     Decimal  @map("amount_due") @db.Decimal(10, 2) @default(0)
+  amountDue     Decimal  @default(0) @map("amount_due") @db.Decimal(10, 2)
   billingDate   DateTime @default(now())
-  arrears Int @default(0) @map("arrears")
-  waterBill Int @default(0) @map("water_bill")
-  reconnection Int @default(0) @map("reconnection")
-  otherCharges Int @default(0) @map("other_charges")
-
+  arrears       Int      @default(0) @map("arrears")
+  waterBill     Int      @default(0) @map("water_bill")
+  reconnection  Int      @default(0) @map("reconnection")
+  otherCharges  Int      @default(0) @map("other_charges")
 
   customer Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
-  cust_id  String    
+  cust_id  String
 
-  meters Meters @relation(fields: [meter_id], references: [meter_id])
+  meters   Meters    @relation(fields: [meter_id], references: [meter_id])
   meter_id String
   receipts Receipts?
 
@@ -92,7 +90,7 @@ model Receipts {
   receipt_id    String   @id @default(uuid())
   receiptNumber Int      @default(autoincrement()) @map("receipt_number")
   amount_paid   Decimal  @map("amount_paid") @db.Decimal(10, 2)
-  deadline_date DateTime @default(now()) @map("deadline_date") 
+  deadline_date DateTime @default(now()) @map("deadline_date")
   createdAt     DateTime @default(now())
 
   billing Billing @relation(fields: [bill_id], references: [bill_id], onDelete: Cascade)
@@ -101,27 +99,26 @@ model Receipts {
   @@map("receipts_tb")
 }
 
-
-model Agents{
-  agent_id String @id @default(uuid())
-  employeeID Int @map("employee_id")
+model Agents {
+  agent_id   String @id @default(uuid())
+  employeeID Int    @map("employee_id")
   first_name String @map("first_name")
-  lastName String @map("last_name")
-  age Int @map("age")
-  contact Int @map("contact")
-  password String @map("password")
-  status STATUS @default(INACTIVE) @map("status")
-  role ROLE @default(AGENT) @map("role")
-
+  lastName   String @map("last_name")
+  age        Int    @map("age")
+  contact    Int    @map("contact")
+  password   String @map("password")
+  status     STATUS @default(INACTIVE) @map("status")
+  role       ROLE   @default(AGENT) @map("role")
 
   @@map("agents_tb")
 }
 
-enum ROLE{
+enum ROLE {
   ADMIN
   AGENT
 }
-enum STATUS{
-  ACTIVE 
+
+enum STATUS {
+  ACTIVE
   INACTIVE
 }

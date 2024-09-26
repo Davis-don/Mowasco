@@ -4,8 +4,12 @@ import logo from "../../../src/images/logo.jpeg";
 import logoImg from "../.././../src/images/jack-b-o1radglopDA-unsplash.jpg";
 import Header from "./Header";
 import store from "../../store/dataStore";
+import { Navigate } from "react-router-dom";
 const Navigation = () => {
   const user = store((state) => state.user);
+  if(!user){
+    return <Navigate to={'/'}/>
+  }
   return (
     <div className="navigation">
       <Header />

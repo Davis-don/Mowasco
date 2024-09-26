@@ -4,6 +4,7 @@ const store = create(
   persist((set) => ({
     user: null,
     getUserData: (data) => set(() => ({ user: data })),
+    logoutUser: (date) => set(()=>({user:null}))
   })),
 );
 
