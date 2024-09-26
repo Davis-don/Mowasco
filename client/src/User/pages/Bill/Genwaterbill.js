@@ -14,23 +14,34 @@ function Genwaterbill() {
   const [meter, setMeter] = useState();
   const [bill, setBill] = useState();
   const [loading, setLoading] = useState(false);
+  const [error, setError ] = useState()
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
+        setError(false)
+        setLoading(true)
+
+
         const getData = await axios
           .get(`http://localhost:4000/meters/${id}`, {
             withCredentials: true,
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            setError(error.message)
+            console.log(error)
+          });
         if (getData.status == 200) {
           setMeter(getData.data.data);
         } else {
           toast.success("Something went wrong.");
         }
       } catch (error) {
-        console.log(error);
-      }
+              setError('Server error. Please try again later')
+
+      }finally{
+      setLoading(false)
+    }
     };
     fetchDetails();
   }, []);
@@ -38,12 +49,17 @@ function Genwaterbill() {
   // // fetch the meter readings.
   const fetchMeterReadings = async () => {
     try {
+      setLoading(true)
+      setError(false)
       //  const meterID = (customer.meters.meter_id)
       const getReadings = await axios
         .get(`http://localhost:4000/customer/reading/${id}`, {
           withCredentials: true,
         })
-        .catch((error) => console.log("water reading", error));
+        .catch((error) => {
+          setError(error.message)
+          console.log("water reading", error)
+        });
 
       if (getReadings.status == 200) {
         setWaterReadings(getReadings.data.data);
@@ -51,7 +67,10 @@ function Genwaterbill() {
         toast.success("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
+         setError('Server error. Please try again later')
+
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -78,6 +97,8 @@ function Genwaterbill() {
 
   const createReceipt = async (billID, custID, meterID, amountPaid) => {
     try {
+       setLoading(true)
+      setError(false)
       const receipt = await axios
         .post(
           `http://localhost:4000/customer/receipt/generate`,
@@ -91,7 +112,9 @@ function Genwaterbill() {
             withCredentials: true,
           },
         )
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setError(error.message)
+        });
 
       if (receipt.status == 200) {
         const receiptData = receipt.data.data;
@@ -101,16 +124,24 @@ function Genwaterbill() {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
+          setError('Server error. Please try again later')
+
+    } finally{
+      setLoading(false)
     }
   };
   const getBillDetails = async (id) => {
     try {
+       setLoading(true)
+      setError(false)
       const billDetails = await axios
         .get(`http://localhost:4000/customer/bill/${id}`, {
           withCredentials: true,
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>{
+          setError(error.message)
+        });
 
       if (billDetails.status == 200) {
         const billData = billDetails.data.data;
@@ -124,11 +155,17 @@ function Genwaterbill() {
       }
     } catch (error) {
       console.log(error);
+          setError('Server error. Please try again later')
+
+    } finally{
+      setLoading(false)
     }
   };
 
   const handleSubmit = async (values) => {
     try {
+       setLoading(true)
+      setError(false)
       const createBill = await axios
         .post(
           `http://localhost:4000/customer/bill/create`,
@@ -141,7 +178,9 @@ function Genwaterbill() {
             withCredentials: true,
           },
         )
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setError(error.message)
+        });
 
       if (createBill.status == 200) {
         const bill = createBill.data.data;
@@ -151,6 +190,9 @@ function Genwaterbill() {
       }
     } catch (error) {
       console.log(error);
+      setError('Server error. Please try again later')
+    } finally{
+      setLoading(false)
     }
   };
   const formik = useFormik({
@@ -170,7 +212,11 @@ function Genwaterbill() {
   });
   return (
     <div className="overall-gen-water-bill-container container-fluid">
-      <div className="gen-water-bill-form-div cust-readings">
+      {
+        loading ? (
+          'Loading ... '
+        ):(
+  <div className="gen-water-bill-form-div cust-readings">
         <h4>Customer <span> details</span>
         </h4>
         <form className="container-fluid" onSubmit={formik.handleSubmit}>
@@ -294,10 +340,16 @@ function Genwaterbill() {
             >
               <button className="btn btn-primary  ">Generate Bill</button>
             </div>
+            {
+              error && <p className="error">{error}</p>
+            }
           </div>
         </form>
         <ToastContainer />
       </div>
+        )
+      }
+    
     </div>
   );
 }
