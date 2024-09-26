@@ -7,9 +7,10 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import waterImage from "../../../images/yoann-boyer-i14h2xyPr18-unsplash.jpg";
 import axios from "axios";
-// import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import { IoFileTray } from "react-icons/io5";
 import store from "../../../store/dataStore";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Login() {
   // const Token = sessionStorage.getItem('userToken');
   // console.log(Token);
@@ -20,6 +21,7 @@ function Login() {
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
   const [form, setForm] = useState(true);
+  const [error, setError] = useState(false)
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -61,7 +63,19 @@ function Login() {
             withCredentials: true,
           },
         )
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log('error 1',error)
+          if (error.status === 404){
+            setError(error.response.data.message)
+            toast.warn(error.response.data.message)
+          }
+          if (error.status === 400){
+            setError(error.response.data.message)
+            toast.warn('Customer was not found', {position:'top-center'})
+          }
+
+    });
+
 
       if (login.status == 200) {
         const data = login.data.data;
@@ -72,7 +86,6 @@ function Login() {
         } else {
           navigate("/Dashboard");
         }
-        console.log(login);
       }
       // if(login.Token){
       // Store the received token in a cookie
@@ -108,7 +121,10 @@ function Login() {
       }, 3000);
     } catch (error) {
       // Log any errors that occur
-      console.log("Error:", error);
+      console.log("Error 2:", error);
+      // setError(error)
+    } finally{
+      // setError(false)
     }
   };
   return (
@@ -123,7 +139,7 @@ function Login() {
               <strong>{serverMessage}</strong>
             </div>
           )}
-          {form && (
+        { form && (
             <form onSubmit={handlePost}>
               <div className="input-group mb-3">
                 <span className="input-group-text">
@@ -158,6 +174,10 @@ function Login() {
                   {passwordShown ? <MdVisibilityOff /> : <MdVisibility />}
                 </span>
               </div>
+              {
+                error && <p className="error">{error}</p>
+              }
+
               <p style={{ float: "right" }}>
                 <a href="#" className="text-danger fs-8" onClick={registerUser}>
                   Forgot password
@@ -171,9 +191,12 @@ function Login() {
                   Sign in
                 </button>
               </div>
+          
             </form>
           )}
+         
         </div>
+        <ToastContainer/>
       </div>
     </div>
   );

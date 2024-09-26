@@ -18,7 +18,6 @@ function Usergenarator() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  console.log("user", userName);
 
   const getZones = async () => {
     try {
@@ -30,15 +29,19 @@ function Usergenarator() {
         .get("http://localhost:4000/zones/all", {
           withCredentials: true,
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          if (error.status == 500){
+            setError(error.response.data.message)
+          }
+          });
       if (zones) {
         setZone(zones.data.data);
       } else {
         toast.warn("Zones were not found.");
       }
+      setError(false)
     } catch (error) {
-      console.log(error);
-      setError(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -46,10 +49,9 @@ function Usergenarator() {
 
   const handleSubmit = async (values) => {
     try {
-      // if(!userName){
-      //   console.log('no user found')
-      //   return
-      // }
+      if(!userName){
+        return
+      }
 
       setError(false);
       setLoading(true);
@@ -66,10 +68,13 @@ function Usergenarator() {
         )
         .catch((error) => {
           console.log(error);
-          setError(error);
-          toast.error(
-            "Invalid inputs. Meter number not associated with that zone.",
+          if (error.status == 500){
+          setError(error.response.data.message);
+           toast.error(
+            "Invalid inputs. The Meter number not is associated with that zone.",{position:'bottom-center'}
           );
+          }
+         
         });
       const custID = queryUser.data.data.customer.cust_id;
 
@@ -79,10 +84,12 @@ function Usergenarator() {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
       setError(error);
+      return <div>{error.message}</div>
     } finally {
       setLoading(false);
+      setError(false)
+
     }
   };
 
@@ -99,7 +106,11 @@ function Usergenarator() {
   }, []);
   return (
     <div className="overall-user-generator">
-      {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
+
+      {
+        loading && <p>{'loading...'}</p>
+      }
+            {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
       <div className="form-div-container-user-gen">
         <p style={{ textAlign: "center" }}>
           Please enter the customer's zone and meter details below
@@ -122,6 +133,7 @@ function Usergenarator() {
                 <p>Loading zones...</p>
               )}
             </select>
+   
           </div>
           <div>
             <input
@@ -137,7 +149,6 @@ function Usergenarator() {
             <button>{loading ? "Generating ..." : "Generate Customer"}</button>
           </div>
         </form>
-        <ToastContainer />
       </div>
 
       <div className="overall-usergen-container-form">
@@ -163,6 +174,7 @@ function Usergenarator() {
                   <p>Loading zones...</p>
                 )}
               </select>
+            {error && <p className="error">{error}</p>}
             </div>
             <div>
               <input
@@ -174,12 +186,17 @@ function Usergenarator() {
                 placeholder="Meter Number"
               />
             </div>
+            {error && <p className="error">{error}</p>}
+
             <div style={{ width: "max-content", margin: "auto" }}>
               <button>
                 {loading ? "Generating ..." : "Generate Customer"}
               </button>
             </div>
+        <ToastContainer />
+
           </form>
+
           {/* <form className='user-gen-form'>
              <div>
               <select className="form-select form-control"  name='zones' value={formik.values.zones} onChange={formik.handleChange} id="sel1">
@@ -212,6 +229,7 @@ function Usergenarator() {
             alt="water in lake"
           />
         </div>
+
       </div>
     </div>
   );

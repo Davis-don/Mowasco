@@ -107,7 +107,6 @@ export const loginAgent = async (req, res) => {
           expiresIn: "3600m",
         });
 
-        console.log("toke", token);
 
         res.cookie("_token", token, { httpOnly: true, secure: true });
         res
