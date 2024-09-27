@@ -16,16 +16,19 @@ function AdminDashboard() {
   const [totalMonthlyConsumed, setTotalMontlyConsumed] = useState(0);
   const [chartsData, setChartsData] = useState([]);
   const [waterReading, setWaterReadings] = useState([]);
-  const [fieldAgents, setFieldAgents] = useState([])
-
+  const [fieldAgents, setFieldAgents] = useState([]);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState();
   // 1. Get the number of zones
   const getZones = async () => {
     try {
+      setLoading(true);
+      setError(false);
       const zones = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/zones/all`, {
           withCredentials: true,
         })
-        .catch((error) => console.log(error));
+        .catch((error) => [setError("Something went wrong.", error.message)]);
 
       if (zones.status == 200) {
         setZones(zones.data.data);
@@ -65,7 +68,9 @@ function AdminDashboard() {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
+      toast.error("Server error", { position: "bottom-center" });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,31 +78,40 @@ function AdminDashboard() {
 
   const getCustomer = async () => {
     try {
+      setError(false);
+      setLoading(true);
       const customers = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/all`, {
           withCredentials: true,
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setError("Something went wrong!!");
+        });
       if (customers.status == 200) {
         setCustomer(customers.data.data);
       } else {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
+      setError("Server error! Please try again later!!");
+    } finally {
+      setLoading(false);
     }
   };
 
   // 3. Get all the registered meters.
   const getMeters = async () => {
     try {
+      setError(false);
+      setLoading(true);
       const meters = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/meters/all`, {
           withCredentials: true,
         })
         .catch((error) => {
-          toast.warn("Error. Please try again later.");
-       
+          toast.warn("Error. Please try again later.", {
+            position: "bottom-center",
+          });
         });
 
       if (meters.status == 200) {
@@ -107,65 +121,94 @@ function AdminDashboard() {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Server error", { position: "bottom-center" });
+    } finally {
+      setLoading(false);
     }
   };
 
   // 4. Get total water readings.
   const getTotalWaterConsumed = async () => {
     try {
+      setError(false);
+      setLoading(true);
       const totalConsumed = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/total-readings`, {
-          withCredentials:true}
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/total-readings`,
+          {
+            withCredentials: true,
+          }
         )
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setError("Server error!");
+        });
 
-      console.log("Total montly consumed", totalConsumed.data);
       if (totalConsumed.status == 200) {
         setTotalMontlyConsumed(totalConsumed.data.data);
       } else {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error);
+      setError("Server error!");
+    } finally {
+      setLoading(false);
     }
   };
 
   const recentWaterReadings = async () => {
     try {
+      setError(false);
+      setLoading(true);
       const getReadings = await axios
-        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`, {
-        withCredentials:true})
-        .catch((error) => console.log(error));
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`,
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => {
+          setError("Server error!");
+        });
       if (getReadings.status == 200) {
         setWaterReadings(getReadings.data.data);
       }
     } catch (error) {
-      console.log(error);
+      setError("Server error");
+    } finally {
+      setLoading(false);
     }
   };
 
   const agents = async () => {
-  try {
-    const getAgents = await axios.get(
-      `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agents/all`, {
-      withCredentials:true}
-    ).catch(error => console.log(error))
+    try {
+      setError(false);
+      setLoading(true);
+      const getAgents = await axios
+        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/user/agents/all`, {
+          withCredentials: true,
+        })
+        .catch((error) => {
+          setError("Server error!");
+        });
 
-    if (getAgents.status == 200){
-    setFieldAgents(getAgents.data.data)
-    } else {
-    toast.warn('Something went wrong')}
-  } catch (error) {
-    console.log(error)
-  }}
+      if (getAgents.status == 200) {
+        setFieldAgents(getAgents.data.data);
+      } else {
+        toast.warn("Something went wrong");
+      }
+    } catch (error) {
+      setError("Server error!!");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     getZones();
     getCustomer();
     getMeters();
     getTotalWaterConsumed();
     recentWaterReadings();
-    agents()  
+    agents();
   }, []);
   return (
     <>
@@ -174,7 +217,8 @@ function AdminDashboard() {
           <div className="card-title">
             <h4>Montly Consumption</h4>
             <p>
-              <span>Total amount</span>: {totalMonthlyConsumed} M <sup>3</sup>
+              <span>Total amount</span>:
+              {loading ? " Loading ..." : totalMonthlyConsumed} M <sup>3</sup>
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
@@ -183,7 +227,8 @@ function AdminDashboard() {
           <div className="card-title">
             <h4>Customers</h4>
             <p>
-              <span>Active Customers: </span> {customer?.length}
+              <span>Active Customers: </span>{" "}
+              {loading ? " Loading ..." : customer?.length}
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
@@ -192,24 +237,31 @@ function AdminDashboard() {
           <div className="card-title">
             <h4>Zones</h4>
             <p>
-              <span>No. of Zones</span>: {zones?.length} (Zones)
+              <span>No. of Zones</span>:{" "}
+              {loading ? " Loading ..." : zones?.length}
+              (Zones)
             </p>
             <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
 
         <div className="graphs">
-          <div className="charts">
-            {chartsData && chartsData?.series && (
-              <Chart
-                options={chartsData?.options}
-                series={chartsData?.series}
-                type="line"
-                className="chart"
-                width=""
-              />
-            )}
-          </div>
+          {loading ? (
+            "Loading ..."
+          ) : (
+            <div className="charts">
+              {chartsData && chartsData?.series && (
+                <Chart
+                  options={chartsData?.options}
+                  series={chartsData?.series}
+                  type="line"
+                  className="chart"
+                  width=""
+                />
+              )}
+            </div>
+          )}
+
           <div className="pie"></div>
         </div>
         <div className="moreDetails">
@@ -229,6 +281,7 @@ function AdminDashboard() {
                     </th>
                   </tr>
                 </thead>
+    
                 <tbody>
                   {waterReading && waterReading.length > 0 ? (
                     waterReading.map((recentReading, key) => (
@@ -318,6 +371,7 @@ function AdminDashboard() {
             ></iframe>
           </div>
         </div>
+        <ToastContainer />
       </div>
       {/* <div className="adminSect">
         <div className="cards">
@@ -357,7 +411,6 @@ function AdminDashboard() {
             <span>Developed by WinkyWebers &copy; All rights reserved.</span>
           </div>
         </div>
-        <ToastContainer />
       </div>  */}
     </>
   );

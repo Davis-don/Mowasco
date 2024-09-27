@@ -48,7 +48,6 @@ const AddNewCustomers = () => {
             position: "top-center",
           });
           setError(error);
-          return;
         });
 
       if (postUser.status == 200) {

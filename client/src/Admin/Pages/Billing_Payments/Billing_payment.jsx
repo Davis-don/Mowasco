@@ -14,6 +14,9 @@ import { IoFilterSharp } from "react-icons/io5";
 const Billing_payment = () => {
   const navigate = useNavigate();
   const [customerBills, setCustomerBills] = useState([]);
+  const [error, setError] = useState()
+  const [loading,setLoading] = useState()
+
 
   const viewCustomerBill = async (id) => {
     try {
@@ -25,53 +28,32 @@ const Billing_payment = () => {
 
   const getCustomerBills = async () => {
     try {
+      setLoading(true)
+      setError(false)
       let getBills = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`, {
           withCredentials:true
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error)
+          setError('Something went wrong!')
+        });
       if (getBills.status == 200) {
         setCustomerBills(getBills.data.data);
+        console.log('bill', getBills.data.data )
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
       console.log(error);
+      toast.error('Server error! Please try again later', {position: 'bottom-center'})
+      setError('Server error. Please try again later.')
+    } finally{
+      setLoading(false)
     }
   };
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+ 
 
-  const validation = Yup.object({
-    meterNumber: Yup.number().required("Please provide a meter number"),
-    zone: Yup.number().required("Please provide a zone"),
-    fName: Yup.string().required("Please provide customer first name."),
-    lName: Yup.string().required("Please provide customers last name"),
-    IDNumber: Yup.number().required(
-      "Please provide national indentification number.",
-    ),
-    phoneNumber: Yup.number().required("Provide customers phone number."),
-    connectionType: Yup.string().required("Provide the connection type."),
-  });
-
-  const handleSubmit = async () => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      fName: "",
-      lastName: "",
-      IDNumber: "",
-      phoneNumber: "",
-      connectionType: "",
-    },
-    onSubmit: handleSubmit,
-    validationSchema: validation,
-  });
 
   useEffect(() => {
     getCustomerBills();
@@ -106,42 +88,44 @@ const Billing_payment = () => {
         </div>
       </div>
 
-      <table>
-        <tr>
-          <th>Meter No.</th>
-          <th>Customer Number</th>
-          <th>First name</th>
-          <th>Last Name</th>
-          <th>Arrears</th>
-          <th>Water bill</th>
-          <th>Reconnection</th>
-          <th>Other charges</th>
-          <th>Total bill</th>
-          <th>View</th>
-        </tr>
+      {loading ? (
+        "Loading..."
+      ) : (
+        <table>
+          <tr>
+            <th>Meter No.</th>
+            <th>Customer Number</th>
+            <th>Zone</th>
+            <th>First name</th>
+            <th>Last Name</th>
+            {/*  <th>Water bill</th>
+            <th>Reconnection</th> */}
+            <th>Other charges</th>
+            <th>Total bill</th>
+            <th>View</th>
+          </tr>
 
-        {customerBills && customerBills.length > 0 ? (
-          customerBills.map((cstBill, key) => (
-            <tr>
-              <td>{cstBill.meters.meterNumber}</td>
-              <td>{cstBill.customer.cust_id}</td>
-              <td>{cstBill.customer.custFirstName}</td>
-              <td>{cstBill.customer.custLastName}</td>
-              <td>{cstBill.arrears}</td>
-              <td>{cstBill.waterBill}</td>
-              <td>{cstBill.reconnection}</td>
-              <td>{cstBill.otherCharges}</td>
-              <td>{cstBill.amountDue}</td>
+          {customerBills && customerBills.length > 0 ? (
+            customerBills.map((cstBill, key) => (
+              <tr>
+                <td>{cstBill.meters.meterNumber}</td>
+                <td>{cstBill.customer.cust_id}</td>
+                <td>{cstBill.meters.zones.zoneName}</td>
+                <td>{cstBill.customer.custFirstName}</td>
+                <td>{cstBill.customer.custLastName}</td>
+                <td>{cstBill.otherCharges}</td>
+                <td>{cstBill.amountDue}</td>
 
-              <td>
-                {<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}
-              </td>
-            </tr>
-          ))
-        ) : (
-          <p>Loading bills...</p>
-        )}
-      </table>
+                <td>
+                  {<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <p>Loading bills...</p>
+          )}
+        </table>
+      )}
     </div>
   );
 };

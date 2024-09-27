@@ -3,8 +3,57 @@ const prisma = new PrismaClient();
 
 export const getAllBills = async (req, res) => {
   try {
-    const getBills = await prisma.billing.findMany({
-      select: {
+    // const getBills = await prisma.billing.findMany({
+    //   select: {
+    //     bill_id: true,
+    //     billingPeriod: true,
+    //     billingDate: true,
+    //     amountDue: true,
+    //     consumption: true,
+    //     customer: true,
+    //     meters: true,
+    //     meters:{
+    //       include:{
+    //         zones:true
+    //       }
+    //     },
+    //     arrears: true,
+    //     waterBill: true,
+    //     otherCharges: true,
+    //     reconnection: true,
+    //     receipts: true,
+    //   },
+    //   orderBy: {billingDate:'desc'}
+    // });
+    // if (getBills) {
+    //   res
+    //     .status(200)
+    //     .json({
+    //       success: true,
+    //       message: "All bills found successfully.",
+    //       data: getBills,
+    //     });
+    // } else {
+    //   res
+    //     .status(500)
+    //     .json({ success: false, message: "Something went wrong." });
+    // }
+
+    const getBills = await prisma.billing.groupBy({
+      by:['cust_id'],
+        _max:{
+          billingDate:true
+        },
+    })
+
+    const recentBills = await Promise.all(
+      getBills.map(async (bill) => {
+        return await prisma.billing.findFirst({
+          where:{
+            cust_id:bill.cust_id,
+            billingDate:bill._max.billingDate
+          }, 
+           select: {
         bill_id: true,
         billingPeriod: true,
         billingDate: true,
@@ -12,20 +61,29 @@ export const getAllBills = async (req, res) => {
         consumption: true,
         customer: true,
         meters: true,
+        meters:{
+          include:{
+            zones:true
+          }
+        },
         arrears: true,
         waterBill: true,
         otherCharges: true,
         reconnection: true,
         receipts: true,
-      },
-    });
-    if (getBills) {
+      
+    }
+        })
+      })
+    )
+
+     if (recentBills) {
       res
         .status(200)
         .json({
           success: true,
           message: "All bills found successfully.",
-          data: getBills,
+          data: recentBills,
         });
     } else {
       res
