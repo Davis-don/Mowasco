@@ -11,7 +11,8 @@ import axios, { Axios } from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
-import { useFetch } from "../../../User/Components/useFetch";
+import { useFetch } from "../../../CustomHooks/useFetch";
+import { useDate } from "../../../CustomHooks/useDate";
 const AboutMeter = () => {
   const { meter_id } = useParams();
   const navigate = useNavigate();
@@ -19,39 +20,16 @@ const AboutMeter = () => {
   const [loading, setLoading] = useState(false);
   const [meterHistory, setMeterHistory] = useState();
   const [meterReadingHistory, setMeterReadingHistory] = useState([]);
+  const { formatDate } = useDate();
+
   const { data, loading1, error1 } = useFetch(
     `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`
   );
 
-  console.log('fetched',data)
-  useEffect(() => {
-    // const meterData = async () => {
-    //   try {
-    //     setError(false)
-    //     setLoading(true)
-    //     const meterDetails = await axios
-    //       .get(
-    //         `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
-    //         {
-    //           withCredentials: true,
-    //         },
-    //       )
-    //       .catch((errors) => {
-    //         setError('Something went wrong!!')
-    //       });
-    //     if (meterDetails.status == 200) {
-    //       setMeterHistory(meterDetails.data.data);
-    //     }
-    //   } catch (error) {
-    //     setError('Server Error!! Please try again later.')
-    //   } finally{
-    //     setLoading(false)
-    //   }
-    // };
-    // if (meter_id) meterData();
-    getMeterReadings();
-    
-  }, [meter_id]);
+
+
+ 
+
 
   const getMeterReadings = async () => {
     try {
@@ -79,6 +57,12 @@ const AboutMeter = () => {
     }
   };
 
+  
+  useEffect(() => {
+    getMeterReadings();
+  }, []);
+
+
   return (
     <div>
       <div className="cust-top">
@@ -100,21 +84,20 @@ const AboutMeter = () => {
               <div className="abt-1">
                 <FaUser className="icons" />
                 <span>
-                  {data.customer.custFirstName} {' '}
-                  {data.customer.custLastName}
+                  {data.customer?.custFirstName} {data?.customer?.custLastName}
                 </span>
               </div>
               <div className="abt-1">
                 <FaTachometerAlt className="icons" />
-                <span>{data.meterNumber}</span>
+                <span>{data?.meterNumber}</span>
               </div>
               <div className="abt-1">
                 <FaLocationDot className="icons" />
-                <span>{data.zones.zoneName}</span>
+                <span>{data?.zones.zoneName}</span>
               </div>
               <div className="abt-1">
                 <MdDateRange className="icons" />
-                <span>{data.createdAt}</span>
+                <span>{formatDate (data.createdAt)}</span>
               </div>
             </div>
           ) : (
@@ -137,15 +120,13 @@ const AboutMeter = () => {
             </tr>
           </thead>
 
-          {
-            error && <p className="error">{error}</p>
-          }
+          {error && <p className="error">{error}</p>}
           <tbody>
             {meterReadingHistory && meterReadingHistory.length > 0 ? (
               meterReadingHistory.map((history, key) => (
                 <tr key={key}>
                   <td>{history.meter.meterNumber}</td>
-                  <td>{history.createdAt}</td>
+                  <td>{formatDate(history.createdAt)}</td>
                   <td>{history.currentReading}</td>
                   <td>{history.prevReading}</td>
                   <td>{history.consumption}</td>

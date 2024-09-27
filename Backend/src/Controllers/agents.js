@@ -104,7 +104,7 @@ export const loginAgent = async (req, res) => {
         };
 
         const token = jwt.sign(payload, process.env.TOKEN_SECRET_KEY, {
-          expiresIn: "60m",
+          expiresIn: "360m",
         });
 
 
