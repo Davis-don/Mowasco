@@ -119,7 +119,9 @@ span {
 
 }
 
-
+.toPrint{
+  margin: 0 1rem
+}
 .receipt-btn{
   display: flex;
   flex:1 1;

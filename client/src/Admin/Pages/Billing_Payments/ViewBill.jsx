@@ -9,12 +9,17 @@ import { MdDateRange } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { FaTachometerAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import {useDate} from '../../../../src/CustomHooks/useDate'
+import { AiOutlineFieldNumber } from "react-icons/ai";
+import Footer from "../../Components/Footer";
+
 const ViewBill = () => {
   const { bill_id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [customerBillHistory, setCustomerBillHistory] = useState();
   const [billingHistory, setBillingHistory] = useState([]);
+  const {formatDate} = useDate()
 
   const getCustomerDetails = async () => {
     try {
@@ -94,12 +99,16 @@ const ViewBill = () => {
             <span>{customerBillHistory.customer.meters.meterNumber}</span>
           </div>
           <div className="abt-1">
+            <AiOutlineFieldNumber className="icons" />
+            <span>{customerBillHistory.customer.cust_id}</span>
+          </div>
+          <div className="abt-1">
             <FaLocationDot className="icons" />
             <span>{customerBillHistory.customer.meters.zones.zoneName}</span>
           </div>
           <div className="abt-1">
             <MdDateRange className="icons" />
-            <span>{customerBillHistory.billingDate}</span>
+            <span>{formatDate(customerBillHistory.billingDate)}</span>
           </div>
         </div>
       ) : (
@@ -125,7 +134,7 @@ const ViewBill = () => {
           {billingHistory && billingHistory.length > 0 ? (
             billingHistory.map((blHistory, key) => (
               <tr key={key}>
-                <td>{blHistory.billingDate}</td>
+                <td>{formatDate(blHistory.billingDate)}</td>
                 <td>{blHistory.consumption}</td>
                 <td>{blHistory.arrears}</td>
                 <td>{blHistory.waterBill}</td>
@@ -144,6 +153,7 @@ const ViewBill = () => {
           )}
         </tbody>
       </table>
+      <Footer/>
     </div>
   );
 };

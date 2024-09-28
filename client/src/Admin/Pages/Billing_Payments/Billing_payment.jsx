@@ -10,6 +10,7 @@ import axios from "axios";
 
 import * as Yup from "yup";
 import { IoFilterSharp } from "react-icons/io5";
+import Footer from "../../Components/Footer";
 
 const Billing_payment = () => {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ const Billing_payment = () => {
           )}
         </table>
       )}
+      <Footer/> 
     </div>
   );
 };

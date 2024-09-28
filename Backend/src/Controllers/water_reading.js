@@ -51,6 +51,7 @@ export const getAllReadingsForOneMeter = async (req, res) => {
         meter: {
           include: {
             billing: true,
+            customer:true
           },
         },
       },

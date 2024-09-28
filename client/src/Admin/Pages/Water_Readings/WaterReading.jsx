@@ -3,6 +3,7 @@ import "./water_reading.css";
 import { FaHistory } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IoFilterSharp } from "react-icons/io5";
+import Footer from "../../Components/Footer";
 
 const WaterReading = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const WaterReading = () => {
     }
   };
   return (
+    <>
     <div className="water-readings">
       <div className="cust-top">
         <span>Water Readings</span>
@@ -59,6 +61,9 @@ const WaterReading = () => {
         </tr>
       </table>
     </div>
+    <Footer/>
+    </>
+    
   );
 };
 

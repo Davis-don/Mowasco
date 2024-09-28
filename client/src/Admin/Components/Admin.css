@@ -121,12 +121,15 @@
   display: flex;
   padding: 0.5rem 0;
   align-items: center;
+
   justify-content: center;
 }
 .card-1 .card-title {
   padding: 0.8rem;
   border-radius: 0.5rem;
   font-weight: 600px;
+  width: 100%;
+  margin: 0 1rem;
   background-color: #c2cbdc;
 }
 .card-title h4 {
@@ -138,11 +141,13 @@
 
 .card-title p span {
   color: var(--navy-blue);
+  font-size: 1.1rem;
 }
 .card-center {
   grid-area: card-center;
   max-width: 100%;
   display: flex;
+      
   align-items: center;
   justify-content: center;
 }

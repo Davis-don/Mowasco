@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import "./newCustomer.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import Footer from "../../Components/Footer";
 const UpdateCustomer = () => {
   const { cust_id } = useParams();
   const navigate = useNavigate();
@@ -183,6 +184,7 @@ const UpdateCustomer = () => {
           <ToastContainer />
         </form>
       </div>
+      <Footer/>
     </div>
   );
 };

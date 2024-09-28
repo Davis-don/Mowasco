@@ -11,6 +11,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./newCustomer.css";
+import Footer from "../../Components/Footer";
 
 const Customers = () => {
   const navigate = useNavigate();
@@ -194,6 +195,7 @@ const Customers = () => {
           <p>Loading customers</p>
         )}
       </table>
+     <Footer/>
     </div>
   );
 };

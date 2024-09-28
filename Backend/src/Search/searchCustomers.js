@@ -1,5 +1,5 @@
 import { Router } from "express";
-import verifyToken from "./Middleware/verifyToken.js";
+import verifyToken from "../Middleware/verifyToken.js"
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 

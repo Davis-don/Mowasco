@@ -6,6 +6,7 @@ import axios from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import Footer from "../../Components/Footer";
 const AddNewCustomers = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -167,6 +168,8 @@ const AddNewCustomers = () => {
           <ToastContainer />
         </form>
       </div>
+
+      <Footer/>
     </div>
   );
 };

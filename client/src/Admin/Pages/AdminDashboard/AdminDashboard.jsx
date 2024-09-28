@@ -8,7 +8,8 @@ import Chart from "react-apexcharts";
 import { VscAccount } from "react-icons/vsc";
 import { FaMoneyBills } from "react-icons/fa6";
 import { BsSpeedometer } from "react-icons/bs";
-
+import {useDate} from '../../../../src/CustomHooks/useDate'
+import Footer from "../../Components/Footer";
 function AdminDashboard() {
   const [zones, setZones] = useState();
   const [customer, setCustomer] = useState();
@@ -19,6 +20,7 @@ function AdminDashboard() {
   const [fieldAgents, setFieldAgents] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
+  const {formatDate} = useDate()
   // 1. Get the number of zones
   const getZones = async () => {
     try {
@@ -202,6 +204,7 @@ function AdminDashboard() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     getZones();
     getCustomer();
@@ -220,7 +223,7 @@ function AdminDashboard() {
               <span>Total amount</span>:
               {loading ? " Loading ..." : totalMonthlyConsumed} M <sup>3</sup>
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
+            {/* <span>1st Jan 2024 - 31st January, 2024</span> */}
           </div>
         </div>
         <div className="card-center card-1">
@@ -230,7 +233,6 @@ function AdminDashboard() {
               <span>Active Customers: </span>{" "}
               {loading ? " Loading ..." : customer?.length}
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
         <div className="card-right card-1">
@@ -241,7 +243,6 @@ function AdminDashboard() {
               {loading ? " Loading ..." : zones?.length}
               (Zones)
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
           </div>
         </div>
 
@@ -267,6 +268,7 @@ function AdminDashboard() {
         <div className="moreDetails">
           <div className="below">
             <div className="below-left">
+              <h4> Most Recent Water Readings </h4>
               <table>
                 <thead>
                   <tr>
@@ -281,19 +283,21 @@ function AdminDashboard() {
                     </th>
                   </tr>
                 </thead>
-    
+
                 <tbody>
                   {waterReading && waterReading.length > 0 ? (
-                    waterReading.map((recentReading, key) => (
-                      <tr key={key}>
-                        <td>{recentReading.meter.meterNumber}</td>
-                        <td>{recentReading.meter.customer.cust_id}</td>
-                        <td>
-                          {recentReading.meter.customer.custFirstName}{" "}
-                          {recentReading.meter.customer.custLastName}
-                        </td>
-                        <td>{recentReading.consumption}</td>
-                      </tr>
+                    waterReading.slice(0, 7).map((recentReading, key) => (
+                      <>
+                        <tr key={key}>
+                          <td>{recentReading.meter.meterNumber}</td>
+                          <td>{recentReading.meter.customer.cust_id}</td>
+                          <td>
+                            {recentReading.meter.customer.custFirstName}{" "}
+                            {recentReading.meter.customer.custLastName}
+                          </td>
+                          <td>{recentReading.consumption}</td>
+                        </tr>
+                      </>
                     ))
                   ) : (
                     <p>Loading recent water readings.</p>
@@ -342,7 +346,7 @@ function AdminDashboard() {
                       {fieldAgents && fieldAgents.length > 0 ? (
                         fieldAgents.map((agent, key) => (
                           <tr key={key}>
-                            <td>Zone 1</td>
+                            <td>{agent.employeeID}</td>
                             <td>
                               {agent.first_name} {agent.lastName}
                             </td>
@@ -406,12 +410,9 @@ function AdminDashboard() {
 
          
 
-          <div className="bottom">
-            <h1>Mutitu Water Project</h1>
-            <span>Developed by WinkyWebers &copy; All rights reserved.</span>
-          </div>
-        </div>
+     
       </div>  */}
+<Footer/>
     </>
   );
 }

@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Footer from "../../Components/Footer";
 const RegisterMeters = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -156,6 +157,8 @@ const RegisterMeters = () => {
           <ToastContainer />
         </form>
       </div>
+
+      <Footer/>
     </div>
   );
 };
