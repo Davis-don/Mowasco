@@ -15,7 +15,7 @@ import Routes from "./Login.js";
 import agents from "./src/Routers/agents.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
-import search_customer from './src/Search/dashboard.customer-search.js'
+import search_customer from "./src/Search/dashboard.customer-search.js";
 config();
 const app = express();
 
@@ -49,7 +49,7 @@ app.listen(4000, (error) => {
 
 app.use("/user", agents);
 app.use("/api/customers", searchCustomers);
-app.use('/api/customer-search',search_customer )
+app.use("/api/customer-search", search_customer);
 app.use("/customers", customers);
 app.use("/customer/reading", waterReading);
 app.use("/meters", meters);

@@ -23,26 +23,28 @@ const ViewCustomer = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {formatDate} = useDate()
+  const { formatDate } = useDate();
   const { data, loading1, error1 } = useFetch(
-    `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
   );
 
-  console.log('data', data)
+  console.log("data", data);
   const [customer, setCustomer] = useState();
-
 
   const moreAboutCustomer = async () => {
     try {
-      setError(false)
-      setLoading(true)
+      setError(false);
+      setLoading(true);
 
       const customerData = await axios
-        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`, {
-          withCredentials:true
-        })
-        .catch((error) =>{
-          setError('Something went wrong!!')
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
+          {
+            withCredentials: true,
+          },
+        )
+        .catch((error) => {
+          setError("Something went wrong!!");
         });
       if (customerData.status == 200) {
         setCustomer(customerData.data.data);
@@ -50,14 +52,14 @@ const ViewCustomer = () => {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
-      setError('Server error.')
-    } finally{
-      setLoading(false)
+      setError("Server error.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-   // moreAboutCustomer();
+    // moreAboutCustomer();
   }, []);
   return (
     <>
@@ -120,7 +122,7 @@ const ViewCustomer = () => {
           </>
         )}
       </div>
-    <Footer/>
+      <Footer />
     </>
   );
 };

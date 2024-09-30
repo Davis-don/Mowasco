@@ -75,98 +75,120 @@ function AddUser() {
 
   return (
     <div className="overall-add-user-container">
-      <div className="form-encapsulator">
-        <h2 style={{ textAlign: "center" }}>Create Account</h2>
+      <div className="form-encapsulator forms">
+        <h2 style={{ textAlign: "center" }}>Add Field Agent</h2>
         {displayServerComponent && (
           <div class="alert alert-info">
             <strong>{serverMessage}</strong>
           </div>
         )}
         {form && (
-          <form onSubmit={handlePost}>
-            <input
-              onChange={handleForm}
-              name="employeeId"
-              required
-              type="number"
-              placeholder="Employee id"
-              className="form-control m-2"
-            />
-            <input
-              onChange={handleForm}
-              name="firstName"
-              required
-              type="text"
-              placeholder="First Name"
-              className="form-control m-2"
-            />
-            <input
-              onChange={handleForm}
-              name="lastName"
-              required
-              type="text"
-              placeholder="Last Name"
-              className="form-control m-2"
-            />
+          <form className="update_customer" onSubmit={handlePost}>
+            <div className="inputs">
+              <label htmlFor="fName">Employee ID:</label>
+              <input
+                onChange={handleForm}
+                name="employeeId"
+                required
+                type="number"
+                placeholder="Employee id"
+                className="form-control"
+              />
+            </div>
 
-            {/* <input onChange={handleForm} name='Gender' required type='text'placeholder='gender'className='form-control m-2'/> */}
-            <select
-              onChange={handleForm}
-              name="gender"
-              className="form-control m-2"
-            >
-              <option value="">Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="N/A">Rather not say</option>
-            </select>
+            <div className="inputs">
+              <label>First name:</label>
 
-            <input
-              onChange={handleForm}
-              name="age"
-              required
-              type="number"
-              placeholder="age"
-              className="form-control m-2"
-            />
+              <input
+                onChange={handleForm}
+                name="firstName"
+                required
+                type="text"
+                placeholder="First Name"
+                className="form-control"
+              />
+            </div>
+            <div className="inputs">
+              <label>Last name:</label>
 
-            <input
-              required
-              onChange={handleForm}
-              name="contact"
-              type="number"
-              placeholder="Enter Kenyan phone number"
-              className="form-control"
-              pattern="(\+2547[0-9]{8}|\+2541[0-9]{8}|07[0-9]{8}|01[0-9]{8})"
-              title="Please enter a valid Kenyan phone number"
-            />
+              <input
+                onChange={handleForm}
+                name="lastName"
+                required
+                type="text"
+                placeholder="Last Name"
+                className="form-control"
+              />
+            </div>
 
-            <input
-              onChange={handleForm}
-              name="password"
-              required
-              type="number"
-              placeholder="password"
-              className="form-control m-2"
-            />
-            <input
-              onChange={handleForm}
-              name="confirmPassword"
-              required
-              type="number"
-              placeholder="confirm password"
-              className="form-control m-2"
-            />
-            {/* <select onChange={handleForm} name="Status" className='form-control m-2'>
-  <option value="">status</option>
-  <option value="active">active</option>
-  <option value="inactive">inactive</option>
-</select>
-<select onChange={handleForm} name="Role" className='form-control m-2'>
-  <option value="">role</option>
-  <option value="admin">admin</option>
-  <option value="user">user</option>
-</select> */}
+            <div className="inputs">
+              <label>Gender:</label>
+
+              <select
+                onChange={handleForm}
+                name="gender"
+                className="form-control"
+              >
+                <option value="">Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="N/A">Rather not say</option>
+              </select>
+            </div>
+
+            <div className="inputs">
+              <label>Age:</label>
+
+              <input
+                onChange={handleForm}
+                name="age"
+                required
+                type="number"
+                placeholder="age"
+                className="form-control"
+              />
+            </div>
+
+            <div className="inputs">
+              <label>Phone number:</label>
+
+              <input
+                required
+                onChange={handleForm}
+                name="contact"
+                type="number"
+                placeholder="Enter Kenyan phone number"
+                className="form-control"
+                pattern="(\+2547[0-9]{8}|\+2541[0-9]{8}|07[0-9]{8}|01[0-9]{8})"
+                title="Please enter a valid Kenyan phone number"
+              />
+            </div>
+
+            <div className="inputs">
+              <label>Password:</label>
+
+              <input
+                onChange={handleForm}
+                name="password"
+                required
+                type="password"
+                placeholder="password"
+                className="form-control"
+              />
+            </div>
+
+            <div className="inputs">
+              <label>Confirm password:</label>
+              <input
+                onChange={handleForm}
+                name="confirmPassword"
+                required
+                type="password"
+                placeholder="confirm password"
+                className="form-control"
+              />
+            </div>
+
             <div className="adduser-button">
               <button type="submit" className="btn btn-outline-primary">
                 Submit

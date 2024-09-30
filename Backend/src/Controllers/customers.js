@@ -6,6 +6,7 @@ export const getAllCustomers = async (req, res) => {
     const getCustomers = await prisma.customers.findMany({
       select: {
         cust_id: true,
+        custNumber: true,
         custFirstName: true,
         custLastName: true,
         custID: true,
@@ -23,13 +24,11 @@ export const getAllCustomers = async (req, res) => {
     });
 
     if (getCustomers != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Customers found successfully.",
-          data: getCustomers,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Customers found successfully.",
+        data: getCustomers,
+      });
     } else {
       res
         .status(500)
@@ -56,13 +55,11 @@ export const getSingleCustomer = async (req, res) => {
     });
 
     if (checkID) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Customer has been found.",
-          data: checkID,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Customer has been found.",
+        data: checkID,
+      });
     } else {
       res.status(500).json({ success: true, message: "Customer not found" });
     }
@@ -72,6 +69,7 @@ export const getSingleCustomer = async (req, res) => {
 };
 
 export const createCustomer = async (req, res) => {
+  console.log(req.body);
   try {
     const {
       custFirstName,
@@ -92,13 +90,11 @@ export const createCustomer = async (req, res) => {
     });
 
     if (createCustomer != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Customer created successfully.",
-          data: createCustomer,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Customer created successfully.",
+        data: createCustomer,
+      });
     } else {
       res
         .status(500)

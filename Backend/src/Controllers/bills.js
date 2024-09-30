@@ -40,51 +40,48 @@ export const getAllBills = async (req, res) => {
     // }
 
     const getBills = await prisma.billing.groupBy({
-      by:['cust_id'],
-        _max:{
-          billingDate:true
-        },
-    })
+      by: ["cust_id"],
+      _max: {
+        billingDate: true,
+      },
+    });
 
     const recentBills = await Promise.all(
       getBills.map(async (bill) => {
         return await prisma.billing.findFirst({
-          where:{
-            cust_id:bill.cust_id,
-            billingDate:bill._max.billingDate
-          }, 
-           select: {
-        bill_id: true,
-        billingPeriod: true,
-        billingDate: true,
-        amountDue: true,
-        consumption: true,
-        customer: true,
-        meters: true,
-        meters:{
-          include:{
-            zones:true
-          }
-        },
-        arrears: true,
-        waterBill: true,
-        otherCharges: true,
-        reconnection: true,
-        receipts: true,
-      
-    }
-        })
-      })
-    )
-
-     if (recentBills) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "All bills found successfully.",
-          data: recentBills,
+          where: {
+            cust_id: bill.cust_id,
+            billingDate: bill._max.billingDate,
+          },
+          select: {
+            bill_id: true,
+            billingPeriod: true,
+            billingDate: true,
+            amountDue: true,
+            consumption: true,
+            customer: true,
+            meters: true,
+            meters: {
+              include: {
+                zones: true,
+              },
+            },
+            arrears: true,
+            waterBill: true,
+            otherCharges: true,
+            reconnection: true,
+            receipts: true,
+          },
         });
+      }),
+    );
+
+    if (recentBills) {
+      res.status(200).json({
+        success: true,
+        message: "All bills found successfully.",
+        data: recentBills,
+      });
     } else {
       res
         .status(500)
@@ -118,13 +115,11 @@ export const getCustomersBills = async (req, res) => {
       },
     });
     if (checkBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill found successfully.",
-          data: checkBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill found successfully.",
+        data: checkBill,
+      });
     } else {
       res
         .status(500)
@@ -156,13 +151,11 @@ export const getSingleBill = async (req, res) => {
       },
     });
     if (checkBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill found successfully.",
-          data: checkBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill found successfully.",
+        data: checkBill,
+      });
     } else {
       res
         .status(500)
@@ -206,13 +199,11 @@ export const createBill = async (req, res) => {
       },
     });
     if (createBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill created successfully.",
-          data: createBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill created successfully.",
+        data: createBill,
+      });
     } else {
       res
         .status(500)

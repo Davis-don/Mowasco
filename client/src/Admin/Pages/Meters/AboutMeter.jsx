@@ -19,25 +19,23 @@ const AboutMeter = () => {
   const { formatDate } = useDate();
 
   const { data, loading1, error1 } = useFetch(
-    `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
   );
-   const { data: meterHistory } = useFetch(
-     `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`
-   );
-
+  const { data: meterHistory } = useFetch(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
+  );
 
   console.log("meter readings", data);
 
-
   // compute total meter readings.
-   const totalMeterReadings = (consumption) => {
-    const totalConsumed= consumption * 123
-    return totalConsumed
-   }
+  const totalMeterReadings = (consumption) => {
+    const totalConsumed = consumption * 123;
+    return totalConsumed;
+  };
 
-   useEffect(()=> {
-totalMeterReadings()
-   }, [])
+  useEffect(() => {
+    totalMeterReadings();
+  }, []);
   // const getMeterReadings = async () => {
   //   try {
   //     setError(false);
@@ -98,7 +96,7 @@ totalMeterReadings()
               </div>
               <div className="abt-1">
                 <AiOutlineFieldNumber className="icons" />
-                <span>{data?.customer.cust_id}</span>
+                <span>{data?.customer.custNumber}</span>
               </div>
               <div className="abt-1">
                 <FaLocationDot className="icons" />
@@ -149,7 +147,7 @@ totalMeterReadings()
           </tbody>
         </table>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

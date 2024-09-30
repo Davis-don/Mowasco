@@ -57,7 +57,7 @@ const MeterReadingHistory = () => {
       setLoading(false);
     }
   };
- 
+
   return (
     <div>
       <div className="cust-top">
@@ -143,7 +143,7 @@ const MeterReadingHistory = () => {
         <ToastContainer />
       </form>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -11,25 +11,25 @@ import { MdDeleteForever } from "react-icons/md";
 import { MdNavigateNext } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineHistory } from "react-icons/ai";
-import {useFetch} from '../../../../src/CustomHooks/useFetch'
-import {useDate} from '../../../CustomHooks/useDate'
+import { useFetch } from "../../../../src/CustomHooks/useFetch";
+import { useDate } from "../../../CustomHooks/useDate";
 import Footer from "../../Components/Footer";
 const CreateMeters = () => {
   const navigate = useNavigate();
- 
-  const { data:meters, error1, loading1 } = useFetch(
-    `http://localhost:4000/meters/all`
-  );
-  const {formatDate} = useDate()
+
+  const {
+    data: meters,
+    error1,
+    loading1,
+  } = useFetch(`http://localhost:4000/meters/all`);
+  const { formatDate } = useDate();
   const viewHistory = async (id) => {
     try {
       navigate(`/${id}/meter-history`);
     } catch (error) {
       console.log(error);
-      
     }
   };
-
 
   return (
     <div>
@@ -68,11 +68,9 @@ const CreateMeters = () => {
           <th>Repair Date</th>
           <th>History</th>
         </tr>
-        {
-          loading1 ? (
-            'Loading data ...'
-          ):(
-            meters && meters.length > 0 ? (
+        {loading1 ? (
+          "Loading data ..."
+        ) : meters && meters.length > 0 ? (
           meters.map((meter, key) => (
             <tr key={key}>
               <td>{meter?.meterNumber}</td>
@@ -91,15 +89,11 @@ const CreateMeters = () => {
           ))
         ) : (
           <p>Loading data ...</p>
-        )
-          )
-        }
-        
-        {
-          error1 && <p>{error1}</p>
-        }
+        )}
+
+        {error1 && <p>{error1}</p>}
       </table>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

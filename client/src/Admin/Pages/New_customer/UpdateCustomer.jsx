@@ -39,7 +39,7 @@ const UpdateCustomer = () => {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => console.log(error));
       if (customerData.status == 200) {
@@ -52,7 +52,7 @@ const UpdateCustomer = () => {
     }
   };
   const handleSubmit = async (values) => {
-    console.log(values)
+    console.log(values);
   };
 
   const formik = useFormik({
@@ -184,7 +184,7 @@ const UpdateCustomer = () => {
           <ToastContainer />
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

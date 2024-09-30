@@ -15,11 +15,11 @@ datasource db {
 
 model Customers {
   cust_id            String   @id @default(uuid())
-  cust_no            Int      @default(autoincrement()) @map("customer_number")
+  custNumber         Int      @default(autoincrement()) @map("customer_number")
   custFirstName      String   @map("first_name")
   custLastName       String   @map("last_name")
   custID             Int      @map("cust_ID")
-  custPhoneNumber    BigInt   @map("phone_number")
+  custPhoneNumber    Int   @map("phone_number")
   custConnectionType String   @map("connection_type")
   custStatus         String   @default("Active") @map("status")
   createdAt          DateTime @default(now())
@@ -35,9 +35,9 @@ model Meters {
   meterNumber Int       @unique @map("meter_number")
   createdAt   DateTime  @default(now())
   zone_id     String
-  zones       Zones     @relation(fields: [zone_id], references: [zone_id])
+  zones       Zones     @relation(fields: [zone_id], references: [zone_id], onDelete: Cascade)
   cust_id     String    @unique
-  customer    Customers @relation(fields: [cust_id], references: [cust_id])
+  customer    Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
 
   water_reading Water_Reading[]
   billing       Billing[]
@@ -58,6 +58,7 @@ model Water_Reading {
   currentReading Decimal  @default(0) @map("current_reading") @db.Decimal(10, 2)
   prevReading    Decimal  @default(0) @map("prev_reading") @db.Decimal(10, 2)
   consumption    Decimal  @default(0) @map("consumption") @db.Decimal(10, 2)
+  readingStatus WATER_READING_STATUS @default(NOT_RECORDED) @map("water_reading_status")
   createdAt      DateTime @default(now()) @map("reading date")
   meter_id       String
   meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
@@ -66,20 +67,21 @@ model Water_Reading {
 }
 
 model Billing {
-  bill_id       String   @id @default(uuid())
-  billingPeriod DateTime @default(now()) @map("billing_period")
-  consumption   Decimal  @map("consumption") @db.Decimal(10, 2)
-  amountDue     Decimal  @default(0) @map("amount_due") @db.Decimal(10, 2)
-  billingDate   DateTime @default(now())
-  arrears       Int      @default(0) @map("arrears")
-  waterBill     Int      @default(0) @map("water_bill")
-  reconnection  Int      @default(0) @map("reconnection")
-  otherCharges  Int      @default(0) @map("other_charges")
+  bill_id       String         @id @default(uuid())
+  billingPeriod DateTime       @default(now()) @map("billing_period")
+  consumption   Decimal        @map("consumption") @db.Decimal(10, 2)
+  amountDue     Decimal        @default(0) @map("amount_due") @db.Decimal(10, 2)
+  billingDate   DateTime       @default(now())
+  arrears       Int            @default(0) @map("arrears")
+  waterBill     Int            @default(0) @map("water_bill")
+  reconnection  Int            @default(0) @map("reconnection")
+  otherCharges  Int            @default(0) @map("other_charges")
+  billingStatus BILLING_STATUS @default(NOT_PAID) @map("billing_status")
 
   customer Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
   cust_id  String
 
-  meters   Meters    @relation(fields: [meter_id], references: [meter_id])
+  meters   Meters    @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
   meter_id String
   receipts Receipts?
 
@@ -121,4 +123,15 @@ enum ROLE {
 enum STATUS {
   ACTIVE
   INACTIVE
+}
+
+enum WATER_READING_STATUS {
+  WATER_RECORDED
+  NOT_RECORDED
+}
+
+enum BILLING_STATUS {
+  PAID
+  PENDING
+  NOT_PAID
 }

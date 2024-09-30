@@ -34,15 +34,19 @@ const AddNewCustomers = () => {
     try {
       setLoading(true);
       const postUser = await axios
-        .post(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/create`, {
-          custFirstName: fName,
-          custLastName: lName,
-          custID: parseInt(IDNumber),
-          custPhoneNumber: parseInt(phoneNumber),
-          custConnectionType: connectionType,
-        }, {
-          withCredentials:true
-        })
+        .post(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/create`,
+          {
+            custFirstName: fName,
+            custLastName: lName,
+            custID: parseInt(IDNumber),
+            custPhoneNumber: parseInt(phoneNumber),
+            custConnectionType: connectionType,
+          },
+          {
+            withCredentials: true,
+          },
+        )
         .catch((error) => {
           console.log(error);
           toast.error("Server error!. Please try again later.", {
@@ -161,15 +165,13 @@ const AddNewCustomers = () => {
             />
           </div>
           <div className="adduser-button">
-            <button>
-              {loading ? "Registering...." : "Register"}
-            </button>
+            <button>{loading ? "Registering...." : "Register"}</button>
           </div>
           <ToastContainer />
         </form>
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -13,13 +13,11 @@ export const getAllMeters = async (req, res) => {
       },
     });
     if (getMeters != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "All meters have been found successfully.",
-          data: getMeters,
-        });
+      res.status(200).json({
+        success: true,
+        message: "All meters have been found successfully.",
+        data: getMeters,
+      });
     } else {
       res
         .status(500)
@@ -44,13 +42,11 @@ export const getSingleMeter = async (req, res) => {
     });
 
     if (checkMeter) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Meter has been found successfully.",
-          data: checkMeter,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Meter has been found successfully.",
+        data: checkMeter,
+      });
     } else {
       res.status(500).json({ success: false, message: "Meter not found." });
     }
@@ -79,21 +75,17 @@ export const createNewMeter = async (req, res) => {
     });
 
     if (createMeter != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Meter created successfully.",
-          data: createMeter,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Meter created successfully.",
+        data: createMeter,
+      });
     } else {
-      res
-        .status(500)
-        .json({
-          success: true,
-          message: "Something went wrong.",
-          data: createMeter,
-        });
+      res.status(500).json({
+        success: true,
+        message: "Something went wrong.",
+        data: createMeter,
+      });
     }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

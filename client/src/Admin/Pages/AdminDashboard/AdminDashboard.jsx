@@ -8,7 +8,7 @@ import Chart from "react-apexcharts";
 import { VscAccount } from "react-icons/vsc";
 import { FaMoneyBills } from "react-icons/fa6";
 import { BsSpeedometer } from "react-icons/bs";
-import {useDate} from '../../../../src/CustomHooks/useDate'
+import { useDate } from "../../../../src/CustomHooks/useDate";
 import Footer from "../../Components/Footer";
 function AdminDashboard() {
   const [zones, setZones] = useState();
@@ -20,7 +20,8 @@ function AdminDashboard() {
   const [fieldAgents, setFieldAgents] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
-  const {formatDate} = useDate()
+  const { formatDate } = useDate();
+  const [zoneConsumptionTotals, setZoneConsumptionTotals] = useState([])
   // 1. Get the number of zones
   const getZones = async () => {
     try {
@@ -139,7 +140,7 @@ function AdminDashboard() {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/total-readings`,
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => {
           setError("Server error!");
@@ -166,7 +167,7 @@ function AdminDashboard() {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`,
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => {
           setError("Server error!");
@@ -205,6 +206,25 @@ function AdminDashboard() {
     }
   };
 
+  // get total amount of water consumed per zone.
+  const zonalConsumptionTotal = async() => {
+    try {
+      const total = await axios.get(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/zone/total-consumption`,{
+          withCredentials:true
+        }
+      ).catch(error => console.log(error))
+      if(total.status === 200){
+        setZoneConsumptionTotals(total.data.data);
+        console.log(total.data.data)
+      } else{
+        toast.warn('Something went wrong', {position: 'bottom-center'})
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getZones();
     getCustomer();
@@ -212,6 +232,7 @@ function AdminDashboard() {
     getTotalWaterConsumed();
     recentWaterReadings();
     agents();
+    zonalConsumptionTotal()
   }, []);
   return (
     <>
@@ -223,7 +244,32 @@ function AdminDashboard() {
               <span>Total amount</span>:
               {loading ? " Loading ..." : totalMonthlyConsumed} M <sup>3</sup>
             </p>
-            {/* <span>1st Jan 2024 - 31st January, 2024</span> */}
+            <div className="zones-consumption">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Zone name:</th>
+                    <th>
+                      Total Consumption:
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {zoneConsumptionTotals && zoneConsumptionTotals.length > 0 ? (
+                    zoneConsumptionTotals.map((zoneTotals, key) => (
+                      <tr key={key}>
+                        <td>{zoneTotals.zoneName}</td>
+                        <td>
+                          {zoneTotals.totalConsumption} M <sup>3</sup>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <p>Loading data...</p>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div className="card-center card-1">
@@ -286,11 +332,11 @@ function AdminDashboard() {
 
                 <tbody>
                   {waterReading && waterReading.length > 0 ? (
-                    waterReading.slice(0, 7).map((recentReading, key) => (
+                    waterReading.slice(0, 10).map((recentReading, key) => (
                       <>
                         <tr key={key}>
                           <td>{recentReading.meter.meterNumber}</td>
-                          <td>{recentReading.meter.customer.cust_id}</td>
+                          <td>{recentReading.meter.customer.custNumber}</td>
                           <td>
                             {recentReading.meter.customer.custFirstName}{" "}
                             {recentReading.meter.customer.custLastName}
@@ -412,7 +458,7 @@ function AdminDashboard() {
 
      
       </div>  */}
-<Footer/>
+      <Footer />
     </>
   );
 }

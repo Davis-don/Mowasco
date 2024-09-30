@@ -9,14 +9,14 @@ const Water_reading = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState();
   const [customer, setCustomer] = useState();
-  const [error, setError] = useState()
+  const [error, setError] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        setLoading(true)
-        setError(false)
+        setLoading(true);
+        setError(false);
         const getData = await axios
           .get(`http://localhost:4000/customers/${id}`, {
             withCredentials: true,
@@ -32,8 +32,8 @@ const Water_reading = () => {
         }
       } catch (error) {
         console.log(error);
-      }finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -54,22 +54,18 @@ const Water_reading = () => {
           },
         )
         .catch((error) => {
-         
-            setError(error.message);
-          
+          setError(error.message);
         });
       if (postRecordings.status == 200) {
         navigate(`/customer/meter/${meterID}`);
       } else {
-        
-          setError('Something went wrong!')
-        
+        setError("Something went wrong!");
       }
     } catch (error) {
-    
-        setError("Server error! Please try again later");
-        toast.error('Server error! Please Try again later!!', {position:'bottom-center'})
-      
+      setError("Server error! Please try again later");
+      toast.error("Server error! Please Try again later!!", {
+        position: "bottom-center",
+      });
     }
   };
   const formik = useFormik({

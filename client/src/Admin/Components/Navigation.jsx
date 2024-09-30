@@ -7,15 +7,15 @@ import store from "../../store/dataStore";
 import { Navigate } from "react-router-dom";
 const Navigation = () => {
   const user = store((state) => state.user);
-  const [time, setTime] = useState( new Date())
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     setInterval(() => {
-      setTime(new Date())
-    }, (1000));
-  }, [])
-  if(!user){
-    return <Navigate to={'/'}/>
+      setTime(new Date());
+    }, 1000);
+  }, []);
+  if (!user) {
+    return <Navigate to={"/"} />;
   }
   return (
     <div className="navigation">

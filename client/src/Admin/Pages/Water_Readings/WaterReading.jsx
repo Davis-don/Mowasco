@@ -17,53 +17,54 @@ const WaterReading = () => {
   };
   return (
     <>
-    <div className="water-readings">
-      <div className="cust-top">
-        <span>Water Readings</span>
-      </div>
-      <h4 style={{ textAlign: "center", marginTop: "1rem" }}>Meter Readings</h4>
-      <div className="search-filter">
-        <div className="search">
-          <input
-            className="search-input"
-            type="text"
-            name="fName"
-            value={""}
-            placeholder="Search customer.."
-            onChange={""}
-            required
-          />
-          <button>Search</button>
+      <div className="water-readings">
+        <div className="cust-top">
+          <span>Water Readings</span>
         </div>
-        <div className="search-filter-left">
-          <div className="filter">
-            <IoFilterSharp className="filter-icon" />
-            <span>Filter</span>
+        <h4 style={{ textAlign: "center", marginTop: "1rem" }}>
+          Meter Readings
+        </h4>
+        <div className="search-filter">
+          <div className="search">
+            <input
+              className="search-input"
+              type="text"
+              name="fName"
+              value={""}
+              placeholder="Search customer.."
+              onChange={""}
+              required
+            />
+            <button>Search</button>
+          </div>
+          <div className="search-filter-left">
+            <div className="filter">
+              <IoFilterSharp className="filter-icon" />
+              <span>Filter</span>
+            </div>
           </div>
         </div>
+        <table>
+          <tr>
+            <th>Meter No.</th>
+            <th>Zone</th>
+            <th>Customer Names</th>
+            <th>Current Reading</th>
+            <th>Reading date</th>
+            <th>View</th>
+          </tr>
+          <tr>
+            <td>1001</td>
+            <td>2</td>
+            <td>Wilfred Kiama</td>
+            <td>12.43</td>
+            <td>12th may, 2024</td>
+            <td>{<FaHistory onClick={viewMeterHistory} />}</td>{" "}
+          </tr>
+        </table>
       </div>
-      <table>
-        <tr>
-          <th>Meter No.</th>
-          <th>Zone</th>
-          <th>Customer Names</th>
-          <th>Current Reading</th>
-          <th>Reading date</th>
-          <th>View</th>
-        </tr>
-        <tr>
-          <td>1001</td>
-          <td>2</td>
-          <td>Wilfred Kiama</td>
-          <td>12.43</td>
-          <td>12th may, 2024</td>
-          <td>{<FaHistory onClick={viewMeterHistory} />}</td>{" "}
-        </tr>
-      </table>
-    </div>
-    <Footer/>
+      <Footer />
     </>
-    
   );
 };
 

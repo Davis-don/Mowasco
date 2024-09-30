@@ -6,43 +6,42 @@
 }
 
 .receipt-invoice .name-logo {
- display: grid;  
- grid-template-columns: 0.4fr 1fr;
- grid-template-rows: auto;
- grid-template-areas: 'left right';
- align-items: start;
- justify-content: center;
+  display: grid;
+  grid-template-columns: 0.4fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "left right";
+  align-items: start;
+  justify-content: center;
 }
 
-
-.company-logo{
+.company-logo {
   grid-area: left;
 }
-.company-name{
+.company-name {
   grid-area: right;
 }
-.overall-receipt-gen-container{
+.overall-receipt-gen-container {
   width: 100%;
 }
 
-table{
+table {
   width: 100%;
 }
-table thead tr th{
+table thead tr th {
   border: none;
 }
 
-table .tr .td{
+table .tr .td {
   border-bottom: 2px solid black;
   border-style: dotted;
 }
 
-table tr td .server{
+table tr td .server {
   color: var(--navy-blue);
   text-transform: capitalize;
 }
-.name-logo h1{
-  letter-spacing: .3rem;
+.name-logo h1 {
+  letter-spacing: 0.3rem;
   font-weight: 700;
 }
 .name-logo h1,
@@ -53,8 +52,7 @@ span {
   line-height: 1.6;
 }
 
-
-.company-name h3{
+.company-name h3 {
   text-align: center;
 }
 .office-details {
@@ -64,7 +62,7 @@ span {
   justify-content: space-between;
   width: 100%;
 }
-.office-left h4{
+.office-left h4 {
   text-align: start;
 }
 .office-left span {
@@ -82,70 +80,69 @@ span {
   text-transform: capitalize;
 }
 
-.bottom .steps span{
+.bottom .steps span {
   font-size: 1.2rem;
-  letter-spacing: .2rem;
+  letter-spacing: 0.2rem;
   line-height: 1.6;
 }
 
-.bottom .account span{
-  padding: .2rem 0;
+.bottom .account span {
+  padding: 0.2rem 0;
   font-size: 1.2rem;
-    letter-spacing: .05rem;
-    line-height: 1.6;
+  letter-spacing: 0.05rem;
+  line-height: 1.6;
 }
-.payment-process{
+.payment-process {
   padding: 1rem 0;
 }
-.next{
+.next {
   font-size: 1.2rem;
   width: 3rem;
 }
-.notice{
+.notice {
   text-align: justify;
   padding: 0 1rem;
   letter-spacing: 5;
   line-height: 1.6;
 }
-.receipt-no{
+.receipt-no {
   text-align: center;
 }
-.name-logo img{
+.name-logo img {
   width: 8rem;
   display: block;
   object-fit: cover;
   border-radius: 50%;
   overflow: hidden;
-
 }
 
-.toPrint{
-  margin: 0 1rem
+.toPrint {
+  margin: 0 1rem;
 }
-.receipt-btn{
+.receipt-btn {
   display: flex;
-  flex:1 1;
+  flex: 1 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 @media screen and (max-width: 500px) {
- .name-logo{
-   border: 1px solid red;
-  display:flex;
-  flex-direction: column;
- }
- 
- .name-logo .company-logo{
-  display: none;
- }
-.company-name{
-  width: 100%;
-  border: 2px solid green;
-}
+  .name-logo {
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name-logo .company-logo {
+    display: none;
+  }
+  .company-name {
+    width: 100%;
+    border: 2px solid green;
+  }
   .gen-water-receipt-form-div {
     padding: 0;
-      width: 100%;
+    width: 100%;
   }
 }
 @media screen and (min-width: 641px) and (max-width: 1025px) {

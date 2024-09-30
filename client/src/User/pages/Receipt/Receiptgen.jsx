@@ -7,10 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import logo from "../../../../src/images/logo.jpeg";
 import store from "../../../store/dataStore";
-import {ReactToPrint} from 'react-to-print'
+import { ReactToPrint } from "react-to-print";
+import { useDate } from "../../../CustomHooks/useDate";
 
 function Receiptgen() {
-const  componentRef  = useRef();
+  const componentRef = useRef();
   const user = store((state) => state.user);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -18,8 +19,9 @@ const  componentRef  = useRef();
   const [waterReadings, setWaterReadings] = useState();
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+  const { formatDate } = useDate();
   const generateReceipt = async () => {
-    window.print()
+    window.print();
   };
 
   const getWaterReadings = async (meterID) => {
@@ -67,9 +69,9 @@ const  componentRef  = useRef();
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      setError('Server error! Please try again later!!');
-    } finally{
-      setLoading(false)
+      setError("Server error! Please try again later!!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -144,7 +146,7 @@ const  componentRef  = useRef();
                       <tr className="rows tr" colSpan={2}>
                         <th>Member Number:</th>
                         <td className="td">
-                          {receiptData.billing.customer.cust_id}
+                          {receiptData.billing.customer.custNumber}
                         </td>
 
                         <th>Zone:</th>
@@ -165,7 +167,9 @@ const  componentRef  = useRef();
                       </tr>
                       <tr className="tr">
                         <th>Date of issue</th>
-                        <td className="td">{receiptData.createdAt}</td>
+                        <td className="td">
+                          {formatDate(receiptData.createdAt)}
+                        </td>
                       </tr>
                     </thead>
                   </table>
@@ -206,7 +210,7 @@ const  componentRef  = useRef();
                           </span>
                         </td>
                         <td rowSpan={2}>{waterReadings.consumption}</td>
-                        <td>July 14 2024</td>
+                        <td>{formatDate(receiptData.createdAt)}</td>
                         <td>{receiptData.billing.amountDue}</td>
                       </tr>
                       <tr>
@@ -217,7 +221,7 @@ const  componentRef  = useRef();
                           <span>Domestic:</span> <br />
                           <span>TOWNSHIP:</span> <br />
                           <span>INSTITUTION:</span> <br />
-                          <span>Due Date:</span> br
+                          <span>Due Date:</span>
                         </td>
                         <td>Adjustments</td>
                         <td></td>

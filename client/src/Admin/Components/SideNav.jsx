@@ -9,14 +9,13 @@ import { FaRegRectangleList } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import store from "../../store/dataStore";
 
-
 const SideNav = () => {
   const user = store((state) => state.user);
   const logoutUser = store((state) => state.logoutUser);
-const handleLogout = async () => {
-  logoutUser()
-  return <Navigate to={'/'}/>
-}
+  const handleLogout = async () => {
+    logoutUser();
+    return <Navigate to={"/"} />;
+  };
   return (
     <div>
       <div className="aside">
@@ -49,9 +48,9 @@ const handleLogout = async () => {
                 </Link>
               </div>
               <div className="nav-1">
-                <Link className="li" to={"/manage-water-readings"}>
+                <Link className="li" to={"/agent/register"}>
                   <FaRegRectangleList className="icons" />
-                  <span>Water readings</span>
+                  <span>Agents</span>
                 </Link>
               </div>
             </>

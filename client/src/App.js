@@ -39,7 +39,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/agent/register" element={<AddUser />} />
         </Routes>
 
         <div className="dis">
@@ -74,6 +73,7 @@ function App() {
                 path="/customer/:cust_id/assign-meter"
                 element={<RegisterMeters />}
               />
+              <Route path="/agent/register" element={<AddUser />} />
             </Routes>
 
             <Routes>

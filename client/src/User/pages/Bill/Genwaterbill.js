@@ -14,22 +14,21 @@ function Genwaterbill() {
   const [meter, setMeter] = useState();
   const [bill, setBill] = useState();
   const [loading, setLoading] = useState(false);
-  const [error, setError ] = useState()
+  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        setError(false)
-        setLoading(true)
-
+        setError(false);
+        setLoading(true);
 
         const getData = await axios
           .get(`http://localhost:4000/meters/${id}`, {
             withCredentials: true,
           })
           .catch((error) => {
-            setError(error.message)
-            console.log(error)
+            setError(error.message);
+            console.log(error);
           });
         if (getData.status == 200) {
           setMeter(getData.data.data);
@@ -37,11 +36,10 @@ function Genwaterbill() {
           toast.success("Something went wrong.");
         }
       } catch (error) {
-              setError('Server error. Please try again later')
-
-      }finally{
-      setLoading(false)
-    }
+        setError("Server error. Please try again later");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchDetails();
   }, []);
@@ -49,16 +47,16 @@ function Genwaterbill() {
   // // fetch the meter readings.
   const fetchMeterReadings = async () => {
     try {
-      setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       //  const meterID = (customer.meters.meter_id)
       const getReadings = await axios
         .get(`http://localhost:4000/customer/reading/${id}`, {
           withCredentials: true,
         })
         .catch((error) => {
-          setError(error.message)
-          console.log("water reading", error)
+          setError(error.message);
+          console.log("water reading", error);
         });
 
       if (getReadings.status == 200) {
@@ -67,10 +65,9 @@ function Genwaterbill() {
         toast.success("Something went wrong.");
       }
     } catch (error) {
-         setError('Server error. Please try again later')
-
-    }finally{
-      setLoading(false)
+      setError("Server error. Please try again later");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,6 +76,7 @@ function Genwaterbill() {
       if (meter) {
         formik.setValues({
           meterNumber: meter.meterNumber,
+          custNumber: meter.customer.custNumber,
           zone: meter.zones.zoneName,
           fName: meter.customer.custFirstName,
           lName: meter.customer.custLastName,
@@ -97,8 +95,8 @@ function Genwaterbill() {
 
   const createReceipt = async (billID, custID, meterID, amountPaid) => {
     try {
-       setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       const receipt = await axios
         .post(
           `http://localhost:4000/customer/receipt/generate`,
@@ -113,7 +111,7 @@ function Genwaterbill() {
           },
         )
         .catch((error) => {
-          setError(error.message)
+          setError(error.message);
         });
 
       if (receipt.status == 200) {
@@ -124,23 +122,22 @@ function Genwaterbill() {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      console.log(error)
-          setError('Server error. Please try again later')
-
-    } finally{
-      setLoading(false)
+      console.log(error);
+      setError("Server error. Please try again later");
+    } finally {
+      setLoading(false);
     }
   };
   const getBillDetails = async (id) => {
     try {
-       setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       const billDetails = await axios
         .get(`http://localhost:4000/customer/bill/${id}`, {
           withCredentials: true,
         })
-        .catch((error) =>{
-          setError(error.message)
+        .catch((error) => {
+          setError(error.message);
         });
 
       if (billDetails.status == 200) {
@@ -155,17 +152,16 @@ function Genwaterbill() {
       }
     } catch (error) {
       console.log(error);
-          setError('Server error. Please try again later')
-
-    } finally{
-      setLoading(false)
+      setError("Server error. Please try again later");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubmit = async (values) => {
     try {
-       setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       const createBill = await axios
         .post(
           `http://localhost:4000/customer/bill/create`,
@@ -179,7 +175,7 @@ function Genwaterbill() {
           },
         )
         .catch((error) => {
-          setError(error.message)
+          setError(error.message);
         });
 
       if (createBill.status == 200) {
@@ -190,9 +186,9 @@ function Genwaterbill() {
       }
     } catch (error) {
       console.log(error);
-      setError('Server error. Please try again later')
-    } finally{
-      setLoading(false)
+      setError("Server error. Please try again later");
+    } finally {
+      setLoading(false);
     }
   };
   const formik = useFormik({
@@ -202,6 +198,7 @@ function Genwaterbill() {
       zone: "",
       fName: "",
       lName: "",
+      custNumber: "",
       IDNumber: "",
       phoneNumber: "",
       currentWaterReadings: "",
@@ -212,144 +209,146 @@ function Genwaterbill() {
   });
   return (
     <div className="overall-gen-water-bill-container container-fluid">
-      {
-        loading ? (
-          'Loading ... '
-        ):(
-  <div className="gen-water-bill-form-div cust-readings">
-        <h4>Customer <span> details</span>
-        </h4>
-        <form className="container-fluid" onSubmit={formik.handleSubmit}>
-          <div className="overall-customer-details-container">
-            <div className="customer-top">
-              <div className="input">
-                <label>Meter No.</label>
-                <input
-                  type="text"
-                  value={formik.values.meterNumber}
-                  placeholder="customer-number"
-                  className="form-control m-2"
-                  disabled
-                />
+      {loading ? (
+        "Loading ... "
+      ) : (
+        <div className="gen-water-bill-form-div cust-readings">
+          <h4>
+            Customer <span> details</span>
+          </h4>
+          <form className="container-fluid" onSubmit={formik.handleSubmit}>
+            <div className="overall-customer-details-container">
+              <div className="customer-top">
+                <div className="input">
+                  <label>Meter No.</label>
+                  <input
+                    type="text"
+                    value={formik.values.meterNumber}
+                    placeholder="customer-number"
+                    className="form-control m-2"
+                    disabled
+                  />
+                </div>
+                <div className="input">
+                  <label>Customer No.</label>
+                  <input
+                    type="number"
+                    value={formik.values.custNumber}
+                    placeholder="Zone Area"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
+                <div className="input">
+                  <label>Zone Area</label>
+                  <input
+                    type="number"
+                    value={formik.values.zone}
+                    placeholder="Zone Area"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
               </div>
-              <div className="input">
-                <label>Customer No.</label>
-                <input
-                  type="number"
-                  value={formik.values.zone}
-                  placeholder="Zone Area"
-                  className="form-control  m-2"
-                  disabled
-                />
+              <div className="customer-top">
+                <div className="input">
+                  <label>First Name.</label>
+                  <input
+                    type="text"
+                    value={formik.values.fName}
+                    placeholder="First Name"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
+                <div className="input">
+                  <label>Last Name.</label>
+                  <input
+                    type="text"
+                    value={formik.values.lName}
+                    placeholder="Last Name"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
+                <div className="input">
+                  <label>ID No.</label>
+                  <input
+                    type="number"
+                    value={formik.values.IDNumber}
+                    placeholder="ID Number"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
+                <div className="inputs">
+                  <label>Phone number</label>
+                  <input
+                    type="number"
+                    value={formik.values.phoneNumber}
+                    placeholder="Phone Number"
+                    className="form-control  m-2"
+                    disabled
+                  />
+                </div>
               </div>
-              <div className="input">
-                <label>Zone Area</label>
-                <input
-                  type="number"
-                  value={formik.values.zone}
-                  placeholder="Zone Area"
-                  className="form-control  m-2"
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="customer-top">
-              <div className="input">
-                <label>First Name.</label>
-                <input
-                  type="text"
-                  value={formik.values.fName}
-                  placeholder="First Name"
-                  className="form-control  m-2"
-                  disabled
-                />
-              </div>
-              <div className="input">
-                <label>Last Name.</label>
-                <input
-                  type="text"
-                  value={formik.values.lName}
-                  placeholder="Last Name"
-                  className="form-control  m-2"
-                  disabled
-                />
-              </div>
-              <div className="input">
-                <label>ID No.</label>
-                <input
-                  type="number"
-                  value={formik.values.IDNumber}
-                  placeholder="ID Number"
-                  className="form-control  m-2"
-                  disabled
-                />
-              </div>
-              <div className="inputs">
-                <label>Phone number</label>
-                <input
-                  type="number"
-                  value={formik.values.phoneNumber}
-                  placeholder="Phone Number"
-                  className="form-control  m-2"
-                  disabled
-                />
-              </div>
-            </div>
 
-            <div className="water-readings">
-              <h4>Meter <span>readings</span></h4>
-              <div>
-                <label>Current water reading</label>
-                <input
-                  type="number"
-                  value={formik.values?.currentWaterReadings}
-                  name="currentWaterReadings"
-                  placeholder="0"
-                  disabled
-                  onChange={formik.handleChange}
-                  className="form-control  m-2"
-                />
+              <div className="water-readings">
+                <h4>
+                  Meter <span>readings</span>
+                </h4>
+                <div>
+                  <label>Current water reading</label>
+                  <input
+                    type="number"
+                    value={formik.values?.currentWaterReadings}
+                    name="currentWaterReadings"
+                    placeholder="0"
+                    disabled
+                    onChange={formik.handleChange}
+                    className="form-control  m-2"
+                  />
+                </div>
+                <div>
+                  <label>Previous Water reading</label>
+                  <input
+                    type="number"
+                    disabled
+                    value={formik.values?.prevWaterReading}
+                    name="prevWaterReading"
+                    placeholder="0"
+                    onChange={formik.handleChange}
+                    className="form-control  m-2"
+                  />
+                </div>
+                <div>
+                  <label>Consumption</label>
+                  <input
+                    type="number"
+                    value={formik.values?.consumption}
+                    name="consumption"
+                    disabled
+                    placeholder="0"
+                    onChange={formik.handleChange}
+                    className="form-control  m-2"
+                  />
+                </div>
               </div>
-              <div>
-                <label>Previous Water reading</label>
-                <input
-                  type="number"
-                  disabled
-                  value={formik.values?.prevWaterReading}
-                  name="prevWaterReading"
-                  placeholder="0"
-                  onChange={formik.handleChange}
-                  className="form-control  m-2"
-                />
+              <div
+                style={{
+                  width: "max-content",
+                  margin: "auto",
+                  padding: "20px",
+                }}
+              >
+                <button className="btn btn-primary  ">Generate Bill</button>
               </div>
-              <div>
-                <label>Consumption</label>
-                <input
-                  type="number"
-                  value={formik.values?.consumption}
-                  name="consumption"
-                  disabled
-                  placeholder="0"
-                  onChange={formik.handleChange}
-                  className="form-control  m-2"
-                />
-              </div>
+              {error && <p className="error">{error}</p>}
             </div>
-            <div
-              style={{ width: "max-content", margin: "auto", padding: "20px" }}
-            >
-              <button className="btn btn-primary  ">Generate Bill</button>
-            </div>
-            {
-              error && <p className="error">{error}</p>
-            }
-          </div>
-        </form>
-        <ToastContainer />
-      </div>
-        )
-      }
-    
+          </form>
+          <ToastContainer />
+        </div>
+      )}
     </div>
   );
 }

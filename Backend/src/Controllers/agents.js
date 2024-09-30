@@ -5,42 +5,37 @@ import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 config();
 
-
 export const getAllAgents = async (req, res) => {
   try {
-    
     const getAgents = await prisma.agents.findMany({
-      select:{
-        agent_id:true,
-         employeeID:true,
-      first_name:true,
-      lastName:true,
-      age:true,
-      contact:true,
-      password:true,
-      status:true,
-      role:true
-      }
-    })
+      select: {
+        agent_id: true,
+        employeeID: true,
+        first_name: true,
+        lastName: true,
+        age: true,
+        contact: true,
+        password: true,
+        status: true,
+        role: true,
+      },
+    });
 
     if (getAgents) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "User created successully.",
-          data: getAgents,
-        });
+      res.status(200).json({
+        success: true,
+        message: "User created successully.",
+        data: getAgents,
+      });
     } else {
       res
         .status(500)
         .json({ success: true, message: "User created successully." });
     }
-
   } catch (error) {
-    res.status(500).json({success:false, message: error.message})
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 export const registerAgent = async (req, res) => {
   try {
     const { employeeId, firstName, lastName, gender, age, contact, password } =
@@ -63,13 +58,11 @@ export const registerAgent = async (req, res) => {
     });
 
     if (register != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "User created successully.",
-          data: register,
-        });
+      res.status(200).json({
+        success: true,
+        message: "User created successully.",
+        data: register,
+      });
     } else {
       res
         .status(500)
@@ -107,15 +100,12 @@ export const loginAgent = async (req, res) => {
           expiresIn: "360m",
         });
 
-
         res.cookie("_token", token, { httpOnly: true, secure: true });
-        res
-          .status(200)
-          .json({
-            success: true,
-            message: "Customer created successfully.",
-            data: payload,
-          });
+        res.status(200).json({
+          success: true,
+          message: "Customer created successfully.",
+          data: payload,
+        });
       } else {
         res
           .status(404)
@@ -129,49 +119,55 @@ export const loginAgent = async (req, res) => {
   }
 };
 
-export const updateAgent = async(req,res) => {
-
+export const updateAgent = async (req, res) => {
   try {
     const updateAgentDetails = req.body;
 
     const agentFields = [
-      'employeeID',
-      'first_name',
-      'lastName',
-      'age',
-      'contact',
-      'password',
-      'status',
-      'role'
-
-    ]
+      "employeeID",
+      "first_name",
+      "lastName",
+      "age",
+      "contact",
+      "password",
+      "status",
+      "role",
+    ];
 
     // find the id to verify if the agent exists in the system.
-    const {agent_id} = req.params;
+    const { agent_id } = req.params;
 
     // store the updates changes in an empty object.
-    let updates = {}
+    let updates = {};
 
-  // use a for in loop to navigate between the updated details respectively.
-  for (let agent in updateAgentDetails){
-    // check if there is any changes in the agent fields
-    if(agentFields.includes(agent)){
-      updates[agent] = updateAgentDetails[agent]
+    // use a for in loop to navigate between the updated details respectively.
+    for (let agent in updateAgentDetails) {
+      // check if there is any changes in the agent fields
+      if (agentFields.includes(agent)) {
+        updates[agent] = updateAgentDetails[agent];
+      }
     }
-  }
 
-  // now update details.
-  const updateDetails = await prisma.agents.update({
-    where:{agent_id},
-    data:updates
-  })
+    // now update details.
+    const updateDetails = await prisma.agents.update({
+      where: { agent_id },
+      data: updates,
+    });
 
-  if(updateDetails){
-    res.status(200).json({success:true, message: 'Agent fields updated successfully.', data:updateDetails})
-  } else{
-    res.status(500).json({success:false, message: 'Something went wrong.'})
-  }
+    if (updateDetails) {
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Agent fields updated successfully.",
+          data: updateDetails,
+        });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Something went wrong." });
+    }
   } catch (error) {
-    res.status(500).json({success:false, message: error.message})
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+};

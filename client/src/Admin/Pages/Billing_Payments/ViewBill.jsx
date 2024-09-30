@@ -9,7 +9,7 @@ import { MdDateRange } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { FaTachometerAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import {useDate} from '../../../../src/CustomHooks/useDate'
+import { useDate } from "../../../../src/CustomHooks/useDate";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import Footer from "../../Components/Footer";
 
@@ -19,15 +19,16 @@ const ViewBill = () => {
   const [error, setError] = useState(false);
   const [customerBillHistory, setCustomerBillHistory] = useState();
   const [billingHistory, setBillingHistory] = useState([]);
-  const {formatDate} = useDate()
+  const { formatDate } = useDate();
 
   const getCustomerDetails = async () => {
     try {
       const getBills = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/${bill_id}`,{
-            withCredentials:true
-          }
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/${bill_id}`,
+          {
+            withCredentials: true,
+          },
         )
         .catch((error) => console.log(error));
 
@@ -48,9 +49,10 @@ const ViewBill = () => {
     try {
       const getAllBills = await axios
         .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/customer/all/${id}`,{
-            withCredentials:true
-          }
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/customer/all/${id}`,
+          {
+            withCredentials: true,
+          },
         )
         .catch((error) => console.log(error));
       if (getAllBills.status == 200) {
@@ -100,7 +102,7 @@ const ViewBill = () => {
           </div>
           <div className="abt-1">
             <AiOutlineFieldNumber className="icons" />
-            <span>{customerBillHistory.customer.cust_id}</span>
+            <span>{customerBillHistory.customer.custNumber}</span>
           </div>
           <div className="abt-1">
             <FaLocationDot className="icons" />
@@ -153,7 +155,7 @@ const ViewBill = () => {
           )}
         </tbody>
       </table>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

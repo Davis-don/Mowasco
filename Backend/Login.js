@@ -113,13 +113,11 @@ Routes.post("/", async (req, res) => {
       });
       res.cookie("access_token", token);
       // console.log(token);
-      res
-        .status(200)
-        .json({
-          Token: token,
-          message: "Login successful",
-          userRole: await getUserRole(UserId),
-        });
+      res.status(200).json({
+        Token: token,
+        message: "Login successful",
+        userRole: await getUserRole(UserId),
+      });
     } else {
       res.status(200).json({ message: "Access denied" });
     }

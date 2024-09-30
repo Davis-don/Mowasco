@@ -22,7 +22,9 @@ const RegisterMeters = () => {
           withCredentials: true,
         })
         .catch((error) => console.log(error));
+
       if (zones) {
+        console.log("zones", zones);
         setZone(zones.data.data);
       } else {
         toast.warn("Zones were not found.");
@@ -49,7 +51,7 @@ const RegisterMeters = () => {
           },
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => {
           toast.error("Server error", { position: "bottom-center" });
@@ -150,15 +152,13 @@ const RegisterMeters = () => {
           </div>
 
           <div className="adduser-button">
-            <button >
-              {loading ? "Assigning meter...." : "Assign meter"}
-            </button>
+            <button>{loading ? "Assigning meter...." : "Assign meter"}</button>
           </div>
           <ToastContainer />
         </form>
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -21,7 +21,7 @@ function Login() {
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
   const [form, setForm] = useState(true);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -64,18 +64,16 @@ function Login() {
           },
         )
         .catch((error) => {
-          console.log('error 1',error)
-          if (error.status === 404){
-            setError(error.response.data.message)
-            toast.warn(error.response.data.message)
+          console.log("error 1", error);
+          if (error.status === 404) {
+            setError(error.response.data.message);
+            toast.warn(error.response.data.message);
           }
-          if (error.status === 400){
-            setError(error.response.data.message)
-            toast.warn('Customer was not found', {position:'top-center'})
+          if (error.status === 400) {
+            setError(error.response.data.message);
+            toast.warn("Customer was not found", { position: "top-center" });
           }
-
-    });
-
+        });
 
       if (login.status == 200) {
         const data = login.data.data;
@@ -123,7 +121,7 @@ function Login() {
       // Log any errors that occur
       console.log("Error 2:", error);
       // setError(error)
-    } finally{
+    } finally {
       // setError(false)
     }
   };
@@ -139,7 +137,7 @@ function Login() {
               <strong>{serverMessage}</strong>
             </div>
           )}
-        { form && (
+          {form && (
             <form onSubmit={handlePost}>
               <div className="input-group mb-3">
                 <span className="input-group-text">
@@ -174,9 +172,7 @@ function Login() {
                   {passwordShown ? <MdVisibilityOff /> : <MdVisibility />}
                 </span>
               </div>
-              {
-                error && <p className="error">{error}</p>
-              }
+              {error && <p className="error">{error}</p>}
 
               <p style={{ float: "right" }}>
                 <a href="#" className="text-danger fs-8" onClick={registerUser}>
@@ -191,12 +187,10 @@ function Login() {
                   Sign in
                 </button>
               </div>
-          
             </form>
           )}
-         
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </div>
   );

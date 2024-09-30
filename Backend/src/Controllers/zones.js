@@ -11,13 +11,11 @@ export const getAllZones = async (req, res) => {
     });
 
     if (getZones != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Zones found successfully.",
-          data: getZones,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Zones found successfully.",
+        data: getZones,
+      });
     } else {
       res
         .status(500)
@@ -37,13 +35,11 @@ export const getSingleZone = async (req, res) => {
     });
 
     if (getZone) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Zone found successfully.",
-          data: getZone,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Zone found successfully.",
+        data: getZone,
+      });
     } else {
       res
         .status(500)

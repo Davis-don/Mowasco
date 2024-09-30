@@ -15,9 +15,8 @@ import Footer from "../../Components/Footer";
 const Billing_payment = () => {
   const navigate = useNavigate();
   const [customerBills, setCustomerBills] = useState([]);
-  const [error, setError] = useState()
-  const [loading,setLoading] = useState()
-
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState();
 
   const viewCustomerBill = async (id) => {
     try {
@@ -29,32 +28,31 @@ const Billing_payment = () => {
 
   const getCustomerBills = async () => {
     try {
-      setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       let getBills = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`, {
-          withCredentials:true
+          withCredentials: true,
         })
         .catch((error) => {
-          console.log(error)
-          setError('Something went wrong!')
+          console.log(error);
+          setError("Something went wrong!");
         });
       if (getBills.status == 200) {
         setCustomerBills(getBills.data.data);
-        console.log('bill', getBills.data.data )
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
       console.log(error);
-      toast.error('Server error! Please try again later', {position: 'bottom-center'})
-      setError('Server error. Please try again later.')
-    } finally{
-      setLoading(false)
+      toast.error("Server error! Please try again later", {
+        position: "bottom-center",
+      });
+      setError("Server error. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
- 
-
 
   useEffect(() => {
     getCustomerBills();
@@ -110,7 +108,7 @@ const Billing_payment = () => {
             customerBills.map((cstBill, key) => (
               <tr>
                 <td>{cstBill.meters.meterNumber}</td>
-                <td>{cstBill.customer.cust_id}</td>
+                <td>{cstBill.customer.custNumber}</td>
                 <td>{cstBill.meters.zones.zoneName}</td>
                 <td>{cstBill.customer.custFirstName}</td>
                 <td>{cstBill.customer.custLastName}</td>
@@ -127,7 +125,7 @@ const Billing_payment = () => {
           )}
         </table>
       )}
-      <Footer/> 
+      <Footer />
     </div>
   );
 };
