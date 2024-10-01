@@ -18,26 +18,27 @@ const Navigation = () => {
     return <Navigate to={"/"} />;
   }
   return (
-    <div className="navigation">
+    <>
       <Header />
-      <div className="nav-top">
-        <div className="nav-left">
-          <span>
-            {" "}
-            {time.toLocaleTimeString()} {"  "}
-            {time.toLocaleDateString()}
-          </span>
-        </div>
-        <div className="nav-right">
-          <h4>
-            Welcome back{" "}
+
+      <div className="navigation">
+        <div className="nav-top">
+          <div className="nav-left">
             <span>
-              {user.first_name} {user.lastName}
+              {" "}
+              {time.toLocaleTimeString()} {"  "}
+              {time.toLocaleDateString()}
             </span>
-          </h4>
+          </div>
+          <div className="nav-right">
+            <h4>Welcome back </h4>
+            <h5>
+              {user.first_name} {user.lastName}
+            </h5>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

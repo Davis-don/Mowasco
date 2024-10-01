@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import "./global.css";
+import '../../../src/App.css'
 import { MdDashboardCustomize } from "react-icons/md";
 import { FaUsers } from "react-icons/fa6";
 import { IoSpeedometerSharp } from "react-icons/io5";

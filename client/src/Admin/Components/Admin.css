@@ -111,7 +111,8 @@
     "moreDetails moreDetails moreDetails"
     "map map map";
   justify-content: center;
-  align-items: center;
+  align-items: start;
+  padding: 0.5rem 0;
 }
 .card-left {
   width: 100%;
@@ -119,7 +120,6 @@
   display: flex;
   flex: 1 1;
   display: flex;
-  padding: 0.5rem 0;
   align-items: center;
 
   justify-content: center;
@@ -193,6 +193,7 @@
     flex-direction: column;
     gap: 1rem;
   }
+  
   .graphs {
     width: 100%;
     display: flex;
@@ -213,6 +214,9 @@
   }
   .below-right .other-details {
     width: 16rem;
+  }
+  .card-center, .card-right{
+    width: 100%;
   }
 }
 
@@ -221,7 +225,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 2px solid black;
   }
 
   .graphs {
@@ -230,11 +233,64 @@
     flex-direction: column;
   }
 
-  .moreDetails .below {
+  .moreDetails,.below {
     display: flex;
     flex-direction: column;
     margin-top: 0;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+   table{
+    max-width: 100%;
+   }
+
+  .below-left {
+    width: 100%;
+  }
+
+  .below-right {
+    width: auto;
+  }
+  .below-right{
+    width: 100%;
+  }
+
+  .below-right .other-details {
+    width: 80%;
+  }
+    .card-center,
+    .card-right {
+      width: 100%;
+    }
+}
+
+
+@media screen and (min-width: 821px) and (max-width: 1010px) {
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .moreDetails,
+  .below {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  table {
+    max-width: 100%;
   }
 
   .below-left {
@@ -245,7 +301,16 @@
     width: auto;
   }
 
+  .below-right {
+    width: 100%;
+  }
+
   .below-right .other-details {
-    width: 16rem;
+    width: 80%;
+  }
+
+  .card-center,
+  .card-right {
+    width: 100%;
   }
 }

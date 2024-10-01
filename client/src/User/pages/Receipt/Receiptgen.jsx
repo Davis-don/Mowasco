@@ -20,9 +20,7 @@ function Receiptgen() {
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
   const { formatDate } = useDate();
-  const generateReceipt = async () => {
-    window.print();
-  };
+
 
   const getWaterReadings = async (meterID) => {
     try {
@@ -60,20 +58,110 @@ function Receiptgen() {
           setError(error.message);
         });
       if (getReceiptData.status == 200) {
+        
         const receiptData = getReceiptData.data.data;
-
         const meterID = receiptData.billing.meters.meter_id;
         setReceiptData(receiptData);
         getWaterReadings(meterID);
+
+        const amountPayable = receiptData.billing.amountDue;
+        const receiptNumber = receiptData.receiptNumber;
+        const arrears = receiptData.billing.arrears;
+        const otherCharges = receiptData.billing.otherCharges;
+        const waterBill = receiptData.billing.waterBill;
+        const consumption = receiptData.billing.consumption;
+        const createdAt= receiptData.createdAt;
+        const paymentDeadline = receiptData.deadline_date
+        const firstName = receiptData.billing.customer.custFirstName
+        const lastName = receiptData.billing.customer.custLastName;
+        const meterNumber = receiptData.billing.meters.meterNumber;
+        const customerNumber = receiptData.billing.customer.custNumber;
+        const custPhoneNumber = receiptData.billing.customer.custPhoneNumber
+        
+        // console.log('receipt data', receiptData)
+        sendMessage(
+          amountPayable,
+          receiptNumber,
+          arrears,
+          otherCharges,
+          waterBill,
+          consumption,
+          createdAt,
+          paymentDeadline,
+          firstName,
+          lastName,
+          meterNumber,
+          customerNumber,
+          custPhoneNumber
+        );
       } else {
         toast.warn("Something went wrong.");
       }
     } catch (error) {
-      setError("Server error! Please try again later!!");
+      setError("Server error! Please try again later!!", error);
+      console.log('err',error)
+
     } finally {
       setLoading(false);
     }
   };
+
+
+  // send a message to the customer upon generating a receipt.
+  const sendMessage = async (
+    amountPayable,
+    receiptNumber,
+    arrears,
+    otherCharges,
+    waterBill,
+    consumption,
+    createdAt,
+    paymentDeadline,
+    firstName,
+    lastName,
+    meterNumber,
+    customerNumber,
+    custPhoneNumber
+
+  ) => {
+
+    try {
+      const formatCreatedAt = formatDate(createdAt)
+      const formatDeadlineDate = formatDate(paymentDeadline)
+      const createMessage = await axios
+        .post(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/send/message`,
+          {
+            amountPayable,
+            receiptNumber,
+            arrears,
+            otherCharges,
+            waterBill,
+            consumption,
+            formatCreatedAt,
+            formatDeadlineDate,
+            firstName,
+            lastName,
+            meterNumber,
+            customerNumber,
+          custPhoneNumber
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => {console.log(error)
+      setError(error)});
+      if (createMessage.status == 200) {
+        toast.success("Message sent successfully.", {
+          position: "bottom-center",
+        });
+      } else toast.warn("Something went wrong!", { position: "bottom-center" });
+
+    } catch (error) {
+      console.log(error);
+    }
+  }; 
 
   const navigateBack = () => {
     navigate("/agent/dashboard");
@@ -81,7 +169,7 @@ function Receiptgen() {
 
   useEffect(() => {
     getReceipt();
-  }, []);
+  }, [id]);
   return (
     <div className="overall-receipt-gen-container">
       {loading ? (
@@ -94,6 +182,7 @@ function Receiptgen() {
               <ReactToPrint
                 trigger={() => <button>Print/Download</button>}
                 content={() => componentRef.current}
+                // onClick={generateReceipt()}
               />
               {error && <p className="error">{error}</p>}
             </div>

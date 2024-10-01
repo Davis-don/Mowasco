@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Usergenerator.css";
-// import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import oceanimg from "../../../images/jack-b-o1radglopDA-unsplash.jpg";
 import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import Water_reading from "../Water_readings/Water_reading";
 import { useNavigate } from "react-router-dom";
 import store from "../../../store/dataStore";
 function Usergenarator() {
@@ -80,7 +77,7 @@ function Usergenarator() {
       if (queryUser.status == 200) {
         navigate(`/customer/current-reading/${custID}`);
       } else {
-        toast.warn("Something went wrong.");
+        toast.warn("Something went wrong.", {position:'bottom-center'});
       }
     } catch (error) {
       setError(error);
@@ -103,15 +100,15 @@ function Usergenarator() {
     getZones();
   }, []);
   return (
-    <div className="overall-user-generator">
+    <div className="overall-user-generator ">
       {loading && <p>{"loading..."}</p>}
       {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
       <div className="form-div-container-user-gen">
         <p style={{ textAlign: "center" }}>
           Please enter the customer's zone and meter details below
         </p>
-        <form className="user-gen-form" onSubmit={formik.handleSubmit}>
-          <div>
+        <form className="user-gen-form update_customer" onSubmit={formik.handleSubmit}>
+          < div className="inputs">
             <select
               className="form-select form-control"
               name="zones"
@@ -129,7 +126,7 @@ function Usergenarator() {
               )}
             </select>
           </div>
-          <div>
+          <div className="inputs">
             <input
               className="form-control"
               name="meterNumber"

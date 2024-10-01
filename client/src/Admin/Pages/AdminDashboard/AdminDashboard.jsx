@@ -21,6 +21,7 @@ function AdminDashboard() {
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const { formatDate } = useDate();
+  const [zonePopulation, setZonePopulation] = useState([])
   const [zoneConsumptionTotals, setZoneConsumptionTotals] = useState([])
   // 1. Get the number of zones
   const getZones = async () => {
@@ -216,7 +217,6 @@ function AdminDashboard() {
       ).catch(error => console.log(error))
       if(total.status === 200){
         setZoneConsumptionTotals(total.data.data);
-        console.log(total.data.data)
       } else{
         toast.warn('Something went wrong', {position: 'bottom-center'})
       }
@@ -225,6 +225,26 @@ function AdminDashboard() {
     }
   }
 
+
+  // get the number of customers based on each zone.
+  const customersPerZone = async () => {
+    try {
+      const customers = await axios.get(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/zones/areas`, {
+          withCredentials:true
+        }
+      ).catch(error => {
+        console.log(error)
+      })
+      if (customers.status == 200){
+        setZonePopulation(customers.data.data)
+      } else{
+        toast.warn('Something went wrong!!')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     getZones();
     getCustomer();
@@ -233,6 +253,7 @@ function AdminDashboard() {
     recentWaterReadings();
     agents();
     zonalConsumptionTotal()
+    customersPerZone()
   }, []);
   return (
     <>
@@ -249,9 +270,7 @@ function AdminDashboard() {
                 <thead>
                   <tr>
                     <th>Zone name:</th>
-                    <th>
-                      Total Consumption:
-                    </th>
+                    <th>Total Consumption:</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -279,6 +298,27 @@ function AdminDashboard() {
               <span>Active Customers: </span>{" "}
               {loading ? " Loading ..." : customer?.length}
             </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Zone:</th>
+                  <th>Population:</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zonePopulation && zonePopulation.length > 0 ? (
+                  zonePopulation.map((zonePop, key) => (
+                    <tr>
+                      <td>{zonePop.zoneName}</td>
+                      <td>{zonePop.customerCount}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <p>Loading data...</p>
+                )}
+                <tr></tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div className="card-right card-1">
@@ -289,6 +329,24 @@ function AdminDashboard() {
               {loading ? " Loading ..." : zones?.length}
               (Zones)
             </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Zone Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zones && zones.length > 0 ? (
+                  zones.map((zone, key) => (
+                    <tr key={key}>
+                      <td>{zone.zoneName}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <p>Loading zones...</p>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
