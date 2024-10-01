@@ -178,7 +178,7 @@ function Receiptgen() {
         <div className="gen-water-receipt-form-div">
           <div className="receipt-btn">
             <button onClick={navigateBack}>Home</button>
-            <div className="righ">
+            <div className="right">
               <ReactToPrint
                 trigger={() => <button>Print/Download</button>}
                 content={() => componentRef.current}
@@ -226,7 +226,7 @@ function Receiptgen() {
                     <thead className="receipt-tbl">
                       <tr className="tr">
                         <th>Member Name:</th>
-                        <td className="td">
+                        <td className="td" colSpan={3}>
                           {receiptData.billing.customer.custFirstName}{" "}
                           {receiptData.billing.customer.custLastName}
                         </td>
@@ -256,7 +256,7 @@ function Receiptgen() {
                       </tr>
                       <tr className="tr">
                         <th>Date of issue</th>
-                        <td className="td">
+                        <td className="td" colSpan={3}>
                           {formatDate(receiptData.createdAt)}
                         </td>
                       </tr>
@@ -325,9 +325,9 @@ function Receiptgen() {
                       <tr>
                         <td>
                           Served by :{" "}
-                          <span className="server">
+                          <h5 className="server">
                             {user.first_name} {user.lastName}
-                          </span>
+                          </h5>
                         </td>
                         <td></td>
                         <td>Total amount:</td>
@@ -348,7 +348,7 @@ function Receiptgen() {
                     </div>
                     <div className="account">
                       <span>
-                        ACCOUNT No. 6243794 #......customer payment
+                        ACCOUNT No....6243794#......customer payment
                         number........
                       </span>
                       <FaArrowRightLong className="next" /> <span>AMOUNT</span>{" "}
