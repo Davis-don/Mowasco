@@ -39,13 +39,11 @@ router.post("/all", async (req, res) => {
     });
 
     if (getCustomer) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Customer found successfully.",
-          data: getCustomer,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Customer found successfully.",
+        data: getCustomer,
+      });
     } else {
       res
         .status(500)

@@ -155,13 +155,11 @@ export const updateAgent = async (req, res) => {
     });
 
     if (updateDetails) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Agent fields updated successfully.",
-          data: updateDetails,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Agent fields updated successfully.",
+        data: updateDetails,
+      });
     } else {
       res
         .status(500)

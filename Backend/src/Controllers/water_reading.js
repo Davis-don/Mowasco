@@ -180,21 +180,17 @@ export const zonalTotalConsumption = async (req, res) => {
       };
     });
     if (consumptionByZone) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Total consumption per zone found successfully.",
-          data: consumptionByZone,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Total consumption per zone found successfully.",
+        data: consumptionByZone,
+      });
     } else {
-      res
-        .status(500)
-        .json({
-          success: true,
-          message: "Something went wrong.",
-          data: consumptionByZone,
-        });
+      res.status(500).json({
+        success: true,
+        message: "Something went wrong.",
+        data: consumptionByZone,
+      });
     }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

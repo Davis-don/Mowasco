@@ -68,6 +68,35 @@ export const getSingleCustomer = async (req, res) => {
   }
 };
 
+export const getTotalCustomersPerZone = async (req, res) => {
+  try {
+    const zoneCustomerCounts = await prisma.zones.findMany({
+      select: {
+        zoneName: true, // Get the zone name
+        meter: {
+          select: {
+            customer: true, // Include customer details
+          },
+        },
+      },
+    });
+
+    // Then you can process the result to count the customers per zone.
+    const counts = zoneCustomerCounts.map((zone) => ({
+      zoneName: zone.zoneName,
+      customerCount: zone.meter.length, // Count the customers based on the meters
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: "zones found successfully",
+      data: counts,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const createCustomer = async (req, res) => {
   console.log(req.body);
   try {

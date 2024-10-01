@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-
+import sendSms from "./src/Routers/sendSms.js";
 import pkg from "pg";
 const { Client } = pkg;
 import customers from "./src/Routers/create_customers.js";
@@ -56,3 +56,4 @@ app.use("/meters", meters);
 app.use("/zones", zones);
 app.use("/customer/bill", bills);
 app.use("/customer/receipt", receipts);
+app.use("/send", sendSms);
