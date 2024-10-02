@@ -49,6 +49,7 @@ export const getSingleCustomer = async (req, res) => {
         meters: {
           include: {
             zones: true,
+            water_reading:true
           },
         },
       },
@@ -98,7 +99,6 @@ export const getTotalCustomersPerZone = async (req, res) => {
 };
 
 export const createCustomer = async (req, res) => {
-  console.log(req.body);
   try {
     const {
       custFirstName,
@@ -134,7 +134,43 @@ export const createCustomer = async (req, res) => {
   }
 };
 export const updateCustomer = async (req, res) => {
-  res.json("Update customer");
+  try {
+
+    const customerDetails = req.body;
+
+    const customerFields = [  
+      'custFirstName',
+        'custLastName',
+        'custID',
+        'custPhoneNumber',
+        'custConnectionType',
+        'custStatus'
+      ]
+    const {cust_id} = req.params;
+
+    // define an object to store those fields.
+    let updates = {}
+
+    // loop through the req.body to update changes items.
+
+  for (let changes in customerDetails) {
+     if(customerFields.includes(changes)){
+      updates[changes]= customerDetails[changes]
+     }
+  }
+  // check user to update details.
+  const updateUser = await prisma.customers.update({
+    where:{cust_id}, 
+    data:updates
+  })
+
+  if (updateUser){
+    res.status(200).json({success: true, message: 'Customer details updated successfully.'})
+  }
+
+  } catch (error) {
+    res.status(500).json({success:false, message: error.message})
+  }
 };
 
 export const deleteCustomer = async (req, res) => {

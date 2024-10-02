@@ -107,6 +107,7 @@ export const getCustomersBills = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true
               },
             },
           },
@@ -144,6 +145,7 @@ export const getSingleBill = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true
               },
             },
           },

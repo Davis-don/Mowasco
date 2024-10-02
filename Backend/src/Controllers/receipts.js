@@ -50,6 +50,9 @@ export const getSingleTransactionReceipt = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true,
+                billing:true
+                
               },
             },
           },
@@ -57,7 +60,7 @@ export const getSingleTransactionReceipt = async (req, res) => {
       },
     });
 
-    console.log(getReceipt);
+
     if (getReceipt != null) {
       res.status(200).json({
         success: true,
@@ -90,6 +93,7 @@ export const getSingleReceipt = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true,
               },
             },
           },

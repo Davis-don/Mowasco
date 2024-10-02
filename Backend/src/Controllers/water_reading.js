@@ -86,7 +86,6 @@ export const totalAmountConsumed = async (req, res) => {
       where: {
         createdAt: {
           gte: startOfMonth,
-          // lte:endOfMonth
         },
       },
     });
@@ -123,33 +122,6 @@ export const zonalTotalConsumption = async (req, res) => {
       },
     });
 
-    //     const consumptionByZone = total.map((zone) => {
-    //       const totalConsumption = zone.meter.reduce((total, meter) => {
-    //       //   const meterConsumption = meter.water_reading.reduce((meterTotal, reading) => meterTotal + Number(reading.consumption), 0
-    //       //   )
-    //       //   return total + meterConsumption
-    //       //
-    //       return total + meter.water_reading.map((readingSum, reading) => {
-    //         const _consumption = parseFloat(reading.consumption)
-
-    //         if (isNaN(_consumption)){
-    //           return readingSum;
-    //         }
-    // console.log('reading sum',readingSum)
-    //         console.log('reading consumption', parseInt(reading._consumption))
-    //         return readingSum + (reading.consumption)
-    //       }, 0)
-    //       },0
-    //       )
-    //         console.log(zone)
-    //         console.log(totalConsumption)
-    //       return {
-    //         zoneName: zone.zoneName,
-    //         totalConsumption
-
-    //       }
-    //     })
-
     const consumptionByZone = total.map((zone) => {
       const totalConsumption = zone.meter.reduce((total, meter) => {
         // Use reduce to sum the readings for each meter
@@ -158,12 +130,8 @@ export const zonalTotalConsumption = async (req, res) => {
             const _consumption = parseFloat(reading.consumption); // Parse consumption as a float
 
             if (isNaN(_consumption)) {
-              console.error(`Invalid consumption: ${reading.consumption}`);
               return readingSum; // Skip invalid readings
             }
-
-            console.log("reading sum", readingSum);
-            console.log("reading consumption", _consumption);
             return readingSum + _consumption;
           },
           0,
@@ -172,8 +140,6 @@ export const zonalTotalConsumption = async (req, res) => {
         return total + meterConsumption; // Accumulate consumption for each meter
       }, 0); // Initial value of total is 0
 
-      console.log("zone", zone);
-      console.log("totalConsumption", totalConsumption);
       return {
         zoneName: zone.zoneName,
         totalConsumption: totalConsumption.toFixed(2), // Format to two decimal places
@@ -246,6 +212,7 @@ export const recordReading = async (req, res) => {
       amountConsumed = currentReading;
     }
 
+    if (lastReading == null){
     const createReading = await prisma.water_Reading.create({
       data: {
         currentReading,
@@ -257,7 +224,7 @@ export const recordReading = async (req, res) => {
       },
     });
 
-    if (createReading != null) {
+     if (createReading != null) {
       res.status(200).json({
         success: true,
         message: "Water reading recorded.",
@@ -268,6 +235,33 @@ export const recordReading = async (req, res) => {
         .status(500)
         .json({ success: false, message: "Something went wrong." });
     }
+    }else if(currentReading >= lastReading.currentReading){
+      const createReading = await prisma.water_Reading.create({
+      data: {
+        currentReading,
+        prevReading: lastReading ? lastReading.currentReading : 0,
+        consumption: amountConsumed,
+        meter: {
+          connect: { meter_id: meter_id },
+        },
+      },
+    });
+
+     if (createReading != null) {
+      res.status(200).json({
+        success: true,
+        message: "Water reading recorded.",
+        data: createReading,
+      });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Something went wrong." });
+    }
+    } else{
+      res.status(500).json({success:false, message: 'Current reading should be greater than the previous reading !!!'})
+    }
+     
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

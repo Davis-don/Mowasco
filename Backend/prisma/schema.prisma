@@ -19,9 +19,9 @@ model Customers {
   custFirstName      String   @map("first_name")
   custLastName       String   @map("last_name")
   custID             Int      @map("cust_ID")
-  custPhoneNumber    Int   @map("phone_number")
+  custPhoneNumber    Int      @map("phone_number")
   custConnectionType String   @map("connection_type")
-  custStatus         String   @default("Active") @map("status")
+  custStatus         CUSTOMER_STATUS   @default(ACTIVE) @map("status")
   createdAt          DateTime @default(now())
   meters             Meters?
 
@@ -54,14 +54,14 @@ model Zones {
 }
 
 model Water_Reading {
-  reading_id     String   @id @default(uuid())
-  currentReading Decimal  @default(0) @map("current_reading") @db.Decimal(10, 2)
-  prevReading    Decimal  @default(0) @map("prev_reading") @db.Decimal(10, 2)
-  consumption    Decimal  @default(0) @map("consumption") @db.Decimal(10, 2)
-  readingStatus WATER_READING_STATUS @default(NOT_RECORDED) @map("water_reading_status")
-  createdAt      DateTime @default(now()) @map("reading date")
+  reading_id     String               @id @default(uuid())
+  currentReading Decimal              @default(0) @map("current_reading") @db.Decimal(10, 2)
+  prevReading    Decimal              @default(0) @map("prev_reading") @db.Decimal(10, 2)
+  consumption    Decimal              @default(0) @map("consumption") @db.Decimal(10, 2)
+  readingStatus  WATER_READING_STATUS @default(NOT_RECORDED) @map("water_reading_status")
+  createdAt      DateTime             @default(now()) @map("reading date")
   meter_id       String
-  meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
+  meter          Meters               @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
 
   @@map("water_reading_tb")
 }
@@ -134,4 +134,10 @@ enum BILLING_STATUS {
   PAID
   PENDING
   NOT_PAID
+}
+
+enum CUSTOMER_STATUS {
+  ACTIVE
+  DISCONNECTED
+  NEW_CUSTOMER
 }
