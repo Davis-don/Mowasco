@@ -176,7 +176,6 @@ export const createBill = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    console.log("amount payable", amoutPayable);
 
     let totalCharges = 0;
     if (amoutPayable) {
@@ -217,7 +216,40 @@ export const createBill = async (req, res) => {
 };
 
 export const updateBill = async (req, res) => {
-  res.json("update bill");
+  try {
+    const billDetatails = req.body;
+
+    const billFields = ['billingStatus']
+
+    const {bill_id} = req.params;
+  
+
+    let updates = {}
+
+    // loop through the updates to update the changes.
+
+  for (const status in billDetatails) {
+    if (billFields.includes(status)) {
+      updates[status]= billDetatails[status];
+      
+    }
+  }
+
+  const updateBill = await prisma.billing.update({
+    where:{bill_id},
+    data: updates
+  })
+
+  if(updateBill){
+    res.status(200).json({success: true, message: 'Bill updated successfully.', data: updateBill})
+  } else{
+    res.status(500).json({success: false, message: 'Something went wrong.'})
+
+  }
+    
+  } catch (error) {
+    res.status(500).json({success: false, message: error.message})
+  }
 };
 
 export const deleteBill = async (req, res) => {

@@ -176,6 +176,7 @@ function Genwaterbill() {
         )
         .catch((error) => {
           setError(error.message);
+          console.log(error)
         });
 
       if (createBill.status == 200) {

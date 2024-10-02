@@ -151,18 +151,24 @@ const AddNewCustomers = () => {
               required
             />
           </div>
+       
+
           <div className="inputs">
             <label htmlFor="fName">Connection type</label>
 
-            <input
-              type="text"
+            <select
               name="connectionType"
-              placeholder="Connection type"
-              className="form-control"
-              value={connectionType}
+              id="connectionType"
               onChange={(e) => setConnectionType(e.target.value)}
-              required
-            />
+              value={connectionType}
+              className="form-control"
+            >
+              <option value="">Connection type</option>
+              <option value="school">School</option>
+              <option value="domestic">Domestic</option>
+              <option value="irrigation">Irrigation</option>
+              <option value="commercial">Commercial</option>
+            </select>
           </div>
           <div className="adduser-button">
             <button>{loading ? "Registering...." : "Register"}</button>

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./billing_payment.css";
 import { MdNavigateNext } from "react-icons/md";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+
 import axios from "axios";
 import { MdDateRange } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
@@ -12,6 +13,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { useDate } from "../../../../src/CustomHooks/useDate";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import Footer from "../../Components/Footer";
+import { CiCircleCheck } from "react-icons/ci";
 
 const ViewBill = () => {
   const { bill_id } = useParams();
@@ -34,6 +36,7 @@ const ViewBill = () => {
 
       if (getBills.status == 200) {
         const custData = getBills.data.data;
+        console.log('bills', getBills.data.data)
         const custID = custData.customer.cust_id;
         setCustomerBillHistory(custData);
         getAllCustomerBills(custID);
@@ -56,12 +59,47 @@ const ViewBill = () => {
         )
         .catch((error) => console.log(error));
       if (getAllBills.status == 200) {
+        console.log('bill history', getAllBills.data.data)
         setBillingHistory(getAllBills.data.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  // handle payment, if customer has paid, or has not.
+  // mark paid if customer has paid.
+  const markPaid = async (id) => {
+    try {
+      const updatePayment = await axios
+        .patch(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/update/${id}`,
+          {
+            billingStatus: true,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((err) => {
+          console.log("error", err);
+        });
+
+      if(updatePayment.status == 200){
+      setCustomerBillHistory(
+        customerBillHistory.filter((customer) => customer.billingStatus !== true)
+      );
+        
+        toast.success('Payment updated successfully', {position:'bottom-center'})
+      } else{
+        toast.warn('Something went wrong.')
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const generateInvoice = (id) => {
     try {
@@ -129,6 +167,7 @@ const ViewBill = () => {
             <th>Reconnection</th>
             <th>Other charges</th>
             <th>Total bill</th>
+            <th>Payment status</th>
             <th>Invoice</th>
           </tr>
         </thead>
@@ -143,6 +182,25 @@ const ViewBill = () => {
                 <td>{blHistory.reconnection}</td>
                 <td>{blHistory.otherCharges}</td>
                 <td>{blHistory.amountDue}</td>
+
+                {blHistory.billingStatus === true ? (
+                  <td>
+                    <div className="mark_paid paid">
+                      <CiCircleCheck className="icons" />
+                      <span>Paid</span>
+                    </div>
+                  </td>
+                ) : (
+                  <td>
+                    <div
+                      onClick={() => markPaid(blHistory.bill_id)}
+                      className="mark_paid"
+                    >
+                      <CiCircleCheck className="icons" />
+                      <span>Mark Paid</span>
+                    </div>
+                  </td>
+                )}
                 <td
                   onClick={() => generateInvoice(blHistory.receipts.receipt_id)}
                 >
@@ -154,6 +212,7 @@ const ViewBill = () => {
             <p>Loading bills ...</p>
           )}
         </tbody>
+        <ToastContainer />
       </table>
       <Footer />
     </div>

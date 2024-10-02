@@ -47,7 +47,6 @@ const Customers = () => {
         });
 
       if (getUsers.status == 200) {
-        console.log(getUsers.data.data);
         const data = getUsers.data.data;
         setCustomers(data);
       } else {
@@ -211,7 +210,15 @@ const Customers = () => {
                 <td>{searchedCustomer.custPhoneNumber}</td>
                 <td>{searchedCustomer.custID}</td>
                 <td className="action">
-                  <span className="status">{searchedCustomer.custStatus}</span>
+                  <td className="action">
+                    {searchedCustomer.custStatus === "ACTIVE" ? (
+                      <>
+                        <span className="status">{searchedCustomer.custStatus}</span>
+                      </>
+                    ) : (
+                      <span className="inactive">{searchedCustomer.custStatus}</span>
+                    )}
+                  </td>
                 </td>
                 <td className="action">
                   {
@@ -252,7 +259,13 @@ const Customers = () => {
                     <td>{customer.custPhoneNumber}</td>
                     <td>{customer.custID}</td>
                     <td className="action">
-                      <span className="status">{customer.custStatus}</span>
+                      {customer.custStatus === "ACTIVE" ? (
+                        <>
+                          <span className="status">{customer.custStatus}</span>
+                        </>
+                      ) : (
+                        <span className="inactive">{customer.custStatus}</span>
+                      )}
                     </td>
                     <td className="action">
                       {

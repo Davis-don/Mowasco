@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Receiptgen.css";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -58,7 +58,7 @@ function Receiptgen() {
           setError(error.message);
         });
       if (getReceiptData.status == 200) {
-        
+        console.log('receipt data', getReceiptData.data.data)
         const receiptData = getReceiptData.data.data;
         const meterID = receiptData.billing.meters.meter_id;
         setReceiptData(receiptData);
