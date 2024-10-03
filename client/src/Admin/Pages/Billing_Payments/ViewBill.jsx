@@ -19,7 +19,7 @@ const ViewBill = () => {
   const { bill_id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-  const [customerBillHistory, setCustomerBillHistory] = useState();
+  const [customerBillHistory, setCustomerBillHistory] = useState(null);
   const [billingHistory, setBillingHistory] = useState([]);
   const { formatDate } = useDate();
 
@@ -36,7 +36,6 @@ const ViewBill = () => {
 
       if (getBills.status == 200) {
         const custData = getBills.data.data;
-        console.log('bills', getBills.data.data)
         const custID = custData.customer.cust_id;
         setCustomerBillHistory(custData);
         getAllCustomerBills(custID);
@@ -87,9 +86,7 @@ const ViewBill = () => {
         });
 
       if(updatePayment.status == 200){
-      setCustomerBillHistory(
-        customerBillHistory.filter((customer) => customer.billingStatus !== true)
-      );
+      setBillingHistory(billingHistory.map((history) => history.bill_id === id ? {...history, billingStatus:true}: history))
         
         toast.success('Payment updated successfully', {position:'bottom-center'})
       } else{
