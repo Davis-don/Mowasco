@@ -196,7 +196,15 @@ export const getSigleReading = async (req, res) => {
   }
 };
 
+const addDays= (date, days) => {
+  const todayDate = new Date(date)
+  todayDate.setDate(todayDate.getDate() + days)
+  return (todayDate)
+}
 export const recordReading = async (req, res) => {
+
+  const today = new Date()
+  const deadlineDate = addDays(today, 14)
   try {
     const { currentReading, meter_id } = req.body;
 
@@ -218,6 +226,7 @@ export const recordReading = async (req, res) => {
         currentReading,
         prevReading: lastReading ? lastReading.currentReading : 0,
         consumption: amountConsumed,
+        deadline_date: deadlineDate,
         meter: {
           connect: { meter_id: meter_id },
         },

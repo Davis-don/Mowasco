@@ -123,6 +123,8 @@ export const updateAgent = async (req, res) => {
   try {
     const updateAgentDetails = req.body;
 
+    console.log('body',updateAgentDetails)
+
     const agentFields = [
       "employeeID",
       "first_name",
@@ -148,6 +150,8 @@ export const updateAgent = async (req, res) => {
       }
     }
 
+
+
     // now update details.
     const updateDetails = await prisma.agents.update({
       where: { agent_id },
@@ -165,6 +169,8 @@ export const updateAgent = async (req, res) => {
         .status(500)
         .json({ success: false, message: "Something went wrong." });
     }
+
+    console.log('update',updateDetails)
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

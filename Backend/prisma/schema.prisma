@@ -92,7 +92,7 @@ model Receipts {
   receipt_id    String   @id @default(uuid())
   receiptNumber Int      @default(autoincrement()) @map("receipt_number")
   amount_paid   Decimal  @map("amount_paid") @db.Decimal(10, 2)
-  deadline_date DateTime @default(now()) @map("deadline_date")
+  deadline_date DateTime @map("deadline_date")
   createdAt     DateTime @default(now())
 
   billing Billing @relation(fields: [bill_id], references: [bill_id], onDelete: Cascade)
@@ -109,7 +109,7 @@ model Agents {
   age        Int    @map("age")
   contact    Int    @map("contact")
   password   String @map("password")
-  status     STATUS @default(INACTIVE) @map("status")
+  status     STATUS @default(ACTIVE) @map("status")
   role       ROLE   @default(AGENT) @map("role")
 
   @@map("agents_tb")
