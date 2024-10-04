@@ -4,32 +4,29 @@ import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as Yup from "yup";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { IoFilterSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useSearchCustomer } from "../../../CustomHooks/useSearchCustomer";
+import { useSearchCustomer}  from "../../../CustomHooks/useSearchCustomer";
 import "./newCustomer.css";
 import Footer from "../../Components/Footer";
 import Search from "../../Components/Search";
 
 const Customers = () => {
   const [searchInput, setSearchInput] = useState("");
-
-  // const { searchCustomer,searchedCustomer } = useSearchCustomer(
-  //   `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/all`,
-  //   searchInput
-  // );
   const navigate = useNavigate();
   const [serverMessage, setServerMessage] = useState("");
-  const [displayServerComponent, setServerComponent] = useState(false);
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
-  const [searchedCustomer, setSearchedCustomer] = useState();
+
+  const { searchedCustomer, searchCustomer } = useSearchCustomer(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/all`
+  );
+
   //get and map all the users from the database.
 
   const getCustomers = async () => {
@@ -114,38 +111,9 @@ const Customers = () => {
   }, []);
 
   // getSearch function
-
-  const searchCustomer = async (e) => {
-    e.preventDefault();
-    if (searchInput == "") {
-      alert("Please input item to search");
-    }
-
-    try {
-      const search = await axios
-        .post(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/all`,
-          {
-            meterNumber: parseInt(searchInput),
-          },
-          {
-            withCredentials: true,
-          },
-        )
-        .catch((error) => {
-          console.log("error", error);
-          toast.error("Invalid meter number", { position: "bottom-center" });
-        });
-
-      if (search.status == 200) {
-        setSearchedCustomer(search.data.data);
-      } else {
-        toast.warn("Customer not found!");
-      }
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
+  const handleCustomerSearch = () =>  {
+    searchCustomer(searchInput)
+  }
 
   return (
     <div>
@@ -164,7 +132,7 @@ const Customers = () => {
             onChange={(e) => setSearchInput(e.target.value)}
             required
           />
-          <button onClick={searchCustomer} disabled={!searchInput}>
+          <button onClick={handleCustomerSearch} disabled={!searchInput}>
             {"Search"}
           </button>
         </div>

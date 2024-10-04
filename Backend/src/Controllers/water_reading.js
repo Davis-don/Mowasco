@@ -196,17 +196,10 @@ export const getSigleReading = async (req, res) => {
   }
 };
 
-const addDays= (date, days) => {
-  const todayDate = new Date(date)
-  todayDate.setDate(todayDate.getDate() + days)
-  return (todayDate)
-}
-export const recordReading = async (req, res) => {
 
-  const today = new Date()
-  const deadlineDate = addDays(today, 14)
+export const recordReading = async (req, res) => {
   try {
-    const { currentReading, meter_id } = req.body;
+    const {currentReading, meter_id } = req.body;
 
     const lastReading = await prisma.water_Reading.findFirst({
       where: { meter_id: meter_id },
@@ -226,7 +219,6 @@ export const recordReading = async (req, res) => {
         currentReading,
         prevReading: lastReading ? lastReading.currentReading : 0,
         consumption: amountConsumed,
-        deadline_date: deadlineDate,
         meter: {
           connect: { meter_id: meter_id },
         },

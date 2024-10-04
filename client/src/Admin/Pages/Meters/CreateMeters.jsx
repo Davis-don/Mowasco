@@ -14,8 +14,16 @@ import { AiOutlineHistory } from "react-icons/ai";
 import { useFetch } from "../../../../src/CustomHooks/useFetch";
 import { useDate } from "../../../CustomHooks/useDate";
 import Footer from "../../Components/Footer";
+import { useSearchCustomer } from "../../../CustomHooks/useSearchCustomer";
 const CreateMeters = () => {
+  const [searchInput, setSearchInput] = useState()
+
   const navigate = useNavigate();
+  const { searchCustomer, searchedCustomer, error, loading } =
+    useSearchCustomer(
+      `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/all`
+    );
+
 
   const {
     data: meters,
@@ -31,6 +39,10 @@ const CreateMeters = () => {
     }
   };
 
+  const handleCustomerSearch = () => {
+    searchCustomer(searchInput)
+  }
+
   return (
     <div>
       <div className="cust-top">
@@ -45,12 +57,14 @@ const CreateMeters = () => {
             className="search-input"
             type="text"
             name="fName"
-            value={""}
+            value={searchInput}
             placeholder="Search customer.."
-            onChange={""}
+            onChange={(e) => setSearchInput(e.target.value)}
             required
           />
-          <button>Search</button>
+          <button onClick={handleCustomerSearch} disabled={!searchInput}>
+            Search
+          </button>
         </div>
         <div className="search-filter-left">
           <div className="filter">
@@ -60,36 +74,66 @@ const CreateMeters = () => {
         </div>
       </div>
       <table>
-        <tr>
-          <th>Meter no.</th>
-          <th>Zone</th>
-          <th>Meter Status</th>
-          <th>Installation Date</th>
-          <th>Repair Date</th>
-          <th>History</th>
-        </tr>
-        {loading1 ? (
-          "Loading data ..."
-        ) : meters && meters.length > 0 ? (
-          meters.map((meter, key) => (
-            <tr key={key}>
-              <td>{meter?.meterNumber}</td>
-              <td>{meter?.zones.zoneName}</td>
-              <td>{meter?.customer.custStatus}</td>
-              <td>{formatDate(meter?.createdAt)}</td>
-              <td>{formatDate(meter?.createdAt)}</td>
-              <td>
-                {
-                  <AiOutlineHistory
-                    onClick={() => viewHistory(meter.meter_id)}
-                  />
-                }
-              </td>
-            </tr>
-          ))
-        ) : (
-          <p>Loading data ...</p>
-        )}
+        <thead>
+          <tr>
+            <th>Meter no.</th>
+            <th>Customer No.</th>
+            <th>Zone</th>
+            <th>Meter Status</th>
+            <th>Installation Date</th>
+            <th>Repair Date</th>
+            <th>History</th>
+          </tr>
+        </thead>
+        <tbody>
+          {searchedCustomer && searchInput !== "" ? (
+            <>
+              
+              <tr>
+                <td>{searchedCustomer.meters?.meterNumber}</td>
+                <td>{searchedCustomer.custNumber}</td>
+                <td>{searchedCustomer?.meters?.zones?.zoneName}</td>
+                <td>{searchedCustomer?.custStatus}</td>
+                <td>{formatDate(searchedCustomer?.meters?.createdAt)}</td>
+                <td>{formatDate(searchedCustomer?.meters?.createdAt)}</td>
+                <td>
+                  {
+                    <AiOutlineHistory
+                      onClick={() => viewHistory(searchedCustomer.meter_id)}
+                    />
+                  }
+                </td>
+              </tr>
+              
+            </>
+          ) : (
+            <>
+              {loading1 ? (
+                "Loading data ..."
+              ) : meters && meters.length > 0 ? (
+                meters.map((meter, key) => (
+                  <tr key={key}>
+                    <td>{meter?.meterNumber}</td>
+                    <td>{meter.customer.custNumber}</td>
+                    <td>{meter?.zones.zoneName}</td>
+                    <td>{meter?.customer.custStatus}</td>
+                    <td>{formatDate(meter?.createdAt)}</td>
+                    <td>{formatDate(meter?.createdAt)}</td>
+                    <td>
+                      {
+                        <AiOutlineHistory
+                          onClick={() => viewHistory(meter.meter_id)}
+                        />
+                      }
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <p>Loading data ...</p>
+              )}
+            </>
+          )}
+        </tbody>
 
         {error1 && <p>{error1}</p>}
       </table>

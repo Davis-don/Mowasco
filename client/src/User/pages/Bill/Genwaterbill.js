@@ -112,6 +112,7 @@ function Genwaterbill() {
         )
         .catch((error) => {
           setError(error.message);
+          console.log(error)
         });
 
       if (receipt.status == 200) {

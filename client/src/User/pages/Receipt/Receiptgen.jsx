@@ -9,8 +9,8 @@ import logo from "../../../../src/images/logo.jpeg";
 import store from "../../../store/dataStore";
 import { ReactToPrint } from "react-to-print";
 import { useDate } from "../../../CustomHooks/useDate";
-
 function Receiptgen() {
+  const {formatDate} = useDate()
   const componentRef = useRef();
   const user = store((state) => state.user);
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ function Receiptgen() {
   const [waterReadings, setWaterReadings] = useState();
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
-  const { formatDate } = useDate();
 
 
   const getWaterReadings = async (meterID) => {
@@ -56,7 +55,9 @@ function Receiptgen() {
         })
         .catch((error) => {
           setError(error.message);
+          console.log('error 1',error)
         });
+        console.log('receipt data', getReceiptData)
       if (getReceiptData.status == 200) {
         console.log('receipt data', getReceiptData.data.data)
         const receiptData = getReceiptData.data.data;
@@ -358,11 +359,12 @@ function Receiptgen() {
                   </div>
                 </div>
                 <p className="notice">
-                  This utility is payable within fourteen days from date of
-                  issue. Your supply is liable for disconnestion without any
-                  further notice. Should your supply be disconnected, in
-                  addition to settling the bill you will be charged reconnection
-                  bill of <span>Ksh. 2000</span>{" "}
+                  This utility is payable within fourteen days (by date {' '}
+                  { formatDate(receiptData.deadline_date)}) from date of issue. Your supply is
+                  liable for disconnestion without any further notice. Should
+                  your supply be disconnected, in addition to settling the bill
+                  you will be charged reconnection bill of{" "}
+                  <span>Ksh. 2000</span>{" "}
                 </p>
                 <p className="receipt-no">{receiptData.receiptNumber}</p>
               </div>

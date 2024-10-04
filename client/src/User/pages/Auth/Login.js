@@ -82,11 +82,15 @@ function Login() {
       if (login.status == 200) {
         const data = login.data.data;
         getUserData(data);
-        if (data.role === "AGENT") {
+        if (data.status == 'ACTIVE'){
+          if (data.role === "AGENT") {
           // navigate('/Account/login')
           navigate("/agent/dashboard");
         } else {
           navigate("/Dashboard");
+        }
+        } else{
+          toast.warn('Access denied')
         }
       }
       // if(login.Token){

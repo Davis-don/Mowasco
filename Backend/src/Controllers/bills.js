@@ -168,6 +168,26 @@ export const getSingleBill = async (req, res) => {
   }
 };
 
+export const totalBills = async (req, res) => {
+  try {
+    const getTotal  = await prisma.billing.aggregate({
+      _sum:{
+        amountDue:true
+      }
+    })
+
+    if(getTotal) {
+      res.status(200).json({success: true, message: 'Total bills computed successfully.', data: getTotal._sum.amountDue})
+    } else{
+      res.status(500).json({success: false, message: 'Something went wrong!!'})
+    }
+    
+  } catch (error) {
+    res.status(500).json({success: false, message: error.message})
+  }
+}
+
+
 export const createBill = async (req, res) => {
   try {
     const { billingPeriod, consumption, cust_id, meter_id } = req.body;

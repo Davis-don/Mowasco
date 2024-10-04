@@ -41,8 +41,6 @@ table tbody tr td .invoice {
 .paid{
   background-color: var(--sky-blue);
   cursor: no-drop;
-
-  
 }
 
 .paid .icons{

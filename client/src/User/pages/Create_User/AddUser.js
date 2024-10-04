@@ -22,7 +22,6 @@ function AddUser() {
       ...userData,
       [e.target.name]: e.target.value,
     });
-    console.log(userData);
   };
 
   const handlePost = async (e) => {
@@ -36,6 +35,9 @@ function AddUser() {
       //   },
       //   body: JSON.stringify(userData)
       // });
+
+      const confirmPassword = userData.password === userData.confirmPassword
+      if (!confirmPassword) return alert('Confirm password does not match with the password.')
 
       const response = await fetch(
         "http://localhost:4000/user/agent/register",

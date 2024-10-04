@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, Outlet } from "react-router-dom";
 import "../../Components/Admin.css";
 import Chart from "react-apexcharts";
 import { VscAccount } from "react-icons/vsc";
 import { FaMoneyBills } from "react-icons/fa6";
-import { BsSpeedometer } from "react-icons/bs";
+import {BsSpeedometer } from "react-icons/bs";
 import { useDate } from "../../../../src/CustomHooks/useDate";
 import Footer from "../../Components/Footer";
 function AdminDashboard() {
@@ -20,9 +19,10 @@ function AdminDashboard() {
   const [fieldAgents, setFieldAgents] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
+  const [totalBills, setTotalBills] = useState()
   const { formatDate } = useDate();
-  const [zonePopulation, setZonePopulation] = useState([])
-  const [zoneConsumptionTotals, setZoneConsumptionTotals] = useState([])
+  const [zonePopulation, setZonePopulation] = useState([]);
+  const [zoneConsumptionTotals, setZoneConsumptionTotals] = useState([]);
   // 1. Get the number of zones
   const getZones = async () => {
     try {
@@ -141,7 +141,7 @@ function AdminDashboard() {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/total-readings`,
           {
             withCredentials: true,
-          },
+          }
         )
         .catch((error) => {
           setError("Server error!");
@@ -168,7 +168,7 @@ function AdminDashboard() {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all`,
           {
             withCredentials: true,
-          },
+          }
         )
         .catch((error) => {
           setError("Server error!");
@@ -208,36 +208,106 @@ function AdminDashboard() {
   };
 
   // get total amount of water consumed per zone.
-  const zonalConsumptionTotal = async() => {
+  const zonalConsumptionTotal = async () => {
     try {
-      const total = await axios.get(
-        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/zone/total-consumption`,{
-          withCredentials:true
-        }
-      ).catch(error => console.log(error))
-      if(total.status === 200){
+      const total = await axios
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/zone/total-consumption`,
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => console.log(error));
+      if (total.status === 200) {
         setZoneConsumptionTotals(total.data.data);
-      } else{
-        toast.warn('Something went wrong', {position: 'bottom-center'})
+      } else {
+        toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
+  };
 
   // get the number of customers based on each zone.
   const customersPerZone = async () => {
     try {
-      const customers = await axios.get(
-        `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/zones/areas`, {
+      const customers = await axios
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/zones/areas`,
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+        });
+      if (customers.status == 200) {
+        setZonePopulation(customers.data.data);
+      } else {
+        toast.warn("Something went wrong!!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // deactivete field agent.
+  const activate = async (id) => {
+    try {
+      const activateAgent = await axios.patch(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agent/update-details/${id}`,{
+          status:'ACTIVE'
+        }, {
           withCredentials:true
         }
-      ).catch(error => {
-        console.log(error)
-      })
-      if (customers.status == 200){
-        setZonePopulation(customers.data.data)
+      ).catch(error => console.log(error))
+
+       if (activateAgent.status == 200) {
+         toast.success("Agent activated successfully.", {position: 'bottom-center'});
+         setFieldAgents(fieldAgents.map((agents) => (agents.agent_id === id ? {...agents, status:'ACTIVE'}: agents)))
+       } else {
+         toast.warn("Something went wrong.", { position: "bottom-center" });
+       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // deactivate customer.
+  const deactivate = async (id) => {
+    try {
+      const deactivateAgent = await axios.patch(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agent/update-details/${id}`,
+        {
+          status: "INACTIVE",
+        },
+        {
+          withCredentials: true,
+        }
+      ).catch(error => console.log(error))
+
+      if (deactivateAgent.status == 200){
+        toast.warn('Agent deactivated successfully.', {position: 'bottom-center'})
+         setFieldAgents(fieldAgents.map((agents) => (agents.agent_id === id ? {...agents, status:'INACTIVE'}: agents)))
+      } else {
+        toast.warn('Something went wrong.', {position: 'bottom-center'})
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalBills = async () => {
+    try {
+      const getTotals = await axios.get(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/total/bills`,{
+          withCredentials: true
+        }
+      ).catch(error => console.log(error))
+      
+      if (getTotals.status === 200){
+        setTotalBills(getTotals.data.data)
+        console.log(getTotals.data.data)
       } else{
         toast.warn('Something went wrong!!')
       }
@@ -245,6 +315,7 @@ function AdminDashboard() {
       console.log(error)
     }
   }
+
   useEffect(() => {
     getZones();
     getCustomer();
@@ -252,8 +323,9 @@ function AdminDashboard() {
     getTotalWaterConsumed();
     recentWaterReadings();
     agents();
-    zonalConsumptionTotal()
-    customersPerZone()
+    zonalConsumptionTotal();
+    customersPerZone();
+    getTotalBills()
   }, []);
   return (
     <>
@@ -428,7 +500,10 @@ function AdminDashboard() {
                 <div className="infor">
                   <h4>Pending/Overdue bills</h4>
                   <span>
-                    <span>Amount:</span> 12
+                    <span>Amount: {totalBills}</span>{" "}
+                    <b>
+                      <i>Ksh</i>
+                    </b>
                   </span>
                 </div>
               </div>
@@ -444,6 +519,7 @@ function AdminDashboard() {
                       <tr>
                         <th>Zone</th>
                         <th>Agent</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -454,6 +530,15 @@ function AdminDashboard() {
                             <td>
                               {agent.first_name} {agent.lastName}
                             </td>
+                            {agent.status === "ACTIVE" ? (
+                              <td onClick={() => deactivate(agent.agent_id)}>
+                                <span className="status">Active</span>
+                              </td>
+                            ) : (
+                              <td onClick={() => activate(agent.agent_id)}>
+                                <span className="inactive">Inactive</span>
+                              </td>
+                            )}
                           </tr>
                         ))
                       ) : (

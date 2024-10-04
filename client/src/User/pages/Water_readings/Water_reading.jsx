@@ -41,10 +41,7 @@ const Water_reading = () => {
   }, []);
   const handleSubmit = async (values) => {
     try {
-        console.log(values.currentReading);
-
       const meterID = customer.meters.meter_id;
-      console.log('meter id', meterID)
       const postRecordings = await axios
         .post(
           `http://localhost:4000/customer/reading/create`,
@@ -54,10 +51,10 @@ const Water_reading = () => {
           },
           {
             withCredentials: true,
-          },
+          }
         )
         .catch((error) => {
-          console.log('error',error)
+          console.log("error", error);
           setError(error.message);
         });
       if (postRecordings.status == 200) {
@@ -67,11 +64,13 @@ const Water_reading = () => {
       }
     } catch (error) {
       setError("Server error! Please try again later");
-      toast.error("Please ensure that the current reading is greater than the previous reading.", {
-        position: "bottom-center",
-      });
-        console.log('err',error);
-
+      toast.error(
+        "Please ensure that the current reading is greater than the previous reading.",
+        {
+          position: "bottom-center",
+        }
+      );
+      console.log("err", error);
     }
   };
   const formik = useFormik({
@@ -108,7 +107,9 @@ const Water_reading = () => {
                   marginTop: ".5rem",
                 }}
               >
-                <button type="submit">{loading ? "Generating ..." : "Generate bill"}</button>
+                <button type="submit">
+                  {loading ? "Generating ..." : "Generate bill"}
+                </button>
               </div>
 
               {error && <p className="error">{error}</p>}

@@ -120,20 +120,30 @@ export const getSingleReceipt = async (req, res) => {
   }
 };
 
+const addDays= (date, days) => {
+  const todayDate = new Date(date)
+  todayDate.setDate(todayDate.getDate() + days)
+  return todayDate
+}
 export const generateReceipt = async (req, res) => {
-  console.log("receipt", req.body);
+   const today = new Date()
+  const deadlineDate = addDays(today, 14)
+  console.log(deadlineDate)
   try {
     const { amount_paid, bill_id } = req.body;
 
     const generate = await prisma.receipts.create({
       data: {
+      deadline_date:deadlineDate,
         amount_paid,
         billing: {
           connect: {
             bill_id: bill_id,
           },
         },
+
       },
+
     });
 
     if (generate != null) {

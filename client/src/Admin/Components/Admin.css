@@ -44,11 +44,11 @@
 .below-right .other-details {
   width: 20rem;
   display: flex;
-  border: 1px solid black;
+  border: 1px solid var(--black);
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-  background-color: var(#c2cbdc);
+  background-color: var(#86878a);
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
@@ -113,6 +113,7 @@
   justify-content: center;
   align-items: start;
   padding: 0.5rem 0;
+  overflow-x: hidden;
 }
 .card-left {
   width: 100%;
