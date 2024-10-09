@@ -76,6 +76,7 @@ export const registerAgent = async (req, res) => {
 export const loginAgent = async (req, res) => {
   try {
     const { password, employeeID } = req.body;
+    console.log(password, employeeID)
 
     // first find if the employee id is present in the database.
     const verifyID = await prisma.agents.findFirst({

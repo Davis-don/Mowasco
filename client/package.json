@@ -19,7 +19,6 @@
     "react-apexcharts": "^1.4.1",
     "react-camera-pro": "^1.4.0",
     "react-dom": "^18.3.1",
-<<<<<<< HEAD
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
@@ -30,12 +29,6 @@
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0",
     "zustand": "^5.0.0-rc.2"
-=======
-    "react-icons": "^5.2.1",
-    "react-router-dom": "^6.26.1",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
->>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
   },
   "scripts": {
     "start": "react-scripts start",
