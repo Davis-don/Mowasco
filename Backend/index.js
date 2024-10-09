@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // const express = require ('express');
 import express from "express";
 import cors from "cors";
@@ -23,6 +24,11 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 
 config();
+=======
+import express from 'express';
+import cors from 'cors'
+import bodyParser from 'body-parser';
+>>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
 const app = express();
 
 // Middleware
@@ -44,7 +50,16 @@ app.use(cookieParser());
 // const UserLogin=require('./Login');
 app.use("/User/Login", Routes);
 
+<<<<<<< HEAD
 // Start server
+=======
+import EmployeesUser from './EmployeesUser.js'
+app.use('/EmployeesUser',EmployeesUser);
+import UserLogin from './Login.js'
+app.use('/User/Login',UserLogin);
+
+  // Start server
+>>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
 app.listen(4000, (error) => {
   if (error) {
     console.error("Error starting server:", error);

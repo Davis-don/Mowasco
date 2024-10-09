@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const Routes = express.Router();
 const { Client } = require("pg");
@@ -65,6 +66,15 @@ async function deleteAllRecordsFromEmployeesTable() {
     console.error("Error deleting records:", err);
   }
 }
+=======
+
+import express from "express";
+const Routes = express.Router();
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+import bcrypt from 'bcrypt';
+const saltRounds=10
+>>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
 
 //FUNCTION TO ADD USER IN THE EMPLOYEES TABLE
 async function insertEmployeeToDatabase({
@@ -88,6 +98,7 @@ async function insertEmployeeToDatabase({
       };
     }
 
+<<<<<<< HEAD
     // Proceed to insert the data if the passwords match
     const insertQuery = `
         INSERT INTO Employees_tbl (Employees_Id, FullNames, Gender, Age, contact, Status, Role, Password)
@@ -170,3 +181,55 @@ Routes.get("/", async (req, res) => {
 // })
 
 module.exports = Routes;
+=======
+
+const insertEmployeeToDatabase = async (dataObject) => {
+  try {
+    // Check whether the password and confirm password match
+    if (dataObject.Password !== dataObject.ConfirmPassword) {
+      console.error('Error: Password and Confirm Password do not match');
+      return {
+        status: 200,
+        message: "Failed! Password and Confirm Password do not match."
+      };
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(dataObject.Password, saltRounds);
+
+    // Add employee to the database
+    const newEmployee = await prisma.employee.create({
+      data: {
+        Employees_Id: parseInt(dataObject.EmployeeId) ,
+        FullNames: dataObject.FullNames,
+        Gender: dataObject.Gender,
+        Age: parseInt(dataObject.Age, 10),
+        contact: dataObject.Contact,
+        Password: hashedPassword, // Store hashed password
+        Status: dataObject.Status,
+        Role: dataObject.Role
+      }
+    });
+
+    return {
+      status: 200,
+      message: "Employee added successfully"
+    };
+    
+  } catch (error) {
+    console.error('Database Insertion Error:', error);
+    return {
+      status: 500,
+      message: "Failed! Error inserting employee into the database."
+    };
+  }
+};
+
+Routes.post('/Add/Employee', async (req, res) => {
+  const DataReturned = await insertEmployeeToDatabase(req.body); // Insert data into the table
+  res.status(DataReturned.status).json({ message: DataReturned.message });
+  //console.log(req.body)
+});
+
+export default Routes;
+>>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
