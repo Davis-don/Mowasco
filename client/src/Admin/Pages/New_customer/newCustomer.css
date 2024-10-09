@@ -27,15 +27,14 @@ table tr td {
 
 .action {
   text-align: center;
-  
 }
 
-.action span{
-  font-size: .85rem;
-  padding: .4rem;
+.action span {
+  font-size: 0.85rem;
+  padding: 0.4rem;
 }
 
-.action .icons{
+.action .icons {
   font-size: 1.5rem;
 }
 table th {
@@ -47,54 +46,66 @@ table th {
   padding: 0.05rem 0.2rem;
   background-color: blue;
   color: white;
+  cursor: pointer;
 }
-table tbody tr {
+
+.cust-status{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 80%;
+  gap: 1rem;
+  margin-top: .5rem;
+}
+
+.inactive{
+  background-color: red;
+  padding: .3rem;
+  border-radius: .3rem;
+  color: white;
+  cursor: pointer;
+}
+table tr {
   border-bottom: 1px solid blue;
 }
-table tbody:nth-of-type(even) {
+table tr:nth-of-type(even) {
   background-color: rebeccapurple;
 }
 
-
-
-.forms{
+.forms {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.update_customer{
+.update_customer {
   display: flex;
   flex-direction: column;
   align-items: center;
-    padding: 1rem;
-    background-color: var(--agent-background);
-    width: 75%;
-    border-radius: 1rem;
-
+  padding: 1rem;
+  background-color: var(--agent-background);
+  width: 75%;
+  border-radius: 1rem;
 }
-.update_customer .inputs{
+.update_customer .inputs {
   width: 80%;
- 
+
   display: flex;
   flex-direction: column;
   align-items: start;
 }
-.update_customer .inputs input{
+.update_customer .inputs input {
   width: 100%;
   border-color: var(--navy-blue);
 }
 
-.inputs label{
+.inputs label {
   font-size: 1.1rem;
 }
 
-
-.adduser-button{
+.adduser-button {
   margin-top: 2rem;
 }
-
-
-
 
 @media screen and (max-width: 500px) {
   .search-filter {
@@ -103,10 +114,9 @@ table tbody:nth-of-type(even) {
     gap: 0.4rem;
   }
 
-    .update_customer {
-      width: 100%;
-    }
-
+  .update_customer {
+    width: 100%;
+  }
 
   .search-filter-left {
     display: flex;

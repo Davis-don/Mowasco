@@ -7,28 +7,24 @@ import * as Yup from "yup";
 import "./newCustomer.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import Footer from "../../Components/Footer";
 const UpdateCustomer = () => {
   const { cust_id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [fName, setFName] = useState("");
-  const [lName, setLName] = useState("");
-  const [IDNumber, setIDNumber] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [connectionType, setConnectionType] = useState("");
-  const [customer, setCustomer] = useState([]);
-
-  const validation = Yup.object({
-    meterNumber: Yup.number().required("Please provide a meter number"),
-    zone: Yup.number().required("Please provide a zone"),
-    fName: Yup.string().required("Please provide customer first name."),
-    lName: Yup.string().required("Please provide customers last name"),
-    IDNumber: Yup.number().required(
-      "Please provide national indentification number.",
-    ),
-    phoneNumber: Yup.number().required("Provide customers phone number."),
-    connectionType: Yup.string().required("Provide the connection type."),
+  const [value, setValues] = useState();
+  const [isActive, setIsActive] = useState(false)
+  const [customer, setCustomer] = useState({
+    meterNumber: "",
+    zone: "",
+    custNumber: "",
+    fName: "",
+    lName: "",
+    IDNumber: "",
+    phoneNumber: "",
+    connectionType: "",
+    status: "",
   });
 
   const getCustomerDetails = async () => {
@@ -42,7 +38,19 @@ const UpdateCustomer = () => {
         )
         .catch((error) => console.log(error));
       if (customerData.status == 200) {
-        setCustomer(customerData.data.data);
+        const customerInformation = customerData.data.data;
+        setCustomer({
+          ...customerInformation,
+          fName: customerInformation.custFirstName,
+          lName: customerInformation.custLastName,
+          IDNumber: customerInformation.custID,
+          custNumber: customerInformation.custNumber,
+          status: customerInformation.custStatus,
+          phoneNumber: customerInformation.custPhoneNumber,
+          connectionType: customerInformation.custConnectionType,
+          meterNumber: customerInformation.meters.meterNumber,
+          zone: customerInformation.meters.zones.zoneName,
+        });
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
@@ -50,37 +58,54 @@ const UpdateCustomer = () => {
       console.log(error);
     }
   };
-  const handleSubmit = async (values) => {
-    console.log(values)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      
+      const updateCustomer = await axios
+        .patch(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/update/${cust_id}`,
+          {
+            custFirstName: customer.fName,
+        custLastName: customer.lName,
+        custID: parseInt(customer.IDNumber),
+        custPhoneNumber: parseInt(customer.phoneNumber),
+        custConnectionType: customer.connectionType,
+        // 'custStatus'
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => console.log(error));
+
+        if (updateCustomer.status == 200) {
+          toast.success('Customer details updated successfully', {position: 'bottom-center'})
+        } else{
+          toast.warn('Something went wrong!!')
+        }
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
-  const formik = useFormik({
-    initialValues: {
-      fName: "",
-      lName: "",
-      IDNumber: "",
-      phoneNumber: "",
-      connectionType: "",
-    },
-    onSubmit: handleSubmit,
-    validationSchema: validation,
-  });
 
-  useEffect(() => {
-    const loadDetails = () => {
-      console.log("first name", customer);
-      if (customer) {
-        formik.setValues({
-          fName: customer.custFirstName,
-          lName: customer.custLastName,
-          IDNumber: customer.custID,
-          phoneNumber: customer.custPhoneNumber,
-          connectionType: customer.custConnectionType,
-        });
-      }
-    };
-    loadDetails();
-  }, [customer]);
+  // useEffect(() => {
+  //   const loadDetails = () => {
+  //     if (customer) {
+  //       formik.setValues({
+  //         fName: customer.custFirstName,
+  //         lName: customer.custLastName,
+  //         IDNumber: customer.custID,
+  //         phoneNumber: customer.custPhoneNumber,
+  //         connectionType: customer.custConnectionType,
+  //       });
+  //     }
+  //   };
+  //   loadDetails();
+  // }, [customer]);
 
   useEffect(() => {
     getCustomerDetails();
@@ -99,22 +124,56 @@ const UpdateCustomer = () => {
         Update Customer Details.
       </h4>
       <div className="forms">
-        <form
-          action=""
-          className="update_customer"
-          onSubmit={formik.handleSubmit}
-        >
+        <form action="" className="update_customer" onSubmit={handleSubmit}>
+          <div className="inputs">
+            <label>Meter Number:</label>
+            <input
+              className="form-control"
+              type="number"
+              name="fName"
+              value={customer.meterNumber}
+              placeholder="Meter Number"
+              required
+              disabled
+            />
+          </div>
+
+          <div className="inputs">
+            <label>Customer Number:</label>
+            <input
+              className="form-control"
+              type="number"
+              name="fName"
+              value={customer.custNumber}
+              placeholder="Customer Number"
+              required
+              disabled
+            />
+          </div>
+
+          <div className="inputs">
+            <label>Zones:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="zone"
+              value={customer.zone}
+              placeholder="First name"
+              required
+              disabled
+            />
+          </div>
           <div className="inputs">
             <label>First Name:</label>
             <input
               className="form-control"
               type="text"
-              onBlur={formik.handleBlur}
               name="fName"
-              value={formik.values.fName}
-              onChange={formik.handleChange}
+              value={customer.fName}
+              onChange={(e) =>
+                setCustomer({ ...customer, fName: e.target.value })
+              }
               placeholder="First name"
-              // onChange={(e) => setFName(e.target.value)}
               required
             />
           </div>
@@ -124,11 +183,11 @@ const UpdateCustomer = () => {
               type="text"
               name="lName"
               className="form-control"
-              value={formik.values.lName}
-              onBlur={formik.handleBlur}
+              value={customer.lName}
               placeholder="Last name"
-              onChange={formik.handleChange}
-              // onChange={(e) => setLName(e.target.value)}
+              onChange={(e) =>
+                setCustomer({ ...customer, lName: e.target.value })
+              }
               required
             />
           </div>
@@ -139,11 +198,11 @@ const UpdateCustomer = () => {
               type="number"
               name="IDNumber"
               className="form-control"
-              value={formik.values.IDNumber}
+              value={customer.IDNumber}
               placeholder="ID number"
-              onChange={formik.handleChange}
-              // onChange={(e) => setIDNumber(e.target.value)}
-              onBlur={formik.handleBlur}
+              onChange={(e) =>
+                setCustomer({ ...customer, IDNumber: e.target.value })
+              }
               required
             />
           </div>
@@ -155,34 +214,53 @@ const UpdateCustomer = () => {
               name="phoneNumber"
               placeholder="Phone number"
               className="form-control"
-              onBlur={formik.handleBlur}
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              // onChange={(e) => setPhoneNumber(e.target.value)}
+              value={customer.phoneNumber}
+              onChange={(e) =>
+                setCustomer({ ...customer, phoneNumber: e.target.value })
+              }
               required
             />
           </div>
+
           <div className="inputs">
             <label>Connection type:</label>
-
             <input
               type="text"
               name="connectionType"
               placeholder="Connection type"
+              value={customer.connectionType}
               className="form-control"
-              value={formik.values.connectionType}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              // onChange={(e) => setConnectionType(e.target.value)}
+              onChange={(e) =>
+                setCustomer({ ...customer, connectionType: e.target.value })
+              }
               required
             />
           </div>
+          {customer.status === "ACTIVE" ? (
+            <>
+              <div className=" cust-status">
+                <label>Status</label>
+                <span className="status">Active</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className=" cust-status">
+                <label>Status</label>
+                <span className="inactive">Disconnected</span>
+              </div>
+            </>
+          )}
+
           <div className="adduser-button">
-            <button>{loading ? "Updating details..." : "Update"}</button>
+            <button  type="submit">
+              {loading ? "Updating details..." : "Update"}
+            </button>
           </div>
           <ToastContainer />
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

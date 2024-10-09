@@ -19,15 +19,15 @@ datasource db {
 
 <<<<<<< HEAD
 model Customers {
-  cust_id            String   @id @default(uuid())
-  cust_no            Int      @default(autoincrement()) @map("customer_number")
-  custFirstName      String   @map("first_name")
-  custLastName       String   @map("last_name")
-  custID             Int      @map("cust_ID")
-  custPhoneNumber    BigInt   @map("phone_number")
-  custConnectionType String   @map("connection_type")
-  custStatus         String   @default("Active") @map("status")
-  createdAt          DateTime @default(now())
+  cust_id            String          @id @default(uuid())
+  custNumber         Int             @default(autoincrement()) @map("customer_number")
+  custFirstName      String          @map("first_name")
+  custLastName       String          @map("last_name")
+  custID             Int             @map("cust_ID")
+  custPhoneNumber    Int             @map("phone_number")
+  custConnectionType String          @map("connection_type")
+  custStatus         CUSTOMER_STATUS @default(ACTIVE) @map("status")
+  createdAt          DateTime        @default(now())
   meters             Meters?
 
   billing Billing[]
@@ -40,9 +40,9 @@ model Meters {
   meterNumber Int       @unique @map("meter_number")
   createdAt   DateTime  @default(now())
   zone_id     String
-  zones       Zones     @relation(fields: [zone_id], references: [zone_id])
+  zones       Zones     @relation(fields: [zone_id], references: [zone_id], onDelete: Cascade)
   cust_id     String    @unique
-  customer    Customers @relation(fields: [cust_id], references: [cust_id])
+  customer    Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
 
   water_reading Water_Reading[]
   billing       Billing[]
@@ -59,13 +59,14 @@ model Zones {
 }
 
 model Water_Reading {
-  reading_id     String   @id @default(uuid())
-  currentReading Decimal  @default(0) @map("current_reading") @db.Decimal(10, 2)
-  prevReading    Decimal  @default(0) @map("prev_reading") @db.Decimal(10, 2)
-  consumption    Decimal  @default(0) @map("consumption") @db.Decimal(10, 2)
-  createdAt      DateTime @default(now()) @map("reading date")
+  reading_id     String               @id @default(uuid())
+  currentReading Decimal              @default(0) @map("current_reading") @db.Decimal(10, 2)
+  prevReading    Decimal              @default(0) @map("prev_reading") @db.Decimal(10, 2)
+  consumption    Decimal              @default(0) @map("consumption") @db.Decimal(10, 2)
+  readingStatus  WATER_READING_STATUS @default(NOT_RECORDED) @map("water_reading_status")
+  createdAt      DateTime             @default(now()) @map("reading date")
   meter_id       String
-  meter          Meters   @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
+  meter          Meters               @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
 
   @@map("water_reading_tb")
 }
@@ -80,11 +81,12 @@ model Billing {
   waterBill     Int      @default(0) @map("water_bill")
   reconnection  Int      @default(0) @map("reconnection")
   otherCharges  Int      @default(0) @map("other_charges")
+  billingStatus Boolean  @default(false) @map("billing_status")
 
   customer Customers @relation(fields: [cust_id], references: [cust_id], onDelete: Cascade)
   cust_id  String
 
-  meters   Meters    @relation(fields: [meter_id], references: [meter_id])
+  meters   Meters    @relation(fields: [meter_id], references: [meter_id], onDelete: Cascade)
   meter_id String
   receipts Receipts?
 
@@ -95,7 +97,7 @@ model Receipts {
   receipt_id    String   @id @default(uuid())
   receiptNumber Int      @default(autoincrement()) @map("receipt_number")
   amount_paid   Decimal  @map("amount_paid") @db.Decimal(10, 2)
-  deadline_date DateTime @default(now()) @map("deadline_date")
+  deadline_date DateTime @map("deadline_date")
   createdAt     DateTime @default(now())
 
   billing Billing @relation(fields: [bill_id], references: [bill_id], onDelete: Cascade)
@@ -112,7 +114,7 @@ model Agents {
   age        Int    @map("age")
   contact    Int    @map("contact")
   password   String @map("password")
-  status     STATUS @default(INACTIVE) @map("status")
+  status     STATUS @default(ACTIVE) @map("status")
   role       ROLE   @default(AGENT) @map("role")
 
   @@map("agents_tb")
@@ -127,6 +129,7 @@ enum STATUS {
   ACTIVE
   INACTIVE
 }
+<<<<<<< HEAD
 =======
 // prisma/schema.prisma
 
@@ -145,3 +148,16 @@ model Employee {
 
 
 >>>>>>> 088cd13ce05f6ef5a88edd2577d0df9cbecbf9af
+=======
+
+enum WATER_READING_STATUS {
+  WATER_RECORDED
+  NOT_RECORDED
+}
+
+enum CUSTOMER_STATUS {
+  ACTIVE
+  DISCONNECTED
+  NEW_CUSTOMER
+}
+>>>>>>> wilfred/101

@@ -21,7 +21,7 @@ function Login() {
   const [serverMessage, setServerMessage] = useState("");
   const [displayServerComponent, setServerComponent] = useState(false);
   const [form, setForm] = useState(true);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -64,27 +64,33 @@ function Login() {
           },
         )
         .catch((error) => {
-          console.log('error 1',error)
-          if (error.status === 404){
-            setError(error.response.data.message)
-            toast.warn(error.response.data.message)
+          console.log("error 1", error);
+          if (error.status === 404) {
+            setError(error.response.data.message);
+            toast.warn(error.response.data.message);
           }
-          if (error.status === 400){
-            setError(error.response.data.message)
-            toast.warn('Customer was not found', {position:'top-center'})
+          if (error.status === 400) {
+            setError(error.response.data.message);
+            toast.warn("Customer was not found", { position: "top-center" });
           }
-
-    });
-
+          if(error.status == 500){
+            toast.error('Server error!! Please try again later.')
+            setError( error)
+          }
+        });
 
       if (login.status == 200) {
         const data = login.data.data;
         getUserData(data);
-        if (data.role === "AGENT") {
+        if (data.status == 'ACTIVE'){
+          if (data.role === "AGENT") {
           // navigate('/Account/login')
           navigate("/agent/dashboard");
         } else {
           navigate("/Dashboard");
+        }
+        } else{
+          toast.warn('Access denied')
         }
       }
       // if(login.Token){
@@ -123,7 +129,7 @@ function Login() {
       // Log any errors that occur
       console.log("Error 2:", error);
       // setError(error)
-    } finally{
+    } finally {
       // setError(false)
     }
   };
@@ -139,7 +145,7 @@ function Login() {
               <strong>{serverMessage}</strong>
             </div>
           )}
-        { form && (
+          {form && (
             <form onSubmit={handlePost}>
               <div className="input-group mb-3">
                 <span className="input-group-text">
@@ -174,9 +180,7 @@ function Login() {
                   {passwordShown ? <MdVisibilityOff /> : <MdVisibility />}
                 </span>
               </div>
-              {
-                error && <p className="error">{error}</p>
-              }
+              {error && <p className="error">{error.message}</p>}
 
               <p style={{ float: "right" }}>
                 <a href="#" className="text-danger fs-8" onClick={registerUser}>
@@ -191,12 +195,10 @@ function Login() {
                   Sign in
                 </button>
               </div>
-          
             </form>
           )}
-         
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </div>
   );
@@ -204,42 +206,3 @@ function Login() {
 
 export default Login;
 
-// import React from 'react';
-// import './Login.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import { MdPermIdentity } from 'react-icons/md';
-// import { RiLockPasswordFill } from "react-icons/ri";
-
-// function Login() {
-//   return (
-//     <div className="overall-login-container container-fluid">
-//       <div className="form-div-container">
-//         <h4 style={{ textAlign: 'center' }}>Sign in to your account</h4>
-//         <h6 style={{ textAlign: 'center' }}>Welcome back</h6>
-//         <div className='login-form-container'>
-//           <form>
-//             <div className="input-group mb-3">
-//               <span className="input-group-text">
-//                 <MdPermIdentity />
-//               </span>
-//               <input type="number" className="form-control" placeholder="Enter company ID" />
-//             </div>
-//             <div className="input-group mb-3">
-//               <span className="input-group-text">
-//                 <RiLockPasswordFill />
-//               </span>
-//               <input type="password" className="form-control" placeholder="Enter password" />
-//             </div>
-//             <p style={{float:'right'}} ><a href='#'className='text-danger fs-8'>Forgot password</a></p>
-//             <div style={{width:'max-content',margin:'auto'}}>
-//             <button className='btn btn-primary actual-signin-btn'>Sign in</button>
-//             </div>
-
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Login;

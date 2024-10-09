@@ -44,11 +44,11 @@
 .below-right .other-details {
   width: 20rem;
   display: flex;
-  border: 1px solid black;
+  border: 1px solid var(--black);
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-  background-color: var(#c2cbdc);
+  background-color: var(#86878a);
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
@@ -111,7 +111,9 @@
     "moreDetails moreDetails moreDetails"
     "map map map";
   justify-content: center;
-  align-items: center;
+  align-items: start;
+  padding: 0.5rem 0;
+  overflow-x: hidden;
 }
 .card-left {
   width: 100%;
@@ -119,14 +121,16 @@
   display: flex;
   flex: 1 1;
   display: flex;
-  padding: 0.5rem 0;
   align-items: center;
+
   justify-content: center;
 }
 .card-1 .card-title {
   padding: 0.8rem;
   border-radius: 0.5rem;
   font-weight: 600px;
+  width: 100%;
+  margin: 0 1rem;
   background-color: #c2cbdc;
 }
 .card-title h4 {
@@ -138,11 +142,13 @@
 
 .card-title p span {
   color: var(--navy-blue);
+  font-size: 1.1rem;
 }
 .card-center {
   grid-area: card-center;
   max-width: 100%;
   display: flex;
+
   align-items: center;
   justify-content: center;
 }
@@ -188,6 +194,7 @@
     flex-direction: column;
     gap: 1rem;
   }
+  
   .graphs {
     width: 100%;
     display: flex;
@@ -208,6 +215,9 @@
   }
   .below-right .other-details {
     width: 16rem;
+  }
+  .card-center, .card-right{
+    width: 100%;
   }
 }
 
@@ -216,7 +226,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 2px solid black;
   }
 
   .graphs {
@@ -225,11 +234,64 @@
     flex-direction: column;
   }
 
-  .moreDetails .below {
+  .moreDetails,.below {
     display: flex;
     flex-direction: column;
     margin-top: 0;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+   table{
+    max-width: 100%;
+   }
+
+  .below-left {
+    width: 100%;
+  }
+
+  .below-right {
+    width: auto;
+  }
+  .below-right{
+    width: 100%;
+  }
+
+  .below-right .other-details {
+    width: 80%;
+  }
+    .card-center,
+    .card-right {
+      width: 100%;
+    }
+}
+
+
+@media screen and (min-width: 821px) and (max-width: 1010px) {
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .graphs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .moreDetails,
+  .below {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  table {
+    max-width: 100%;
   }
 
   .below-left {
@@ -240,7 +302,16 @@
     width: auto;
   }
 
+  .below-right {
+    width: 100%;
+  }
+
   .below-right .other-details {
-    width: 16rem;
+    width: 80%;
+  }
+
+  .card-center,
+  .card-right {
+    width: 100%;
   }
 }

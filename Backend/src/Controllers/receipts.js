@@ -20,13 +20,11 @@ export const getAllReceipts = async (req, res) => {
     });
 
     if (getReceipts != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "All receipts found successfully.",
-          data: getReceipts,
-        });
+      res.status(200).json({
+        success: true,
+        message: "All receipts found successfully.",
+        data: getReceipts,
+      });
     } else {
       res
         .status(500)
@@ -52,6 +50,9 @@ export const getSingleTransactionReceipt = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true,
+                billing:true
+                
               },
             },
           },
@@ -59,22 +60,18 @@ export const getSingleTransactionReceipt = async (req, res) => {
       },
     });
 
-    console.log(getReceipt);
+
     if (getReceipt != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Receipt found successfully.",
-          data: getReceipt,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Receipt found successfully.",
+        data: getReceipt,
+      });
     } else {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Something went wrong. Server error",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong. Server error",
+      });
     }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -96,6 +93,7 @@ export const getSingleReceipt = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true,
               },
             },
           },
@@ -106,50 +104,54 @@ export const getSingleReceipt = async (req, res) => {
     });
 
     if (getReceipt != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Receipt found successfully.",
-          data: getReceipt,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Receipt found successfully.",
+        data: getReceipt,
+      });
     } else {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Something went wrong. Server error",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong. Server error",
+      });
     }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
+const addDays= (date, days) => {
+  const todayDate = new Date(date)
+  todayDate.setDate(todayDate.getDate() + days)
+  return todayDate
+}
 export const generateReceipt = async (req, res) => {
-  console.log("receipt", req.body);
+   const today = new Date()
+  const deadlineDate = addDays(today, 14)
+  console.log(deadlineDate)
   try {
     const { amount_paid, bill_id } = req.body;
 
     const generate = await prisma.receipts.create({
       data: {
+      deadline_date:deadlineDate,
         amount_paid,
         billing: {
           connect: {
             bill_id: bill_id,
           },
         },
+
       },
+
     });
 
     if (generate != null) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Receipt generated successfully.",
-          data: generate,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Receipt generated successfully.",
+        data: generate,
+      });
     } else {
       res.status(500).json({ success: false, message: "Server error." });
     }
@@ -174,12 +176,10 @@ export const deleteReceipt = async (req, res) => {
         .status(200)
         .json({ success: true, message: "Receipt deleted successfully." });
     } else {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Something went wrong. Server error",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong. Server error",
+      });
     }
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

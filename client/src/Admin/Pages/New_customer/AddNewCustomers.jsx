@@ -6,6 +6,7 @@ import axios from "axios";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import Footer from "../../Components/Footer";
 const AddNewCustomers = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -33,15 +34,19 @@ const AddNewCustomers = () => {
     try {
       setLoading(true);
       const postUser = await axios
-        .post(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/create`, {
-          custFirstName: fName,
-          custLastName: lName,
-          custID: parseInt(IDNumber),
-          custPhoneNumber: parseInt(phoneNumber),
-          custConnectionType: connectionType,
-        }, {
-          withCredentials:true
-        })
+        .post(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/create`,
+          {
+            custFirstName: fName,
+            custLastName: lName,
+            custID: parseInt(IDNumber),
+            custPhoneNumber: parseInt(phoneNumber),
+            custConnectionType: connectionType,
+          },
+          {
+            withCredentials: true,
+          },
+        )
         .catch((error) => {
           console.log(error);
           toast.error("Server error!. Please try again later.", {
@@ -146,27 +151,33 @@ const AddNewCustomers = () => {
               required
             />
           </div>
+       
+
           <div className="inputs">
             <label htmlFor="fName">Connection type</label>
 
-            <input
-              type="text"
+            <select
               name="connectionType"
-              placeholder="Connection type"
-              className="form-control"
-              value={connectionType}
+              id="connectionType"
               onChange={(e) => setConnectionType(e.target.value)}
-              required
-            />
+              value={connectionType}
+              className="form-control"
+            >
+              <option value="">Connection type</option>
+              <option value="school">School</option>
+              <option value="domestic">Domestic</option>
+              <option value="irrigation">Irrigation</option>
+              <option value="commercial">Commercial</option>
+            </select>
           </div>
           <div className="adduser-button">
-            <button>
-              {loading ? "Registering...." : "Register"}
-            </button>
+            <button>{loading ? "Registering...." : "Register"}</button>
           </div>
           <ToastContainer />
         </form>
       </div>
+
+      <Footer />
     </div>
   );
 };

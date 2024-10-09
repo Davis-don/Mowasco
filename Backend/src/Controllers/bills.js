@@ -40,51 +40,48 @@ export const getAllBills = async (req, res) => {
     // }
 
     const getBills = await prisma.billing.groupBy({
-      by:['cust_id'],
-        _max:{
-          billingDate:true
-        },
-    })
+      by: ["cust_id"],
+      _max: {
+        billingDate: true,
+      },
+    });
 
     const recentBills = await Promise.all(
       getBills.map(async (bill) => {
         return await prisma.billing.findFirst({
-          where:{
-            cust_id:bill.cust_id,
-            billingDate:bill._max.billingDate
-          }, 
-           select: {
-        bill_id: true,
-        billingPeriod: true,
-        billingDate: true,
-        amountDue: true,
-        consumption: true,
-        customer: true,
-        meters: true,
-        meters:{
-          include:{
-            zones:true
-          }
-        },
-        arrears: true,
-        waterBill: true,
-        otherCharges: true,
-        reconnection: true,
-        receipts: true,
-      
-    }
-        })
-      })
-    )
-
-     if (recentBills) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "All bills found successfully.",
-          data: recentBills,
+          where: {
+            cust_id: bill.cust_id,
+            billingDate: bill._max.billingDate,
+          },
+          select: {
+            bill_id: true,
+            billingPeriod: true,
+            billingDate: true,
+            amountDue: true,
+            consumption: true,
+            customer: true,
+            meters: true,
+            meters: {
+              include: {
+                zones: true,
+              },
+            },
+            arrears: true,
+            waterBill: true,
+            otherCharges: true,
+            reconnection: true,
+            receipts: true,
+          },
         });
+      }),
+    );
+
+    if (recentBills) {
+      res.status(200).json({
+        success: true,
+        message: "All bills found successfully.",
+        data: recentBills,
+      });
     } else {
       res
         .status(500)
@@ -110,6 +107,7 @@ export const getCustomersBills = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true
               },
             },
           },
@@ -118,13 +116,11 @@ export const getCustomersBills = async (req, res) => {
       },
     });
     if (checkBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill found successfully.",
-          data: checkBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill found successfully.",
+        data: checkBill,
+      });
     } else {
       res
         .status(500)
@@ -149,6 +145,7 @@ export const getSingleBill = async (req, res) => {
             meters: {
               include: {
                 zones: true,
+                water_reading:true
               },
             },
           },
@@ -156,13 +153,11 @@ export const getSingleBill = async (req, res) => {
       },
     });
     if (checkBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill found successfully.",
-          data: checkBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill found successfully.",
+        data: checkBill,
+      });
     } else {
       res
         .status(500)
@@ -173,6 +168,26 @@ export const getSingleBill = async (req, res) => {
   }
 };
 
+export const totalBills = async (req, res) => {
+  try {
+    const getTotal  = await prisma.billing.aggregate({
+      _sum:{
+        amountDue:true
+      }
+    })
+
+    if(getTotal) {
+      res.status(200).json({success: true, message: 'Total bills computed successfully.', data: getTotal._sum.amountDue})
+    } else{
+      res.status(500).json({success: false, message: 'Something went wrong!!'})
+    }
+    
+  } catch (error) {
+    res.status(500).json({success: false, message: error.message})
+  }
+}
+
+
 export const createBill = async (req, res) => {
   try {
     const { billingPeriod, consumption, cust_id, meter_id } = req.body;
@@ -181,7 +196,6 @@ export const createBill = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    console.log("amount payable", amoutPayable);
 
     let totalCharges = 0;
     if (amoutPayable) {
@@ -206,13 +220,11 @@ export const createBill = async (req, res) => {
       },
     });
     if (createBill) {
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Bill created successfully.",
-          data: createBill,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Bill created successfully.",
+        data: createBill,
+      });
     } else {
       res
         .status(500)
@@ -224,7 +236,40 @@ export const createBill = async (req, res) => {
 };
 
 export const updateBill = async (req, res) => {
-  res.json("update bill");
+  try {
+    const billDetatails = req.body;
+
+    const billFields = ['billingStatus']
+
+    const {bill_id} = req.params;
+  
+
+    let updates = {}
+
+    // loop through the updates to update the changes.
+
+  for (const status in billDetatails) {
+    if (billFields.includes(status)) {
+      updates[status]= billDetatails[status];
+      
+    }
+  }
+
+  const updateBill = await prisma.billing.update({
+    where:{bill_id},
+    data: updates
+  })
+
+  if(updateBill){
+    res.status(200).json({success: true, message: 'Bill updated successfully.', data: updateBill})
+  } else{
+    res.status(500).json({success: false, message: 'Something went wrong.'})
+
+  }
+    
+  } catch (error) {
+    res.status(500).json({success: false, message: error.message})
+  }
 };
 
 export const deleteBill = async (req, res) => {

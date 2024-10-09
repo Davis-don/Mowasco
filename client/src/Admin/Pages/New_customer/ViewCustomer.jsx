@@ -15,103 +15,115 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaOrcid } from "react-icons/fa";
 import { GiPipes } from "react-icons/gi";
 import { GrStatusGood } from "react-icons/gr";
+import { formatDate, useDate } from "../../../CustomHooks/useDate";
+import { useFetch } from "../../../CustomHooks/useFetch";
+import Footer from "../../Components/Footer";
 const ViewCustomer = () => {
   const { cust_id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { formatDate } = useDate();
+  const { data, loading1, error1 } = useFetch(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
+  );
 
+  console.log("data", data);
   const [customer, setCustomer] = useState();
-
 
   const moreAboutCustomer = async () => {
     try {
+      setError(false);
+      setLoading(true);
+
       const customerData = await axios
-        .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`, {
-          withCredentials:true
-        })
-        .catch((error) => console.log(error));
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/${cust_id}`,
+          {
+            withCredentials: true,
+          },
+        )
+        .catch((error) => {
+          setError("Something went wrong!!");
+        });
       if (customerData.status == 200) {
-        console.log(customerData.data.data)
         setCustomer(customerData.data.data);
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
-      console.log(error);
+      setError("Server error.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const formatDate = (createAT) => {
-      const date = new Date(createAT);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        day: "numeric",
-        year: "numeric",
-        month: "long",
-      });
-      return formattedDate; // Output: "September 2024"
-    };
-
-  }, [customer]);
-
-  useEffect(() => {
-    moreAboutCustomer();
+    // moreAboutCustomer();
   }, []);
   return (
-    <div className="cust-details">
-      <div className="cust-top">
-        <span>
-          <Link className="link" to={"/manage-customers"}>
-            Customers
-          </Link>
-          <MdNavigateNext /> View Customer{" "}
-        </span>
-      </div>
-      <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
-        Customer Details
-      </h2>
-
-      <div className="abt-meters">
-        <div className="abt-1">
-          <FaUser className="icons" />
+    <>
+      <div className="cust-details">
+        <div className="cust-top">
           <span>
-            {customer?.custFirstName} {customer?.custLastName}
+            <Link className="link" to={"/manage-customers"}>
+              Customers
+            </Link>
+            <MdNavigateNext /> View Customer{" "}
           </span>
         </div>
-        <div className="abt-1">
-          <FaTachometerAlt className="icons" />
-          <span>{customer?.meters.meterNumber}</span>
-        </div>
-        <div className="abt-1">
-          <FaLocationDot className="icons" />
-          <span>{customer?.meters?.zones.zoneName}</span>
-        </div>
-        <div className="abt-1">
-          <MdDateRange className="icons" />
-          <span>{customer?.createdAt}</span>
-        </div>
-      </div>
+        <h2 style={{ textAlign: "center", marginTop: "1rem" }}>
+          Customer Details
+        </h2>
 
-      <div className="abt-meters">
-        <div className="abt-1">
-          <FaPhoneAlt className="icons" />
-          <span>{customer?.custPhoneNumber}</span>
-        </div>
-        <div className="abt-1">
-          <FaOrcid className="icons" />
-          <span>{customer?.custID}</span>
-        </div>
-        <div className="abt-1">
-          <GiPipes className="icons" />
-          <span>{customer?.custConnectionType}</span>
-        </div>
-        <div className="abt-1">
-          <GrStatusGood className="icons" />
-          <span>{customer?.custStatus}</span>
-        </div>
+        {loading1 ? (
+          "Loading details..."
+        ) : (
+          <>
+            <div className="abt-meters">
+              <div className="abt-1">
+                <FaUser className="icons" />
+                <span>
+                  {data?.custFirstName} {data?.custLastName}
+                </span>
+              </div>
+              <div className="abt-1">
+                <FaTachometerAlt className="icons" />
+                <span>{data?.meters.meterNumber}</span>
+              </div>
+              <div className="abt-1">
+                <FaLocationDot className="icons" />
+                <span>{data?.meters?.zones.zoneName}</span>
+              </div>
+              <div className="abt-1">
+                <MdDateRange className="icons" />
+                <span>{formatDate(data?.createdAt)}</span>
+              </div>
+            </div>
+
+            <div className="abt-meters">
+              <div className="abt-1">
+                <FaPhoneAlt className="icons" />
+                <span>+254({data?.custPhoneNumber})</span>
+              </div>
+              <div className="abt-1">
+                <FaOrcid className="icons" />
+                <span>{data?.custID}</span>
+              </div>
+              <div className="abt-1">
+                <GiPipes className="icons" />
+                <span>{data?.custConnectionType}</span>
+              </div>
+              <div className="abt-1">
+                <GrStatusGood className="icons" />
+                <span>{data?.custStatus}</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

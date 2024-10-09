@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, Outlet } from "react-router-dom";
 import "../../Components/Admin.css";
 import Chart from "react-apexcharts";
 import { VscAccount } from "react-icons/vsc";
 import { FaMoneyBills } from "react-icons/fa6";
-import { BsSpeedometer } from "react-icons/bs";
-
+import {BsSpeedometer } from "react-icons/bs";
+import { useDate } from "../../../../src/CustomHooks/useDate";
+import Footer from "../../Components/Footer";
 function AdminDashboard() {
   const [zones, setZones] = useState();
   const [customer, setCustomer] = useState();
@@ -19,6 +19,10 @@ function AdminDashboard() {
   const [fieldAgents, setFieldAgents] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
+  const [totalBills, setTotalBills] = useState()
+  const { formatDate } = useDate();
+  const [zonePopulation, setZonePopulation] = useState([]);
+  const [zoneConsumptionTotals, setZoneConsumptionTotals] = useState([]);
   // 1. Get the number of zones
   const getZones = async () => {
     try {
@@ -202,6 +206,116 @@ function AdminDashboard() {
       setLoading(false);
     }
   };
+
+  // get total amount of water consumed per zone.
+  const zonalConsumptionTotal = async () => {
+    try {
+      const total = await axios
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/zone/total-consumption`,
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => console.log(error));
+      if (total.status === 200) {
+        setZoneConsumptionTotals(total.data.data);
+      } else {
+        toast.warn("Something went wrong", { position: "bottom-center" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // get the number of customers based on each zone.
+  const customersPerZone = async () => {
+    try {
+      const customers = await axios
+        .get(
+          `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/zones/areas`,
+          {
+            withCredentials: true,
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+        });
+      if (customers.status == 200) {
+        setZonePopulation(customers.data.data);
+      } else {
+        toast.warn("Something went wrong!!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // deactivete field agent.
+  const activate = async (id) => {
+    try {
+      const activateAgent = await axios.patch(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agent/update-details/${id}`,{
+          status:'ACTIVE'
+        }, {
+          withCredentials:true
+        }
+      ).catch(error => console.log(error))
+
+       if (activateAgent.status == 200) {
+         toast.success("Agent activated successfully.", {position: 'bottom-center'});
+         setFieldAgents(fieldAgents.map((agents) => (agents.agent_id === id ? {...agents, status:'ACTIVE'}: agents)))
+       } else {
+         toast.warn("Something went wrong.", { position: "bottom-center" });
+       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // deactivate customer.
+  const deactivate = async (id) => {
+    try {
+      const deactivateAgent = await axios.patch(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/user/agent/update-details/${id}`,
+        {
+          status: "INACTIVE",
+        },
+        {
+          withCredentials: true,
+        }
+      ).catch(error => console.log(error))
+
+      if (deactivateAgent.status == 200){
+        toast.warn('Agent deactivated successfully.', {position: 'bottom-center'})
+         setFieldAgents(fieldAgents.map((agents) => (agents.agent_id === id ? {...agents, status:'INACTIVE'}: agents)))
+      } else {
+        toast.warn('Something went wrong.', {position: 'bottom-center'})
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalBills = async () => {
+    try {
+      const getTotals = await axios.get(
+        `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/total/bills`,{
+          withCredentials: true
+        }
+      ).catch(error => console.log(error))
+      
+      if (getTotals.status === 200){
+        setTotalBills(getTotals.data.data)
+        console.log(getTotals.data.data)
+      } else{
+        toast.warn('Something went wrong!!')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getZones();
     getCustomer();
@@ -209,6 +323,9 @@ function AdminDashboard() {
     getTotalWaterConsumed();
     recentWaterReadings();
     agents();
+    zonalConsumptionTotal();
+    customersPerZone();
+    getTotalBills()
   }, []);
   return (
     <>
@@ -220,7 +337,30 @@ function AdminDashboard() {
               <span>Total amount</span>:
               {loading ? " Loading ..." : totalMonthlyConsumed} M <sup>3</sup>
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
+            <div className="zones-consumption">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Zone name:</th>
+                    <th>Total Consumption:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {zoneConsumptionTotals && zoneConsumptionTotals.length > 0 ? (
+                    zoneConsumptionTotals.map((zoneTotals, key) => (
+                      <tr key={key}>
+                        <td>{zoneTotals.zoneName}</td>
+                        <td>
+                          {zoneTotals.totalConsumption} M <sup>3</sup>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <p>Loading data...</p>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div className="card-center card-1">
@@ -230,7 +370,27 @@ function AdminDashboard() {
               <span>Active Customers: </span>{" "}
               {loading ? " Loading ..." : customer?.length}
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
+            <table>
+              <thead>
+                <tr>
+                  <th>Zone:</th>
+                  <th>Population:</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zonePopulation && zonePopulation.length > 0 ? (
+                  zonePopulation.map((zonePop, key) => (
+                    <tr>
+                      <td>{zonePop.zoneName}</td>
+                      <td>{zonePop.customerCount}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <p>Loading data...</p>
+                )}
+                <tr></tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div className="card-right card-1">
@@ -241,7 +401,24 @@ function AdminDashboard() {
               {loading ? " Loading ..." : zones?.length}
               (Zones)
             </p>
-            <span>1st Jan 2024 - 31st January, 2024</span>
+            <table>
+              <thead>
+                <tr>
+                  <th>Zone Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {zones && zones.length > 0 ? (
+                  zones.map((zone, key) => (
+                    <tr key={key}>
+                      <td>{zone.zoneName}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <p>Loading zones...</p>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -267,6 +444,7 @@ function AdminDashboard() {
         <div className="moreDetails">
           <div className="below">
             <div className="below-left">
+              <h4> Most Recent Water Readings </h4>
               <table>
                 <thead>
                   <tr>
@@ -281,19 +459,21 @@ function AdminDashboard() {
                     </th>
                   </tr>
                 </thead>
-    
+
                 <tbody>
                   {waterReading && waterReading.length > 0 ? (
-                    waterReading.map((recentReading, key) => (
-                      <tr key={key}>
-                        <td>{recentReading.meter.meterNumber}</td>
-                        <td>{recentReading.meter.customer.cust_id}</td>
-                        <td>
-                          {recentReading.meter.customer.custFirstName}{" "}
-                          {recentReading.meter.customer.custLastName}
-                        </td>
-                        <td>{recentReading.consumption}</td>
-                      </tr>
+                    waterReading.slice(0, 10).map((recentReading, key) => (
+                      <>
+                        <tr key={key}>
+                          <td>{recentReading.meter.meterNumber}</td>
+                          <td>{recentReading.meter.customer.custNumber}</td>
+                          <td>
+                            {recentReading.meter.customer.custFirstName}{" "}
+                            {recentReading.meter.customer.custLastName}
+                          </td>
+                          <td>{recentReading.consumption}</td>
+                        </tr>
+                      </>
                     ))
                   ) : (
                     <p>Loading recent water readings.</p>
@@ -320,7 +500,10 @@ function AdminDashboard() {
                 <div className="infor">
                   <h4>Pending/Overdue bills</h4>
                   <span>
-                    <span>Amount:</span> 12
+                    <span>Amount: {totalBills}</span>{" "}
+                    <b>
+                      <i>Ksh</i>
+                    </b>
                   </span>
                 </div>
               </div>
@@ -336,16 +519,26 @@ function AdminDashboard() {
                       <tr>
                         <th>Zone</th>
                         <th>Agent</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {fieldAgents && fieldAgents.length > 0 ? (
                         fieldAgents.map((agent, key) => (
                           <tr key={key}>
-                            <td>Zone 1</td>
+                            <td>{agent.employeeID}</td>
                             <td>
                               {agent.first_name} {agent.lastName}
                             </td>
+                            {agent.status === "ACTIVE" ? (
+                              <td onClick={() => deactivate(agent.agent_id)}>
+                                <span className="status">Active</span>
+                              </td>
+                            ) : (
+                              <td onClick={() => activate(agent.agent_id)}>
+                                <span className="inactive">Inactive</span>
+                              </td>
+                            )}
                           </tr>
                         ))
                       ) : (
@@ -406,12 +599,9 @@ function AdminDashboard() {
 
          
 
-          <div className="bottom">
-            <h1>Mutitu Water Project</h1>
-            <span>Developed by WinkyWebers &copy; All rights reserved.</span>
-          </div>
-        </div>
+     
       </div>  */}
+      <Footer />
     </>
   );
 }

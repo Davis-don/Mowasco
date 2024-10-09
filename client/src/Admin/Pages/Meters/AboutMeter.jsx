@@ -1,83 +1,70 @@
 import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaRegUser, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { FaTachometerAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import "./createmeters.css";
 import { MdDateRange } from "react-icons/md";
-import axios, { Axios } from "axios";
-import * as Yup from "yup";
+import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
-import { useFetch } from "../../../User/Components/useFetch";
+import { useFetch } from "../../../CustomHooks/useFetch";
+import { useDate } from "../../../CustomHooks/useDate";
+import { AiOutlineFieldNumber } from "react-icons/ai";
+import Footer from "../../Components/Footer";
 const AboutMeter = () => {
   const { meter_id } = useParams();
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [meterHistory, setMeterHistory] = useState();
-  const [meterReadingHistory, setMeterReadingHistory] = useState([]);
+  // const [meterReadingHistory, setMeterReadingHistory] = useState([]);
+  const { formatDate } = useDate();
+
   const { data, loading1, error1 } = useFetch(
-    `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
+  );
+  const { data: meterHistory } = useFetch(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
   );
 
-  console.log('fetched',data)
-  useEffect(() => {
-    // const meterData = async () => {
-    //   try {
-    //     setError(false)
-    //     setLoading(true)
-    //     const meterDetails = await axios
-    //       .get(
-    //         `${process.env.REACT_APP_VITE_API_URL_BASE}/meters/${meter_id}`,
-    //         {
-    //           withCredentials: true,
-    //         },
-    //       )
-    //       .catch((errors) => {
-    //         setError('Something went wrong!!')
-    //       });
-    //     if (meterDetails.status == 200) {
-    //       setMeterHistory(meterDetails.data.data);
-    //     }
-    //   } catch (error) {
-    //     setError('Server Error!! Please try again later.')
-    //   } finally{
-    //     setLoading(false)
-    //   }
-    // };
-    // if (meter_id) meterData();
-    getMeterReadings();
-    
-  }, [meter_id]);
+  console.log("meter readings", data);
 
-  const getMeterReadings = async () => {
-    try {
-      setError(false)
-      setLoading(true)
-      const getReadings = await axios
-        .get(
-          `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
-          {
-            withCredentials: true,
-          },
-        )
-        .catch((error) => {
-          setError('Something went wrong!!')
-        });
-      if (getReadings.status == 200) {
-        setMeterReadingHistory(getReadings.data.data);
-      } else {
-        toast.warn("Something went wrong.");
-      }
-    } catch (error) {
-      setError('Server error! Please try again later.')
-    } finally{
-      setLoading(false)
-    }
+  // compute total meter readings.
+  const totalMeterReadings = (consumption) => {
+    const totalConsumed = consumption * 123;
+    return totalConsumed;
   };
+
+  useEffect(() => {
+    totalMeterReadings();
+  }, []);
+  // const getMeterReadings = async () => {
+  //   try {
+  //     setError(false);
+  //     setLoading(true);
+  //     const getReadings = await axios
+  //       .get(
+  //         `${process.env.REACT_APP_VITE_API_URL_BASE}/customer/reading/all/${meter_id}/readings`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       )
+  //       .catch((error) => {
+  //         setError("Something went wrong!!");
+  //       });
+  //     if (getReadings.status == 200) {
+  //       setMeterReadingHistory(getReadings.data.data);
+  //     } else {
+  //       toast.warn("Something went wrong.");
+  //     }
+  //   } catch (error) {
+  //     setError("Server error! Please try again later.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getMeterReadings();
+  // }, []);
 
   return (
     <div>
@@ -91,7 +78,7 @@ const AboutMeter = () => {
         </span>
       </div>
       <h4 style={{ textAlign: "center", marginTop: "1rem" }}>Meter History</h4>
-      {loading ? (
+      {loading1 ? (
         "Loading data ..."
       ) : (
         <>
@@ -100,21 +87,24 @@ const AboutMeter = () => {
               <div className="abt-1">
                 <FaUser className="icons" />
                 <span>
-                  {data.customer.custFirstName} {' '}
-                  {data.customer.custLastName}
+                  {data?.customer?.custFirstName} {data?.customer?.custLastName}
                 </span>
               </div>
               <div className="abt-1">
                 <FaTachometerAlt className="icons" />
-                <span>{data.meterNumber}</span>
+                <span>{data?.meterNumber}</span>
+              </div>
+              <div className="abt-1">
+                <AiOutlineFieldNumber className="icons" />
+                <span>{data?.customer.custNumber}</span>
               </div>
               <div className="abt-1">
                 <FaLocationDot className="icons" />
-                <span>{data.zones.zoneName}</span>
+                <span>{data?.zones.zoneName}</span>
               </div>
               <div className="abt-1">
                 <MdDateRange className="icons" />
-                <span>{data.createdAt}</span>
+                <span>{formatDate(data?.createdAt)}</span>
               </div>
             </div>
           ) : (
@@ -123,6 +113,7 @@ const AboutMeter = () => {
         </>
       )}
 
+      {error1 && <p>{error1}</p>}
       <div className="mtrs-form">
         <h5>Meter water reading history</h5>
         <table>
@@ -137,19 +128,17 @@ const AboutMeter = () => {
             </tr>
           </thead>
 
-          {
-            error && <p className="error">{error}</p>
-          }
+          {/* {error1 && <p className="error">{error1}</p>} */}
           <tbody>
-            {meterReadingHistory && meterReadingHistory.length > 0 ? (
-              meterReadingHistory.map((history, key) => (
+            {meterHistory && meterHistory.length > 0 ? (
+              meterHistory?.map((history, key) => (
                 <tr key={key}>
-                  <td>{history.meter.meterNumber}</td>
-                  <td>{history.createdAt}</td>
-                  <td>{history.currentReading}</td>
-                  <td>{history.prevReading}</td>
-                  <td>{history.consumption}</td>
-                  <td>{history.amount}</td>
+                  <td>{history?.meter.meterNumber}</td>
+                  <td>{formatDate(history?.createdAt)}</td>
+                  <td>{history?.currentReading}</td>
+                  <td>{history?.prevReading}</td>
+                  <td>{history?.consumption}</td>
+                  <td>{totalMeterReadings(history?.consumption)}</td>
                 </tr>
               ))
             ) : (
@@ -158,6 +147,7 @@ const AboutMeter = () => {
           </tbody>
         </table>
       </div>
+      <Footer />
     </div>
   );
 };

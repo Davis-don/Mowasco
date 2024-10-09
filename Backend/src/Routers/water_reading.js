@@ -7,6 +7,7 @@ import {
   totalAmountConsumed,
   recordReading,
   deleteReading,
+  zonalTotalConsumption,
 } from "../Controllers/water_reading.js";
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get("/all", verifyToken, getAllReadings);
 router.get("/all/:meter_id/readings", verifyToken, getAllReadingsForOneMeter);
 
 router.get("/all/total-readings", verifyToken, totalAmountConsumed);
-
+router.get("/zone/total-consumption", zonalTotalConsumption);
 router.get("/:meter_id", verifyToken, getSigleReading);
 
 router.post("/create", verifyToken, recordReading);

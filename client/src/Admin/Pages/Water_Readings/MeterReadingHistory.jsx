@@ -6,6 +6,7 @@ import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { MdNavigateNext } from "react-icons/md";
+import Footer from "../../Components/Footer";
 
 const MeterReadingHistory = () => {
   const navigate = useNavigate();
@@ -16,17 +17,6 @@ const MeterReadingHistory = () => {
   const [IDNumber, setIDNumber] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [connectionType, setConnectionType] = useState("");
-  const validation = Yup.object({
-    meterNumber: Yup.number().required("Please provide a meter number"),
-    zone: Yup.number().required("Please provide a zone"),
-    fName: Yup.string().required("Please provide customer first name."),
-    lName: Yup.string().required("Please provide customers last name"),
-    IDNumber: Yup.number().required(
-      "Please provide national indentification number.",
-    ),
-    phoneNumber: Yup.number().required("Provide customers phone number."),
-    connectionType: Yup.string().required("Provide the connection type."),
-  });
 
   const handleSubmit = async (e) => {
     // navigate("/newTestFile");
@@ -67,17 +57,7 @@ const MeterReadingHistory = () => {
       setLoading(false);
     }
   };
-  const formik = useFormik({
-    initialValues: {
-      fName: "",
-      lastName: "",
-      IDNumber: "",
-      phoneNumber: "",
-      connectionType: "",
-    },
-    onSubmit: handleSubmit,
-    validationSchema: validation,
-  });
+
   return (
     <div>
       <div className="cust-top">
@@ -162,6 +142,8 @@ const MeterReadingHistory = () => {
         </div>
         <ToastContainer />
       </form>
+
+      <Footer />
     </div>
   );
 };

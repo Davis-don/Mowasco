@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "./billing_payment.css";
-import { MdNavigateNext } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
-import * as Yup from "yup";
 import { IoFilterSharp } from "react-icons/io5";
+import Footer from "../../Components/Footer";
+import { useSearchCustomer } from "../../../CustomHooks/useSearchCustomer";
+
 
 const Billing_payment = () => {
   const navigate = useNavigate();
   const [customerBills, setCustomerBills] = useState([]);
-  const [error, setError] = useState()
-  const [loading,setLoading] = useState()
-
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState();
+  const [searchInput, setSearchInput ] = useState()
+  const { searchCustomer, searchedCustomer } = useSearchCustomer(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/search/bills`
+  );
 
   const viewCustomerBill = async (id) => {
     try {
@@ -28,32 +30,36 @@ const Billing_payment = () => {
 
   const getCustomerBills = async () => {
     try {
-      setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       let getBills = await axios
         .get(`${process.env.REACT_APP_VITE_API_URL_BASE}/customer/bill/all`, {
-          withCredentials:true
+          withCredentials: true,
         })
         .catch((error) => {
-          console.log(error)
-          setError('Something went wrong!')
+          console.log(error);
+          setError("Something went wrong!");
         });
       if (getBills.status == 200) {
         setCustomerBills(getBills.data.data);
-        console.log('bill', getBills.data.data )
       } else {
         toast.warn("Something went wrong", { position: "bottom-center" });
       }
     } catch (error) {
       console.log(error);
-      toast.error('Server error! Please try again later', {position: 'bottom-center'})
-      setError('Server error. Please try again later.')
-    } finally{
-      setLoading(false)
+      toast.error("Server error! Please try again later", {
+        position: "bottom-center",
+      });
+      setError("Server error. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
- 
-
+  
+  // search custoeer.
+  const handleCustomerSearch = () => {
+    searchCustomer(searchInput)
+  }
 
   useEffect(() => {
     getCustomerBills();
@@ -73,12 +79,12 @@ const Billing_payment = () => {
             className="search-input"
             type="text"
             name="fName"
-            value={""}
+            value={searchInput}
             placeholder="Search customer.."
-            onChange={""}
+            onChange={(e) => setSearchInput(e.target.value)}
             required
           />
-          <button>Search</button>
+          <button onClick={handleCustomerSearch}>Search</button>
         </div>
         <div className="search-filter-left">
           <div className="filter">
@@ -104,28 +110,52 @@ const Billing_payment = () => {
             <th>Total bill</th>
             <th>View</th>
           </tr>
-
-          {customerBills && customerBills.length > 0 ? (
-            customerBills.map((cstBill, key) => (
+          {searchedCustomer && searchInput !== "" ? (
+            <>
               <tr>
-                <td>{cstBill.meters.meterNumber}</td>
-                <td>{cstBill.customer.cust_id}</td>
-                <td>{cstBill.meters.zones.zoneName}</td>
-                <td>{cstBill.customer.custFirstName}</td>
-                <td>{cstBill.customer.custLastName}</td>
-                <td>{cstBill.otherCharges}</td>
-                <td>{cstBill.amountDue}</td>
+                <td>{searchedCustomer.meters.meterNumber}</td>
+                <td>{searchedCustomer.customer.custNumber}</td>
+                <td>{searchedCustomer.meters.zones.zoneName}</td>
+                <td>{searchedCustomer.customer.custFirstName}</td>
+                <td>{searchedCustomer.customer.custLastName}</td>
+                <td>{searchedCustomer.otherCharges}</td>
+                <td>{searchedCustomer.amountDue}</td>
 
                 <td>
-                  {<FaEye onClick={() => viewCustomerBill(cstBill.bill_id)} />}
+                  {<FaEye onClick={() => viewCustomerBill(searchedCustomer.bill_id)} />}
                 </td>
               </tr>
-            ))
+            </>
           ) : (
-            <p>Loading bills...</p>
+            <>
+              {customerBills && customerBills.length > 0 ? (
+                customerBills.map((cstBill, key) => (
+                  <tr>
+                    <td>{cstBill.meters.meterNumber}</td>
+                    <td>{cstBill.customer.custNumber}</td>
+                    <td>{cstBill.meters.zones.zoneName}</td>
+                    <td>{cstBill.customer.custFirstName}</td>
+                    <td>{cstBill.customer.custLastName}</td>
+                    <td>{cstBill.otherCharges}</td>
+                    <td>{cstBill.amountDue}</td>
+
+                    <td>
+                      {
+                        <FaEye
+                          onClick={() => viewCustomerBill(cstBill.bill_id)}
+                        />
+                      }
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <p>Loading bills...</p>
+              )}
+            </>
           )}
         </table>
       )}
+      <Footer />
     </div>
   );
 };

@@ -3,8 +3,10 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 const store = create(
   persist((set) => ({
     user: null,
+    customers: null,
     getUserData: (data) => set(() => ({ user: data })),
-    logoutUser: (date) => set(()=>({user:null}))
+    logoutUser: () => set(() => ({ user: null })),
+    // delete:() => set((customers) => customers.filter((customer) => customer.cust !== id))
   })),
 );
 

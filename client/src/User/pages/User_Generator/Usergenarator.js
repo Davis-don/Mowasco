@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Usergenerator.css";
-// import waterImage from '../images/yoann-boyer-i14h2xyPr18-unsplash.jpg'
 import oceanimg from "../../../images/jack-b-o1radglopDA-unsplash.jpg";
 import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import oceanimg from '../images/jack-b-o1radglopDA-unsplash.jpg'
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import Water_reading from "../Water_readings/Water_reading";
 import { useNavigate } from "react-router-dom";
 import store from "../../../store/dataStore";
 function Usergenarator() {
@@ -17,7 +14,6 @@ function Usergenarator() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
 
   const getZones = async () => {
     try {
@@ -30,16 +26,16 @@ function Usergenarator() {
           withCredentials: true,
         })
         .catch((error) => {
-          if (error.status == 500){
-            setError(error.response.data.message)
+          if (error.status == 500) {
+            setError(error.response.data.message);
           }
-          });
+        });
       if (zones) {
         setZone(zones.data.data);
       } else {
         toast.warn("Zones were not found.");
       }
-      setError(false)
+      setError(false);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -49,8 +45,8 @@ function Usergenarator() {
 
   const handleSubmit = async (values) => {
     try {
-      if(!userName){
-        return
+      if (!userName) {
+        return;
       }
 
       setError(false);
@@ -68,28 +64,27 @@ function Usergenarator() {
         )
         .catch((error) => {
           console.log(error);
-          if (error.status == 500){
-          setError(error.response.data.message);
-           toast.error(
-            "Invalid inputs. The Meter number not is associated with that zone.",{position:'bottom-center'}
-          );
+          if (error.status == 500) {
+            setError(error.response.data.message);
+            toast.error(
+              "Invalid inputs. The Meter number not is associated with that zone.",
+              { position: "bottom-center" },
+            );
           }
-         
         });
       const custID = queryUser.data.data.customer.cust_id;
 
       if (queryUser.status == 200) {
         navigate(`/customer/current-reading/${custID}`);
       } else {
-        toast.warn("Something went wrong.");
+        toast.warn("Something went wrong.", {position:'bottom-center'});
       }
     } catch (error) {
       setError(error);
-      return <div>{error.message}</div>
+      return <div>{error.message}</div>;
     } finally {
       setLoading(false);
-      setError(false)
-
+      setError(false);
     }
   };
 
@@ -105,18 +100,15 @@ function Usergenarator() {
     getZones();
   }, []);
   return (
-    <div className="overall-user-generator">
-
-      {
-        loading && <p>{'loading...'}</p>
-      }
-            {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
+    <div className="overall-user-generator ">
+      {loading && <p>{"loading..."}</p>}
+      {/* <img className='water-background' src={waterImage} alt='water in lake'/> */}
       <div className="form-div-container-user-gen">
         <p style={{ textAlign: "center" }}>
           Please enter the customer's zone and meter details below
         </p>
-        <form className="user-gen-form" onSubmit={formik.handleSubmit}>
-          <div>
+        <form className="user-gen-form update_customer" onSubmit={formik.handleSubmit}>
+          < div className="inputs">
             <select
               className="form-select form-control"
               name="zones"
@@ -133,9 +125,8 @@ function Usergenarator() {
                 <p>Loading zones...</p>
               )}
             </select>
-   
           </div>
-          <div>
+          <div className="inputs">
             <input
               className="form-control"
               name="meterNumber"
@@ -174,7 +165,7 @@ function Usergenarator() {
                   <p>Loading zones...</p>
                 )}
               </select>
-            {error && <p className="error">{error}</p>}
+              {error && <p className="error">{error}</p>}
             </div>
             <div>
               <input
@@ -193,8 +184,7 @@ function Usergenarator() {
                 {loading ? "Generating ..." : "Generate Customer"}
               </button>
             </div>
-        <ToastContainer />
-
+            <ToastContainer />
           </form>
 
           {/* <form className='user-gen-form'>
@@ -229,7 +219,6 @@ function Usergenarator() {
             alt="water in lake"
           />
         </div>
-
       </div>
     </div>
   );

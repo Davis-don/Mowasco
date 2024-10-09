@@ -5,44 +5,46 @@
   justify-content: center;
 }
 
-.receipt-invoice .name-logo {
- display: grid;  
- grid-template-columns: 0.4fr 1fr;
- grid-template-rows: auto;
- grid-template-areas: 'left right';
- align-items: start;
- justify-content: center;
+.name-logo{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
-
 
 .company-logo{
-  grid-area: left;
+  width: 30%;
+  display: grid;
+  place-content: center;
 }
+
 .company-name{
-  grid-area: right;
-}
-.overall-receipt-gen-container{
   width: 100%;
 }
 
-table{
+.overall-receipt-gen-container {
   width: 100%;
 }
-table thead tr th{
+
+table {
+  width: 100%;
+}
+table thead tr th {
   border: none;
 }
 
-table .tr .td{
+table .tr .td {
   border-bottom: 2px solid black;
   border-style: dotted;
 }
 
-table tr td .server{
+table tr td .server {
   color: var(--navy-blue);
   text-transform: capitalize;
 }
-.name-logo h1{
-  letter-spacing: .3rem;
+.name-logo h1 {
+  letter-spacing: 0.3rem;
   font-weight: 700;
 }
 .name-logo h1,
@@ -53,8 +55,7 @@ span {
   line-height: 1.6;
 }
 
-
-.company-name h3{
+.company-name h3 {
   text-align: center;
 }
 .office-details {
@@ -64,7 +65,7 @@ span {
   justify-content: space-between;
   width: 100%;
 }
-.office-left h4{
+.office-left h4 {
   text-align: start;
 }
 .office-left span {
@@ -82,73 +83,129 @@ span {
   text-transform: capitalize;
 }
 
-.bottom .steps span{
+.bottom .steps span {
   font-size: 1.2rem;
-  letter-spacing: .2rem;
+  letter-spacing: 0.2rem;
   line-height: 1.6;
 }
 
-.bottom .account span{
-  padding: .2rem 0;
+.bottom .account span {
+  padding: 0.2rem 0;
   font-size: 1.2rem;
-    letter-spacing: .05rem;
-    line-height: 1.6;
+  letter-spacing: 0.05rem;
+  line-height: 1.6;
 }
-.payment-process{
+.payment-process {
   padding: 1rem 0;
 }
-.next{
+.next {
   font-size: 1.2rem;
   width: 3rem;
 }
-.notice{
+.notice {
   text-align: justify;
   padding: 0 1rem;
   letter-spacing: 5;
   line-height: 1.6;
 }
-.receipt-no{
+.receipt-no {
   text-align: center;
 }
-.name-logo img{
+.name-logo img {
   width: 8rem;
   display: block;
   object-fit: cover;
   border-radius: 50%;
   overflow: hidden;
-
 }
 
-
-.receipt-btn{
+.toPrint {
+  margin: 0 1rem;
+}
+.receipt-btn {
   display: flex;
-  flex:1 1;
+  flex: 1 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 @media screen and (max-width: 500px) {
- .name-logo{
-   border: 1px solid red;
-  display:flex;
-  flex-direction: column;
- }
- 
- .name-logo .company-logo{
-  display: none;
- }
-.company-name{
-  width: 100%;
-  border: 2px solid green;
-}
+  .receipt-btn button{
+    padding:.3rem .8rem;
+    font-size:.85rem ;
+    border-radius: 0;
+  }
+  .receipt-invoice h2{
+    font-size: 1.1rem;
+  }
+
+  .company-name h1{
+    font-size: 1.5rem;
+
+  }
+  .company-name h3{
+    font-size: .9rem;
+  }
+
+  .company-name span {
+    font-size: 1rem;
+  }
+
+  .office-details{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .office-details h4{
+    font-size: 1.1rem;
+  }
+  .office-details span{
+    font-size: .9rem;
+  }
+
+  table thead tr th{
+    max-width: 100%;
+  }
+    table tr td{
+      border: 2px solid var(--sky-blue);
+    }
+
+  table tr td .server{
+    color:aliceblue;
+    font-size: .85rem;
+    width: 100%;
+  }
+
+  .bottom h4{
+    font-size: 1.1rem;
+  }
+  .payment-process .steps span{
+    font-size: .85rem;
+  }
+     .payment-process .account span {
+    font-size: .85rem;    
+  }
+  .name-logo {
+    display: flex;
+    flex-direction: column;
+  }
+  .name-logo .company-name{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .company-name h1 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
   .gen-water-receipt-form-div {
     padding: 0;
-      width: 100%;
+    width: 100%;
   }
 }
-@media screen and (min-width: 641px) and (max-width: 1025px) {
-  .overall-receipt-gen-container {
-  }
+@media screen and (min-width: 501px) and (max-width: 900px) {
+
   .gen-water-receipt-form-div {
     padding: 30px;
     width: 80vw;
@@ -159,8 +216,92 @@ span {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 20px;
   }
+
+    .receipt-btn button {
+      padding: .3rem .8rem;
+      font-size: 1.2rem;
+      border-radius: 0;
+    }
+  
+    .receipt-invoice h2 {
+      font-size: 2rem;
+    }
+  
+    .name-logo .company-name h1 {
+      font-size: 2rem;
+  
+    }
+  
+    .company-name h3 {
+      font-size: 1.1rem;
+    }
+  
+    .company-name span {
+      font-size: 1.1rem;
+    }
+  
+    .office-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .office-details h4 {
+      font-size: 1.5rem;
+    }
+  
+    .office-details span {
+      font-size: 1.1rem;
+    }
+  
+    table thead tr th {
+      max-width: 100%;
+    }
+  
+    table tr td {
+      border: 2px solid var(--sky-blue);
+    }
+  
+    table tr td .server {
+      color: aliceblue;
+      font-size: 1rem;
+      width: 100%;
+    }
+  
+    .bottom h4 {
+      font-size: 1.3rem;
+    }
+  
+    .payment-process .steps span {
+      font-size: 1.1rem;
+    }
+  
+    .payment-process .account span {
+      font-size: 1.1rem;
+    }
+  
+    .name-logo {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .name-logo .company-name {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .company-name h1 {
+      font-size: 1.4rem;
+      text-align: center;
+    }
+  
+    .gen-water-receipt-form-div {
+      padding: 0;
+      width: 100%;
+    }
 }
-@media screen and (min-width: 1026px) {
+@media screen and (min-width:901) {
   .overall-receipt-gen-container {
   }
   .gen-water-receipt-form-div {

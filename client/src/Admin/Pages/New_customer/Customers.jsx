@@ -4,22 +4,28 @@ import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as Yup from "yup";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { IoFilterSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useSearchCustomer}  from "../../../CustomHooks/useSearchCustomer";
 import "./newCustomer.css";
+import Footer from "../../Components/Footer";
+import Search from "../../Components/Search";
 
 const Customers = () => {
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const [serverMessage, setServerMessage] = useState("");
-  const [displayServerComponent, setServerComponent] = useState(false);
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
+
+  const { searchedCustomer, searchCustomer } = useSearchCustomer(
+    `${process.env.REACT_APP_VITE_API_URL_BASE}/api/customer-search/all`
+  );
 
   //get and map all the users from the database.
 
@@ -39,7 +45,6 @@ const Customers = () => {
 
       if (getUsers.status == 200) {
         const data = getUsers.data.data;
-        console.log("customer", data);
         setCustomers(data);
       } else {
         toast.warn("Something went wrong. Please try again later.");
@@ -82,15 +87,18 @@ const Customers = () => {
           `${process.env.REACT_APP_VITE_API_URL_BASE}/customers/delete/${id}`,
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => {
           console.log(error);
           toast.warn("Server error");
         });
+      setCustomers(customers.filter((customer) => customer.cust_id !== id));
 
       if (deleteCustomer) {
-        toast.success("Customer deleted successfully.");
+        toast.success("Customer deleted successfully.", {
+          position: "bottom-center",
+        });
       } else {
         toast.warn("Something went wrong.");
       }
@@ -102,6 +110,11 @@ const Customers = () => {
     getCustomers();
   }, []);
 
+  // getSearch function
+  const handleCustomerSearch = () =>  {
+    searchCustomer(searchInput)
+  }
+
   return (
     <div>
       <div className="cust-top">
@@ -112,14 +125,16 @@ const Customers = () => {
         <div className="search">
           <input
             className="search-input"
-            type="text"
+            type="number"
             name="fName"
-            value={""}
+            value={searchInput}
             placeholder="Search customer.."
-            onChange={""}
+            onChange={(e) => setSearchInput(e.target.value)}
             required
           />
-          <button>Search</button>
+          <button onClick={handleCustomerSearch} disabled={!searchInput}>
+            {"Search"}
+          </button>
         </div>
         <div className="search-filter-left">
           <div className="filter">
@@ -138,6 +153,7 @@ const Customers = () => {
         <thead>
           <tr>
             <th>Meter no.</th>
+            <th>Customer No.</th>
             <th>Zone</th>
             <th>First Name</th>
             <th>Last Name</th>
@@ -150,24 +166,33 @@ const Customers = () => {
           </tr>
         </thead>
 
-        {customers && customers.length > 0 ? (
-          customers.map((customer, key) => (
-            <tbody>
-              <tr key={key}>
-                <td>{customer.meters?.meterNumber}</td>
-                <td>{customer.meters?.zones.zoneName}</td>
-                <td>{customer.custFirstName}</td>
-                <td>{customer.custLastName}</td>
-                <td>{customer.custPhoneNumber}</td>
-                <td>{customer.custID}</td>
+        <tbody>
+          {searchedCustomer && searchInput !== "" ? (
+            <>
+              <tr>
+                <td>{searchedCustomer.meters?.meterNumber}</td>
+                <td>{searchedCustomer.custNumber}</td>
+                <td>{searchedCustomer.meters?.zones.zoneName}</td>
+                <td>{searchedCustomer.custFirstName}</td>
+                <td>{searchedCustomer.custLastName}</td>
+                <td>{searchedCustomer.custPhoneNumber}</td>
+                <td>{searchedCustomer.custID}</td>
                 <td className="action">
-                  <span className="status">{customer.custStatus}</span>
+                  <td className="action">
+                    {searchedCustomer.custStatus === "ACTIVE" ? (
+                      <>
+                        <span className="status">{searchedCustomer.custStatus}</span>
+                      </>
+                    ) : (
+                      <span className="inactive">{searchedCustomer.custStatus}</span>
+                    )}
+                  </td>
                 </td>
                 <td className="action">
                   {
                     <MdEdit
                       className="icons"
-                      onClick={() => updateCustomer(customer.cust_id)}
+                      onClick={() => updateCustomer(searchedCustomer.cust_id)}
                     />
                   }
                 </td>
@@ -175,7 +200,7 @@ const Customers = () => {
                   {
                     <MdDelete
                       className="icons"
-                      onClick={() => handleDelete(customer.cust_id)}
+                      onClick={() => handleDelete(searchedCustomer.cust_id)}
                     />
                   }
                 </td>
@@ -183,17 +208,67 @@ const Customers = () => {
                   {
                     <FaEye
                       className="icons"
-                      onClick={() => viewCustomer(customer.cust_id)}
+                      onClick={() => viewCustomer(searchedCustomer.cust_id)}
                     />
                   }
                 </td>
               </tr>
-            </tbody>
-          ))
-        ) : (
-          <p>Loading customers</p>
-        )}
+            </>
+          ) : (
+            <>
+              {customers && customers.length > 0 ? (
+                customers.map((customer, key) => (
+                  <tr key={key}>
+                    <td>{customer.meters?.meterNumber}</td>
+                    <td>{customer?.custNumber}</td>
+                    <td>{customer.meters?.zones.zoneName}</td>
+                    <td>{customer.custFirstName}</td>
+                    <td>{customer.custLastName}</td>
+                    <td>{customer.custPhoneNumber}</td>
+                    <td>{customer.custID}</td>
+                    <td className="action">
+                      {customer.custStatus === "ACTIVE" ? (
+                        <>
+                          <span className="status">{customer.custStatus}</span>
+                        </>
+                      ) : (
+                        <span className="inactive">{customer.custStatus}</span>
+                      )}
+                    </td>
+                    <td className="action">
+                      {
+                        <MdEdit
+                          className="icons"
+                          onClick={() => updateCustomer(customer.cust_id)}
+                        />
+                      }
+                    </td>
+                    <td className="action">
+                      {
+                        <MdDelete
+                          className="icons"
+                          onClick={() => handleDelete(customer.cust_id)}
+                        />
+                      }
+                    </td>
+                    <td className="action">
+                      {
+                        <FaEye
+                          className="icons"
+                          onClick={() => viewCustomer(customer.cust_id)}
+                        />
+                      }
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <p>Loading customers</p>
+              )}{" "}
+            </>
+          )}
+        </tbody>
       </table>
+      <Footer />
     </div>
   );
 };

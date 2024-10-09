@@ -5,6 +5,7 @@ import {
   createCustomer,
   updateCustomer,
   deleteCustomer,
+  getTotalCustomersPerZone,
 } from "../Controllers/customers.js";
 import verifyToken from "../Middleware/verifyToken.js";
 const router = Router();
@@ -18,5 +19,6 @@ router.post("/create", verifyToken, createCustomer);
 router.patch("/update/:cust_id", verifyToken, updateCustomer);
 
 router.delete("/delete/:cust_id", verifyToken, deleteCustomer);
+router.get("/zones/areas", getTotalCustomersPerZone);
 
 export default router;

@@ -1,12 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // const express = require ('express');
+=======
+>>>>>>> wilfred/101
 import express from "express";
 import cors from "cors";
-// const cors = require('cors');
 import bodyParser from "body-parser";
-// const bodyParser = require('body-parser');
-// const { Client } = require('pg');
-// import { Client } from 'pg'
+import sendSms from "./src/Routers/sendSms.js";
 import pkg from "pg";
 const { Client } = pkg;
 import customers from "./src/Routers/create_customers.js";
@@ -15,14 +15,12 @@ import waterReading from "./src/Routers/water_reading.js";
 import meters from "./src/Routers/meters.js";
 import zones from "./src/Routers/zones.js";
 import receipts from "./src/Routers/receipts.js";
-import searchCustomers from "./src/searchCustomers.js";
-// const configurations = require('./Databaseconfig');
-import configurations from "./Databaseconfig";
+import searchCustomers from "./src/Search/searchCustomers.js";
 import Routes from "./Login.js";
 import agents from "./src/Routers/agents.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
-
+import search_customer from "./src/Search/dashboard.customer-search.js";
 config();
 =======
 import express from 'express';
@@ -70,9 +68,11 @@ app.listen(4000, (error) => {
 
 app.use("/user", agents);
 app.use("/api/customers", searchCustomers);
+app.use("/api/customer-search", search_customer);
 app.use("/customers", customers);
 app.use("/customer/reading", waterReading);
 app.use("/meters", meters);
 app.use("/zones", zones);
 app.use("/customer/bill", bills);
 app.use("/customer/receipt", receipts);
+app.use("/send", sendSms);

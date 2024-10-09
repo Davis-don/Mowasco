@@ -170,7 +170,7 @@ function Header() {
         <div className="img">
           <img src={logo} alt="Company logo" />
         </div>
-        <h1>Muwasco</h1>
+        <h1>Mutitu</h1>
       </div>
     </>
   );

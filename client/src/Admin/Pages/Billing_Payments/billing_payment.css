@@ -1,4 +1,3 @@
-
 .customer-bills .select {
   float: right;
 }
@@ -12,9 +11,42 @@ table tbody tr td .invoice {
   cursor: pointer;
 }
 
-
-.cust-details{
+.cust-details {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+
+.mark_paid{
+  /* margin: 0 .5rem; */
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+  align-items: center;
+  padding: .2rem .4rem;
+  border-radius: .2rem;
+  background-color: var(--navy-blue);
+  cursor: pointer;
+}
+.mark_paid .icons{
+  font-size: 1.7rem;
+  color: var(--white);
+}
+.mark_paid span{
+  font-size: 1rem;
+  color: var(--white);
+}
+
+.paid{
+  background-color: var(--sky-blue);
+  cursor: no-drop;
+}
+
+.paid .icons{
+  color: var(--black);
+}
+
+.paid span{
+  color: var(--black);
 }

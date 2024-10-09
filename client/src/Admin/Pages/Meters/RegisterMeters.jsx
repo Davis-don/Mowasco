@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Footer from "../../Components/Footer";
 const RegisterMeters = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -21,7 +22,9 @@ const RegisterMeters = () => {
           withCredentials: true,
         })
         .catch((error) => console.log(error));
+
       if (zones) {
+        console.log("zones", zones);
         setZone(zones.data.data);
       } else {
         toast.warn("Zones were not found.");
@@ -48,7 +51,7 @@ const RegisterMeters = () => {
           },
           {
             withCredentials: true,
-          }
+          },
         )
         .catch((error) => {
           toast.error("Server error", { position: "bottom-center" });
@@ -149,13 +152,13 @@ const RegisterMeters = () => {
           </div>
 
           <div className="adduser-button">
-            <button >
-              {loading ? "Assigning meter...." : "Assign meter"}
-            </button>
+            <button>{loading ? "Assigning meter...." : "Assign meter"}</button>
           </div>
           <ToastContainer />
         </form>
       </div>
+
+      <Footer />
     </div>
   );
 };

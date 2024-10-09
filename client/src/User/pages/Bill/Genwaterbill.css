@@ -1,13 +1,13 @@
-.overall-gen-water-bill-container{
-    display:flex;
-    align-items: center;
-    flex-direction: column;
+.overall-gen-water-bill-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.overall-gen-water-bill-container .gen-water-bill-form-div{
-    width: 80%;
-    padding: 0;
-    margin: 0;
+.overall-gen-water-bill-container .gen-water-bill-form-div {
+  width: 80%;
+  padding: 0;
+  margin: 0;
 }
 .container-fluid {
   display: flex;
@@ -48,26 +48,25 @@ h4 {
   text-align: center;
 }
 
-h4 span{
-    color: var(--navy-blue);
-    text-transform: lowercase;
+h4 span {
+  color: var(--navy-blue);
+  text-transform: lowercase;
 }
-@media screen and (max-width:500px){
-
-.overall-gen-water-bill-container .gen-water-bill-form-div{
+@media screen and (max-width: 500px) {
+  .overall-gen-water-bill-container .gen-water-bill-form-div {
     min-width: 100%;
     padding: 0;
     margin: 0;
-}
+  }
 
-.customer-top, .water-readings{
+  .customer-top,
+  .water-readings {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
 }
-}
-
 
 @media screen and (min-width: 641px) and (max-width: 1025px) {
   .overall-gen-water-bill-container {
