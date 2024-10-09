@@ -215,7 +215,7 @@ const Water_reading = () => {
             accept="image/*"
             onChange={handleImageCapture}
           />
-          <img src={camCaprture} />
+          {/* <img src={camCaprture} /> */}
           {/* <div className="camera">
             <Camera
               ref={camera}
